@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>后台首页</title>
+	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="themes/icon.css">
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.min.js"></script>
+</head>
+<body style="padding:2px;margin:4px;">
+	<div class="easyui-panel" style="padding:5px; margin-bottom:10px;">
+		新闻管理
+	</div>
+	<div class="easyui-panel" style="padding:5px;">
+		<input class="easyui-textbox" style="width:15%;height:26px" data-options="prompt: '标题'">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+	</div>
+	
+	<table id="dg" class="easyui-datagrid" style="width:100%;height:500px" data-options="rownumbers:true,singleSelect:true,autoRowHeight:false,pagination:true,pageSize:10">
+		<thead>
+			<tr>
+				<th field="inv" width="80">新闻标题</th>
+				<th field="date" width="100">Date</th>
+				<th field="name" width="80">Name</th>
+				<th field="amount" width="80" align="right">Amount</th>
+				<th field="price" width="80" align="right">Price</th>
+				<th field="cost" width="100" align="right">Cost</th>
+				<th field="note" width="110">Note</th>
+			</tr>
+		</thead>
+	</table>
+	<script type="text/javascript">
+	$(function(){
+		$('#dg').datagrid('loadData');
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>都能访问</title>
+</head>
+<body>
+<%if(so.isGuest()) { %>
+	<a href="">登录</a>
+<%} %>
+<%if(so.isAuthenticated()){ %>
+	${so.principal(null) }, 你好！
+<%} %>
+</body>
+</html>

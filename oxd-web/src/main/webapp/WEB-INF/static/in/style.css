@@ -1,0 +1,57 @@
+* {margin: 0; padding: 0;}
+html,body{height: 100%;}
+body {font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,STXihei,"Microsoft YaHei","微软雅黑",sans-serif; background: #fff; min-height: 512px;}
+ul{list-style: none;}
+a{text-decoration: none; color: #666;}
+h4{display: inherit;}
+
+#main{min-height:100%; position: relative; display: block;}
+
+#top ul li {display:inline-block; margin: 0 10px 0 0;}
+#top ul a, ul span {color: #f2f2f2; font-size: 13px; text-decoration: none;}
+#top ul span {font-size: 17px;}
+#top ul a:hover {color: #ccc}
+#top {width: 100%; background: #232323;}
+#top .top_menu {width: 950px; height: 40px; line-height: 40px; margin: 0 auto;}
+
+#content {width:  950px; margin: 0 auto; position: relative; padding-bottom: 75px; }
+.blog_title {width: auto; height: 95px; line-height:120px;  border-bottom:1px solid #eee;}
+.blog_title span {margin: 0 10px 0 0;}
+.blog_title .f_title {color: #232323; font-size: 30px; font-weight: bold;}
+.blog_title .blog_exp {color: #aaa; font-size: 15px; margin-left: 0;}
+.blog_title .blog_time {color: #aaa; font-size: 12px;float: right; height: 22px;margin-top: 22px;}
+
+.blog_item li { margin: 20px 0 0 10px; color: #666;}
+.blog_item .blog_time {margin-top: 7px; color: #aaa; font-size: 13px;}
+.blog_item .content_p {margin-top: 7px;font-size: 14px;}
+
+.blog_new {padding-top: 20px;}
+.blog_new input.form-input {
+    border-radius: 5px;
+    height: 22px;
+    width:  940px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 5px;
+}
+
+.blog_new textarea.form-area {
+    border-radius: 5px;
+    height: 180px;
+    width: 940px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 5px;
+}
+
+.blog_new input.form-submit {
+    border: 1px solid #4C90C1;
+    border-radius: 3px;
+    width: 55px;
+    height: 25px;
+    background: #64B5F1;
+    color: #fff;
+    font-weight: bold;
+}
+
+#footer {width: 100%; bottom: 0; position: absolute; background: #232323; line-height: 40px; font-size: 12px; color: white; text-align: center;}
