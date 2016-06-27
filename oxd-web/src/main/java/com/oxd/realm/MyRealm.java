@@ -9,6 +9,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +28,6 @@ public class MyRealm extends AuthorizingRealm {
 		String username = (String) principals.getPrimaryPrincipal();
 		System.out.println(username);
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-		// authorizationInfo.setRoles(userService.findRoles(username));
-		// authorizationInfo.setStringPermissions(userService.findPermissions(username));
 		return authorizationInfo;
 	}
 
@@ -42,9 +41,10 @@ public class MyRealm extends AuthorizingRealm {
 		}
 
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-				user.getUsername(), 
+				user.getName(), 
 				user.getPassword(), 
-				getName() // realm name
+				ByteSource.Util.bytes(user.getCredentialsSalt()),
+				getName()
 		);
 		return authenticationInfo;
 	}

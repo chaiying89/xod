@@ -2,9 +2,12 @@ package com.oxd.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,8 @@ import com.oxd.service.UserService;
 
 @Controller
 public class UserController {
+	
+	protected static final Logger logger = Logger.getLogger(UserController.class);
 
 	@Autowired
 	private UserService service;
@@ -28,22 +33,24 @@ public class UserController {
 		try {
 			Subject subject = SecurityUtils.getSubject();
 			if(subject.isAuthenticated()) {
-				return "redirect:/ajax_page";
+				return "redirect:/main";
 			}
 			String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
 	        String error = null;
 	        if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
-	            error = "用户名/密码错误";
+	            error = "用户名或密码错误";
+	            logger.error(error);
 	        } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-	            error = "用户名/密码错误";
+	            error = "用户名或密码错误";
+	            logger.error(error);
 	        } else if(exceptionClassName != null) {
-	            error = "未知错误" + exceptionClassName;
+	            error = "未知错误";
+	            logger.error(error + ":" + exceptionClassName);
 	        }
 	        model.addAttribute("error", error);
-			model.addAttribute("message", "login success!");
 		} catch(Exception e) {
-			model.addAttribute("message", "login fail! username or password is wrong, please try agin. <a href='userLogin'>login in</a>");
-			return "fail";
+			model.addAttribute("error", "未知错误");
+			logger.error("未知错误", e);
 		}
 		return "login";
 	}
@@ -70,12 +77,17 @@ public class UserController {
 			@RequestParam(required = true)String password, 
 			@RequestParam(required = true)String repassword) {
 		try {
+			Subject subject = SecurityUtils.getSubject();
 			if(!password.equals(repassword)) {
 				model.addAttribute("message", "register fail! <a href='userRegister'>register</a>");
 				return "fail";
 			}
+			SecureRandomNumberGenerator sec = new SecureRandomNumberGenerator();
+			String salt = sec.nextBytes().toHex();
+			String pwd = new Md5Hash(password, username + salt, 2).toBase64();
 			User u = new User();
-			u.setPassword(password);
+			u.setSalt(salt);
+			u.setPassword(pwd);
 			u.setUsername(username);
 			service.register(u);
 			model.addAttribute("message", "register success! <a href='userLogin'>login in</a>");
@@ -86,14 +98,14 @@ public class UserController {
 		return "success";
 	}
 	
-	@RequestMapping("/success")
+	@RequestMapping(value = {"/", "/main"})
 	public String success() {
-		return "success";
+		return "main";
 	}
 	
-	@RequestMapping("/ajax_page")
+	@RequestMapping("/index")
 	public String registerNewPage(Model model) {
-		return "ajax_page";
+		return "index";
 	}
 	
 	@RequestMapping("/ajax")
@@ -112,5 +124,12 @@ public class UserController {
 		String callname = request.getParameter("callback");
 		JSONObject json = new JSONObject();
 		return callname != null ? callname + "(" + json.toJSONString(obj) + ")" : json.toJSONString(obj);
+	}
+	
+	public static void main(String args[]) {
+		SecureRandomNumberGenerator sec = new SecureRandomNumberGenerator();
+		String salt = sec.nextBytes().toHex();
+		String password = new Md5Hash("123","zhangsan"+salt,2).toBase64();
+		System.out.println("salt：" + salt + "\r\n" + "password：" + password);
 	}
 }

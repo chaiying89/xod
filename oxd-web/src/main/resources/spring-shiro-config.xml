@@ -14,11 +14,18 @@
     <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">  
         <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>  
     </bean>  
-  
+    
+    <!-- 添加加密算法 -->
+	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="md5" />
+		<property name="hashIterations" value="2" />
+		<property name="storedCredentialsHexEncoded" value="false" />
+	</bean>    
      
     
     <bean id="myRealm" class="com.oxd.realm.MyRealm">
-    	<property name="cachingEnabled" value="false"/>
+    	<property name="cachingEnabled" value="false" />
+    	<property name="credentialsMatcher" ref="credentialsMatcher" />
     </bean>
     
     <!-- 会话ID生成器 -->
@@ -95,7 +102,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
         <property name="securityManager" ref="securityManager"/>  
         <property name="loginUrl" value="/login"/>  
-        <property name="successUrl" value="/ajax_page"/>  
+        <property name="successUrl" value="/main"/>  
         <property name="unauthorizedUrl" value="/page/401"/>  
         <property name="filters">
             <util:map>
