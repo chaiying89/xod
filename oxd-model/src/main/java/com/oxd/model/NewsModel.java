@@ -18,23 +18,24 @@ import javax.persistence.Table;
 public class NewsModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	@Column(length = 30)
 	private String title;	//标题
 	@Column(length = 255)
 	private String introduction;//引言（简介）
+	@Column(length = 255)
 	private String prePictureUrl;//前置图url
-	@Column(columnDefinition="enum('news','events','notice')")
-	private String type;//类型
+	@ManyToOne
+	private MenuModel type;//类型
 	@Lob  
 	@Basic(fetch = FetchType.LAZY)
 	private String content;//内容
 	private Date createTime;//创建时间
 	private Date updateTime;//更新时间
 	@ManyToOne
-	private User createUser;//创建用户
+	private UserModel createUser;//创建用户
 	@ManyToOne
-	private User updateUser;//更新用户
+	private UserModel updateUser;//更新用户
 	
 	public String getTitle() {
 		return title;
@@ -66,29 +67,35 @@ public class NewsModel {
 	public void setPrePictureUrl(String prePictureUrl) {
 		this.prePictureUrl = prePictureUrl;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public Date getUpdateTime() {
 		return updateTime;
 	}
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public User getCreateUser() {
+	public UserModel getCreateUser() {
 		return createUser;
 	}
-	public void setCreateUser(User createUser) {
+	public void setCreateUser(UserModel createUser) {
 		this.createUser = createUser;
 	}
-	public User getUpdateUser() {
+	public UserModel getUpdateUser() {
 		return updateUser;
 	}
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(UserModel updateUser) {
 		this.updateUser = updateUser;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public MenuModel getType() {
+		return type;
+	}
+	public void setType(MenuModel type) {
+		this.type = type;
 	}
 	
 }

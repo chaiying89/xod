@@ -13,7 +13,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.2.3.RELEASE</spring.version>
-		<jackson.version>1.9.13</jackson.version>
 		<shiro.version>1.2.3</shiro.version>
 		<cglib.version>3.1</cglib.version>
 		<httpclient.version>4.3.1</httpclient.version>
@@ -122,11 +121,11 @@
 			</dependency>
 	
 			<!-- json -->
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+			<dependency>  
+			    <groupId>com.fasterxml.jackson.core</groupId>  
+			    <artifactId>jackson-databind</artifactId>  
+			    <version>2.5.1</version>  
+			</dependency> 
 	
 			<!-- cglib -->
 			<dependency>

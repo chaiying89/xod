@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Table
 @Entity
-public class User {
+public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -57,4 +57,8 @@ public class User {
 		return this.username + this.salt;
 	}
 	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

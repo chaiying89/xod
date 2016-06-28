@@ -61,12 +61,6 @@
 			<artifactId>spring-aspects</artifactId>
 		</dependency>
 
-		<!-- json -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-		</dependency>
-
 		<!-- cglib -->
 		<dependency>
 			<groupId>cglib</groupId>

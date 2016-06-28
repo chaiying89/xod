@@ -97,9 +97,9 @@
 		</dependency>
 
 		<!-- json -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
+		<dependency>  
+			    <groupId>com.fasterxml.jackson.core</groupId>  
+			    <artifactId>jackson-databind</artifactId>  
 		</dependency>
 
 		<!-- cglib -->

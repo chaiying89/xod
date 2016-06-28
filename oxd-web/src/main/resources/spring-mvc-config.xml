@@ -4,16 +4,28 @@
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd  
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  
-            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd              
-            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd  
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd              
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd"
 	default-autowire="byName">
 
 	<context:annotation-config />
 	<context:component-scan base-package="com.oxd.controller,com.oxd.realm" />
-	<mvc:annotation-driven />
+	
+	<mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+            <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
 	<!-- 当在web.xml 中 DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
 	<mvc:default-servlet-handler />
@@ -23,6 +35,7 @@
 	<bean name="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration"
 		init-method="init">
 		<property name="configFileResource" value="/WEB-INF/beetl.properties" />
+		<property name="root" value="/WEB-INF/templates/" />
 		<property name="functionPackages">
 			<map>
 				<entry key="so" value-ref="authTagPackages" />
@@ -35,29 +48,9 @@
 
 	<bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
 		<property name="contentType" value="text/html;charset=UTF-8" />
-		<!-- 
-		<property name="viewNames">
-			<list>
-				<value>templates/**</value>
-			</list>
-		</property>
-		 -->
-		<property name="prefix" value="/WEB-INF/templates/" />
 		<property name="suffix" value=".html"/>
-		<property name="order" value="0" />
+		<property name="order" value="1" />
 	</bean>
-
-	<!-- JSP视图配置 
-	<bean id="JSPResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="order" value="256" />
-		<property name="contentType" value="text/html" />
-		<property name="prefix" value="/WEB-INF/pages/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-	-->
 
 	<bean id="exception"
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

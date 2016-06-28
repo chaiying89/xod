@@ -40,6 +40,13 @@ public class ShiroExt {
 	public boolean isNotAuthenticated() {
 		return !isAuthenticated();
 	}
+	
+	public Object loginUser() {
+		if(getSubject() == null) {
+			return null;
+		}
+		return getSubject().getPrincipal();
+	}
 
 	/**
 	 * The principal tag

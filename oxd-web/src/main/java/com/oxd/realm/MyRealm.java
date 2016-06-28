@@ -13,7 +13,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.oxd.model.User;
+import com.oxd.model.UserModel;
 import com.oxd.service.UserService;
 
 @Component
@@ -35,13 +35,13 @@ public class MyRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
 		String username = (String) token.getPrincipal();
-		User user = userService.getByUsername(username);
+		UserModel user = userService.getByUsername(username);
 		if (user == null) {
 			throw new UnknownAccountException();
 		}
 
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-				user.getName(), 
+				user, 
 				user.getPassword(), 
 				ByteSource.Util.bytes(user.getCredentialsSalt()),
 				getName()

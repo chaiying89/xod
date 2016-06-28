@@ -34,10 +34,23 @@
 	div.panel-body.panel-body-noheader.panel-body-noborder {
 		overflow: hidden;
 	}
+	.test{border:none;}
+	.top-bar{
+		margin-top:35px;
+	}
+	.top-bar div{
+		background:#E0ECFF;
+		padding:5px;
+		text-align: right;
+	}
 	</style>
 </head>
 <body class="easyui-layout">
-	<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">north region</div>
+	<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;">
+		<div class="easyui-panel top-bar">
+			<div>你好，${so.loginUser() }！ <a href="javascript:void(0)" id="pwdUpdate">修改密码</a> | <a href="logout">退出</a></div>
+		</div>
+	</div>
 	<div data-options="region:'west',split:true,title:'功能菜单'" style="overflow-y:auto;width:250px; padding:2px;">
 		<div class="easyui-accordion" data-options="multiple:true" style="width:100%;">
 			<div title="企业信息" data-options="iconCls:'icon-search'" style="padding:6px;">
@@ -49,14 +62,9 @@
 					<li><a href="index.html" target="main">企业愿景</a></li>
 				</ul>
 			</div>
-			<div title="新闻公告" style="padding:6px;">
+			<div title="资讯中心" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="index.html" target="main">地址管理</a></li>
-					<li><a href="index.html" target="main">联系方式管理</a></li>
-					<li><a href="index.html" target="main">网站栏目管理</a></li>
-					<li><a href="index.html" target="main">地址管理</a></li>
-					<li><a href="index.html" target="main">联系方式管理</a></li>
-					<li><a href="index.html" target="main">网站栏目管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('news-info/main', '咨讯管理')">资讯管理</a></li>
 				</ul>
 			</div>
 			<div title="产品管理" style="padding:6px;">
@@ -78,32 +86,73 @@
 			</div>
 		</div>
 	</div>
-	<div data-options="region:'south',border:false" style="height:40px;background:#B3DFDA;padding:10px; line-height:40xp; text-align:center;">south region</div>
-	<div data-options="region:'center'" style="overflow:hidden;">
+	<div data-options="region:'south',border:false" style="height:40px;background:#E0ECFF;padding:10px; line-height:40xp; text-align:center;">技术支持：成都轻软科技</div>
+	<div data-options="region:'center'" style="overflow:hidden;" class="test">
 		<div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools'" style="width:100%;height:100%; overflow:hidden;">
 		</div>
-		<div id="tab-tools">
-			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="addPanel()"></a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" onclick="removePanel()"></a>
-		</div>
 		<script type="text/javascript">
+			$.extend($.fn.validatebox.defaults.rules, { equals : { validator : function(value, param) { return value == $(param[0]).val(); }, message : '密码不一致！' } });
+			$.extend($.fn.validatebox.defaults.rules, { pwdValid : { validator : function(value, param) { if(new RegExp(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/).exec(value)) return true; return false;}, message : '密码只能是6至12位数字和字母组合！' } });
 			var index = 0;
-			function addPanel(){
+			function addPanel(url, menu){
 				index++;
 				$('#tt').tabs('add',{
-					title: '新闻管理',
-					content: '<iframe name="main" src="index" style="width:100%; height:100%; border:none;"></iframe>',
+					title: menu,
+					content: '<iframe name="main" src="'+url+'" style="width:100%; height:100%; border:none;"></iframe>',
 					closable: true
 				});
 			}
-			function removePanel(){
-				var tab = $('#tt').tabs('getSelected');
-				if (tab){
-					var index = $('#tt').tabs('getTabIndex', tab);
-					$('#tt').tabs('close', index);
+			
+			$(function(){
+				$("#pwdUpdate").click(function(){
+					$('#dlg').dialog('open');
+				});
+			});
+			
+			// 修改密码
+			function ok() {
+				if($("#pwdUpdateForm").form("validate")){
+					var oldPwd = $("#oldPwd").val();
+					var newPwd = $("#newPwd").val();
+					var reNewPwd = $("#reNewPwd").val();
+					$.ajax({
+						url:'user/pwd_update',
+						data:{"oldPwd":oldPwd, "newPwd":newPwd, "reNewPwd":reNewPwd},
+						type:'POST',
+						dataType:'json',
+						success:function(data) {
+							alert(data.message);
+							if(data.success) {
+								$('#dlg').dialog('close');
+								window.location.href = "login";
+							}
+						},
+						error:function(){
+							alert("未知错误，请稍后再试");
+						}
+					});
 				}
 			}
 		</script>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="密码修改" closed="true" style="display:block;width:400px;height:300px;padding:10px"
+			data-options="modal:true,iconCls:'icon-save',buttons:[{text:'提交',iconCls:'icon-ok',handler:ok},{text:'取消',handler:function(){$('#dlg').dialog('close');}}]">
+		<div class="easyui-panel" style="width:300px;padding:10px 40px;" data-options="style:{margin:'15px auto 0px auto'}">
+			<form id="pwdUpdateForm">
+			<div style="margin-bottom:10px">
+				<div>原密码:</div>
+				<input class="easyui-validatebox textbox" id="oldPwd" type="password" required="true" missingMessage="请填写旧密码" style="width:100%;height:26px">
+			</div>
+			<div style="margin-bottom:10px">
+				<div>新密码:</div>
+				<input class="easyui-validatebox textbox" id="newPwd" type="password" required="true" missingMessage="请填写新密码" validType="pwdValid" style="width:100%;height:26px">
+			</div>
+			<div style="margin-bottom:10px">
+				<div>确认密码:</div>
+				<input class="easyui-validatebox textbox" id="reNewPwd" type="password" required="true" validType="equals['#newPwd']" missingMessage="请再次填写新密码" style="width:100%;height:26px">
+			</div>
+			</form>
+		</div>
 	</div>
 </body>
 </html>

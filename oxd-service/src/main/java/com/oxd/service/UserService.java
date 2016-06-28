@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oxd.dao.UserRepository;
-import com.oxd.model.User;
+import com.oxd.model.UserModel;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -15,8 +15,8 @@ public class UserService {
 	private UserRepository repository;
 	
 	@Transactional(readOnly = true)
-	public void login(User user) throws Exception {
-		User u = repository.findByName(user.getUsername());
+	public void login(UserModel user) throws Exception {
+		UserModel u = repository.findByName(user.getUsername());
 		if(u == null) throw new Exception();
 		if(!user.getPassword().equals(u.getPassword())) {
 			throw new Exception();
@@ -24,11 +24,11 @@ public class UserService {
 	}
 	
 	@Transactional(readOnly = true)
-	public User getByUsername(String username) {
+	public UserModel getByUsername(String username) {
 		return repository.findByName(username);
 	}
 	
-	public void register(User user) {
+	public void update(UserModel user) {
 		repository.save(user);
 	}
 
