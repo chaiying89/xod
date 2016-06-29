@@ -184,6 +184,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>site-web</finalName>
+		<finalName>oxd-web</finalName>
 	</build>
 </project>
