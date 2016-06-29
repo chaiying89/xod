@@ -27,7 +27,9 @@ public class MenuModel {
 	private String url; //网页菜单url地址
 	@Column(columnDefinition = "enum('1','2','3')")
 	private String level;
+	@Column(columnDefinition = "BIT", length = 1)
 	private boolean editable;//是否可编辑
+	@Column(columnDefinition = "BIT", length = 1)
 	private boolean hashChild;//能否有孩子（子集）
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

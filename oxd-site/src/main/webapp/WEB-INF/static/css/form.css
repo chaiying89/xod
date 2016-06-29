@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* CSS Document */
+.myform{
+	padding-top:100px;}
+.box{
+	width:500px;
+	margin:0 auto;
+	border:1px #ccc solid;
+	border-radius:4px;
+	padding:30px;}
+.box textarea{
+	height:80px;}
+

@@ -16,15 +16,29 @@
 	
 	<table id="dg" class="easyui-datagrid" style="width:100%;height:400px" data-options="singleSelect:true,autoRowHeight:false">
 	</table>
+	<script type="text/javascript" src="/oxd-web/static/js/fastjson-1.0.min.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		$('#dg').datagrid({
 			url:'search',  
 		    columns:[[  
+				{field:'ck',checkbox: true},  
 		        {field:'id',title:'ID'},  
 		        {field:'title',title:'标题'},  
-		        {field:'introduction',title:'内容简介',align:'right'}
-		    ]],  
+		        {field:'prePictureUrl',title:'前置图地址'},
+		        {field:'type',title:'类型'},
+		        {field:'introduction',title:'内容简介',formatter:function(value,row,index){
+		        	var val = value;
+		        	if(val && val.length > 20) {
+		        		val = '<span title="' + val + '">' + val.substring(0, 20) + '...</span>';
+		        	}
+		        	return val;
+		        }},
+		        {field:'createTime',title:'创建时间'},
+		        {field:'createUser',title:'创建人'},
+		        {field:'updateTime',title:'修改时间'},
+		        {field:'updateUser',title:'修改人'}
+		    ]],
 		    pagination:true,
 		    rownumbers:true,
 		    toolbar: [{ 

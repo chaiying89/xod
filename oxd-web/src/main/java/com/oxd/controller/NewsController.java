@@ -1,22 +1,22 @@
 package com.oxd.controller;
 
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oxd.model.NewsModel;
 import com.oxd.service.NewsService;
+import com.oxd.vo.MessageVo;
 import com.oxd.vo.PageVo;
 
 @Controller
-@RequestMapping("/news-info")
+@RequestMapping("/newsInfo")
 public class NewsController {
 	
 	protected static final Logger logger = Logger.getLogger(NewsController.class);
@@ -31,21 +31,52 @@ public class NewsController {
 	
 	@RequestMapping("/search")
 	@ResponseBody
-	public PageVo fingPageByParam(Model model) {
+	public PageVo fingPageByParam(Model model,
+			@RequestParam(defaultValue = "", required = false) String title, 
+			@RequestParam(defaultValue = "0", required = false) int typeId, 
+			int page, int rows) {
 		PageVo pageVo = new PageVo();
-		List<NewsModel> list = new ArrayList<NewsModel>();
-		NewsModel news = new NewsModel();
-		news.setTitle("今天星期二");
-		news.setId(1);
-		news.setIntroduction("据介绍大家的时间");
-		NewsModel news1 = new NewsModel();
-		news1.setTitle("今天星期二fff");
-		news1.setId(2);
-		news1.setIntroduction("据介绍大家的时间sss");
-		list.add(news);
-		list.add(news1);
-		pageVo.setRows(list);
-		pageVo.setTotal(2);
+		try {
+			pageVo = service.findPageByParam(title, typeId, page, rows);
+		} catch(Exception e) {
+			logger.error("分页查询失败", e);
+		}
 		return pageVo;
 	}
+	
+	@RequestMapping("/findOne")
+	@ResponseBody
+	public NewsModel findOne(Model model, int id) {
+		try {
+			return service.findOne(id);
+		} catch(Exception e) {
+			logger.error("根据id查询失败", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping("/saveOrupdate")
+	@ResponseBody
+	public Object saveOrUpdate(Model model, NewsModel news) {
+		try {
+			service.saveOrUpdate(news);
+			return MessageVo.fullSuccessMessage("新增成功");
+		} catch(Exception e) {
+			logger.error("更新或修改失败", e);
+			return MessageVo.fullErrorMessage("更新或修改失败");
+		}
+	}
+	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public Object delete(Model model, int id) {
+		try {
+			service.delete(id);
+			return MessageVo.fullSuccessMessage("删除成功");
+		} catch(Exception e) {
+			logger.error("根据id查询失败", e);
+			return MessageVo.fullErrorMessage("根据id删除失败");
+		}
+	}
+	
 }

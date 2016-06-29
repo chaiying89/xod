@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd  
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd              
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd"
+	default-autowire="byName">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.cdxod.controller" />
+	
+	<mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+            <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+	<mvc:default-servlet-handler />
+	<mvc:resources mapping="/**" location="/WEB-INF/static/" />
+
+	<!-- beetl配置文件加载 -->
+	<bean name="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration"
+		init-method="init">
+		<property name="configFileResource" value="/WEB-INF/beetl.properties" />
+		<property name="root" value="/WEB-INF/templates/" />
+	</bean>
+	
+	<bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="suffix" value=".html"/>
+		<property name="order" value="1" />
+	</bean>
+
+	<bean id="exception"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="/WEB-INF/error/" />
+		<property name="defaultStatusCode" value="500" />
+		<property name="warnLogCategory">
+			<value>
+				org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
+			</value>
+		</property>
+	</bean>
+</beans>
