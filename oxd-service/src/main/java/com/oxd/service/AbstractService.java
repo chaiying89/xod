@@ -1,10 +1,15 @@
 package com.oxd.service;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+
+import com.oxd.model.AbstractEntity;
+import com.oxd.model.UserModel;
 
 public class AbstractService {
 	
@@ -27,5 +32,18 @@ public class AbstractService {
 	protected int getCount(Session session, String sql) {
 		SQLQuery query = session.createSQLQuery(sql);
 		return ((BigInteger) query.uniqueResult()).intValue();
+	}
+	
+	protected void fillEntity(AbstractEntity entity) {
+		UserModel user = (UserModel) SecurityUtils.getSubject().getPrincipal();
+		entity.setUpdateUser(user);
+		if(entity.getCreateUser() == null) {
+			entity.setCreateUser(user);
+		}
+		entity.setUpdateTime(new Date());
+		if(entity.getCreateTime() == null) {
+			entity.setCreateTime(entity.getUpdateTime());
+		}
+		
 	}
 }

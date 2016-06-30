@@ -1,6 +1,5 @@
 package com.oxd.model;
 
-import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,9 +12,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
+@SuppressWarnings("serial")
 @Table
 @Entity
-public class NewsModel {
+public class NewsModel extends AbstractEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -30,12 +31,7 @@ public class NewsModel {
 	@Lob  
 	@Basic(fetch = FetchType.LAZY)
 	private String content;//内容
-	private Date createTime;//创建时间
-	private Date updateTime;//更新时间
-	@ManyToOne
-	private UserModel createUser;//创建用户
-	@ManyToOne
-	private UserModel updateUser;//更新用户
+	
 	
 	public String getTitle() {
 		return title;
@@ -49,12 +45,6 @@ public class NewsModel {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
 	public String getIntroduction() {
 		return introduction;
 	}
@@ -66,24 +56,6 @@ public class NewsModel {
 	}
 	public void setPrePictureUrl(String prePictureUrl) {
 		this.prePictureUrl = prePictureUrl;
-	}
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-	public UserModel getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(UserModel createUser) {
-		this.createUser = createUser;
-	}
-	public UserModel getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(UserModel updateUser) {
-		this.updateUser = updateUser;
 	}
 	public int getId() {
 		return id;

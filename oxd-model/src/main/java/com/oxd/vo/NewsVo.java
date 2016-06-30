@@ -1,10 +1,14 @@
 package com.oxd.vo;
 
+import java.io.Serializable;
 
-public class NewsVo {
+
+@SuppressWarnings("serial")
+public class NewsVo implements Serializable {
 	private int id;
 	private String title;
 	private String type;
+	private int typeId;
 	private String introduction;//引言（简介）
 	private String prePictureUrl;//前置图url
 	private String content;//内容
@@ -72,4 +76,11 @@ public class NewsVo {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	public int getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
+	}
+	
 }

@@ -40,6 +40,7 @@ public class NewsService extends AbstractService {
 	 * @param news
 	 */
 	public void saveOrUpdate(NewsModel news) {
+		this.fillEntity(news);
 		repository.save(news);
 	}
 	
@@ -77,13 +78,13 @@ public class NewsService extends AbstractService {
 			Session session = entityManager.unwrap(Session.class);
 			List<Object> params = new ArrayList<Object>();
 			String[] columns = { "id", "title", "introduction",
-					"prePictureUrl", "type", "createTime", "updateTime",
+					"prePictureUrl", "type", "typeId", "createTime", "updateTime",
 					"createUser", "updateUser" };
 
 			String countSql = "select count(0) as count from news_model n left join menu_model e on n.type=e.id ";
 
 			String sql = "select n.id, n.title, n.introduction, "
-					+ "n.pre_picture_url as prePictureUrl, e.`name` as type, "
+					+ "n.pre_picture_url as prePictureUrl, e.`name` as type, n.type as typeId, "
 					+ "DATE_FORMAT(n.create_time, '%Y-%m-%d %T') as createTime,"
 					+ "DATE_FORMAT(n.update_time, '%Y-%m-%d %T') as updateTime, "
 					+ "u.`name` as createUser, u1.`name` as updateUser from news_model n "

@@ -6,7 +6,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -55,9 +57,9 @@ public class NewsController {
 		return null;
 	}
 	
-	@RequestMapping("/saveOrupdate")
+	@RequestMapping(value = "/saveOrUpdate", method = {RequestMethod.POST})
 	@ResponseBody
-	public Object saveOrUpdate(Model model, NewsModel news) {
+	public Object saveOrUpdate(Model model, @RequestBody NewsModel news) {
 		try {
 			service.saveOrUpdate(news);
 			return MessageVo.fullSuccessMessage("新增成功");
