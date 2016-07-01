@@ -61,8 +61,12 @@ public class NewsController {
 	@ResponseBody
 	public Object saveOrUpdate(Model model, @RequestBody NewsModel news) {
 		try {
+			String msg = "新增成功";
+			if(news.getId() != 0) {
+				msg = "修改成功";
+			}
 			service.saveOrUpdate(news);
-			return MessageVo.fullSuccessMessage("新增成功");
+			return MessageVo.fullSuccessMessage(msg);
 		} catch(Exception e) {
 			logger.error("更新或修改失败", e);
 			return MessageVo.fullErrorMessage("更新或修改失败");

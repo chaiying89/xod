@@ -21,6 +21,7 @@ public class AbstractService {
 			int i = 0;
 			while(i < params.size()) {
 				query.setParameter(i, params.get(i));
+				i++;
 			}
 		}
 	}

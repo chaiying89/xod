@@ -72,7 +72,7 @@ public class NewsService extends AbstractService {
 	 */
 	@SuppressWarnings("unchecked")
 	public PageVo findPageByParam(final String title, final int typeId,
-			int pageNum, int pageSize) {
+			int pageNum, int pageSize) throws Exception {
 		PageVo page = new PageVo();
 		try {
 			Session session = entityManager.unwrap(Session.class);
@@ -104,7 +104,7 @@ public class NewsService extends AbstractService {
 			int count = this.getCount(session, countSql + where);
 			page.setTotal(count);
 			
-			where.append(" limit " + ((pageNum-1)*pageSize) + "," + pageSize);
+			where.append(" order by n.create_time desc limit " + ((pageNum-1)*pageSize) + "," + pageSize);
 
 			SQLQuery query = session.createSQLQuery(sql + where);
 			this.setScalarsAndParams(query, columns, params);
@@ -114,6 +114,7 @@ public class NewsService extends AbstractService {
 			page.setRows(vos);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		return page;
 	}
