@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="/oxd-web/static/umeditor/themes/default/css/umeditor.css">
 	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/oxd-web/static/easyui/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" charset="utf-8" src="/oxd-web/static/umeditor/umeditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="/oxd-web/static/umeditor/umeditor.min.js"></script>
     <script type="text/javascript" src="/oxd-web/static/umeditor/lang/zh-cn/zh-cn.js"></script>
@@ -26,7 +27,6 @@
 	<script type="text/javascript" src="/oxd-web/static/js/fastjson-1.0.min.js"></script>
 	<script type="text/javascript" src="/oxd-web/static/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
-	var types = [];
 	var defImg = "/oxd-web/static/umeditor/dialogs/image/images/upload2.png";
 	$.extend($.fn.validatebox.defaults.rules, { 
 		jianjieValid : { 
@@ -62,6 +62,14 @@
 		        	}
 		        	return val;
 		        }},
+		        {field:'top',title:'是否置顶',formatter:function(value,row,index){
+		        	var val = value;
+		        	if(val == 0) {
+		        		return '否';
+		        	} else {
+		        		return '是';
+		        	}
+		        }},
 		        {field:'createTime',title:'创建时间'},
 		        {field:'createUser',title:'创建人', width:60},
 		        {field:'updateTime',title:'修改时间'},
@@ -87,14 +95,69 @@
 	            handler: function(){ 
 	            	deleteNews();
 	            } 
-	        }]
+	        }, '-',{ 
+	        	id: 'zhiding',
+	            text: '置顶', 
+	            iconCls: 'icon-up', 
+	            handler: function(){ 
+	            	changeTopStatus();
+	            } 
+	        }],
+	        onClickRow:function(rIndex, rData) {
+	        	if(this.myIndex == rIndex) {
+	        		$(this).datagrid('unselectRow', rIndex);
+	        		this.myIndex = -1;
+	        		setZhidingText(0);
+	        	} else {
+	        		this.myIndex = rIndex;
+	        		setZhidingText(rData.top);
+	        	}
+	        }
 		});
 		
 		//实例化编辑器
 	    UM.getEditor('myEditor');
 	});
 	
-
+	// 切换置顶文字
+	function setZhidingText(data) {
+		if(data == 0) {
+			$("#zhiding span[class='l-btn-text']").html("置顶");
+			$("#zhiding span[class='l-btn-icon icon-cancel']").attr("class","l-btn-icon icon-up");
+		} else {
+			$("#zhiding span[class='l-btn-text']").html("取消置顶");
+			$("#zhiding span[class='l-btn-icon icon-up']").attr("class","l-btn-icon icon-cancel");
+		}
+		
+	}
+	
+	// 修改置顶状态
+	function changeTopStatus() {
+		var row = $("#dg").datagrid("getSelected");
+		if(row) {
+			$.messager.confirm("提示", "确定要执行该操作？",function(r){
+				if(r) {
+					var url = 'top';
+					if(row.top == 1) url = 'cancelTop';
+					$.ajax({
+						url:url,
+						data:{"id":row.id},
+						type:'POST',
+						dataType:'json',
+						success:function(data) {
+							$.messager.alert("提示",data.message,"info");
+							$('#dg').datagrid('reload');
+						},
+						error:function(){
+							$.messager.alert("错误","未知错误，请稍后再试","error");
+						}
+					});
+				}
+			});
+		} else {
+			$.messager.alert("警告","请选择要置顶的数据","warning");
+		}
+	}
 	
 	//上传文件
 	function ajaxFileUpload(){
@@ -137,12 +200,11 @@
 		$('#type').combobox('select',data[0].id);
 		
 		$("#newsId").val("");
-		$('#addDialog').dialog({title: "新增"});
-    	$('#addDialog').dialog('open');
+		$('#addDialog').dialog({title: "新增"}).dialog('open');
     	$.parser.parse($('#pwdUpdateForm').parent());
     	deleteUpload();
     	$("#pwdUpdateForm input").val("");
-    	UM.getEditor('myEditor').setContent('', false);
+    	UM.getEditor('myEditor').setContent("", false);
 	}
 	
 	// 打开编辑页面
@@ -168,9 +230,9 @@
 					$('#introduction').val(data.introduction);
 					$('#type').combobox('setValue',row.typeId);
 					
+					// 将html添加到
 					UM.getEditor('myEditor').execCommand('insertHtml',data.content);
-					$('#addDialog').dialog({title: "修改"});
-					$('#addDialog').dialog('open');
+					$('#addDialog').dialog({title: "修改"}).dialog('open');
 				},
 				error:function(){
 					$.messager.alert("错误","未知错误，请稍后再试","error");
@@ -255,7 +317,7 @@
 			</div>
 			<div style="margin-bottom:10px">
 				<div>资讯类型:</div>
-				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', url:'/oxd-web/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
+				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'/oxd-web/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>前置图:</div>

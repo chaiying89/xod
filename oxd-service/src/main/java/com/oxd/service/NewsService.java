@@ -12,10 +12,12 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.oxd.dao.NewsRepository;
+import com.oxd.exception.OxdException;
+import com.oxd.model.MenuModel;
 import com.oxd.model.NewsModel;
+import com.oxd.util.Constants;
 import com.oxd.vo.NewsVo;
 import com.oxd.vo.PageVo;
 
@@ -45,6 +47,37 @@ public class NewsService extends AbstractService {
 	}
 	
 	/**
+	 * 设置置顶
+	 * @param id
+	 * @throws Exception
+	 */
+	public void top(int id) throws Exception {
+		NewsModel news = repository.findOne(id);
+		MenuModel menu = news.getType();
+		Session session = entityManager.unwrap(Session.class);
+		List<Object> params = new ArrayList<Object>();
+		String countSql = "select count(0) as count from news_model n where n.top=1 and n.type=?";
+		params.add(menu.getId());
+		int count = this.getCount(session, countSql, params);
+		if(count>=4) {
+			throw new OxdException("置顶已超过上限，请取消后再置顶");
+		}
+		news.setTop(Constants.TOP_1);
+		repository.saveAndFlush(news);
+	}
+	
+	/**
+	 * 取消置顶
+	 * @param id
+	 * @throws Exception
+	 */
+	public void cancelTop(int id) throws Exception {
+		NewsModel news = repository.findOne(id);
+		news.setTop(Constants.TOP_0);
+		repository.saveAndFlush(news);
+	}
+	
+	/**
 	 * 删除资讯
 	 * @param id
 	 */
@@ -57,6 +90,7 @@ public class NewsService extends AbstractService {
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public NewsModel findOne(int id) {
 		return repository.findOne(id);
 	}
@@ -70,20 +104,20 @@ public class NewsService extends AbstractService {
 	 * @param pageSize
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
-	public PageVo findPageByParam(final String title, final int typeId,
-			int pageNum, int pageSize) throws Exception {
+	public PageVo findPageByParam(int pageNum, int pageSize, int type) throws Exception {
 		PageVo page = new PageVo();
 		try {
 			Session session = entityManager.unwrap(Session.class);
 			List<Object> params = new ArrayList<Object>();
 			String[] columns = { "id", "title", "introduction",
 					"prePictureUrl", "type", "typeId", "createTime", "updateTime",
-					"createUser", "updateUser" };
+					"createUser", "updateUser", "top" };
 
 			String countSql = "select count(0) as count from news_model n left join menu_model e on n.type=e.id ";
 
-			String sql = "select n.id, n.title, n.introduction, "
+			String sql = "select n.id, n.top, n.title, n.introduction, "
 					+ "n.pre_picture_url as prePictureUrl, e.`name` as type, n.type as typeId, "
 					+ "DATE_FORMAT(n.create_time, '%Y-%m-%d %T') as createTime,"
 					+ "DATE_FORMAT(n.update_time, '%Y-%m-%d %T') as updateTime, "
@@ -92,19 +126,15 @@ public class NewsService extends AbstractService {
 					+ "left join user_model u1 on n.update_user = u1.id ";
 
 			StringBuilder where = new StringBuilder(" where 1=1 ");
-			if (!StringUtils.isEmpty(title)) {
-				params.add(title);
-				where.append(" and n.title like ? ");
-			}
-			if (typeId > 0) {
-				params.add(title);
-				where.append(" and e.id = ? ");
+			if (type > 0) {
+				params.add(type);
+				where.append(" and e.parent_id = ? ");
 			}
 
-			int count = this.getCount(session, countSql + where);
+			int count = this.getCount(session, countSql + where, params);
 			page.setTotal(count);
 			
-			where.append(" order by n.create_time desc limit " + ((pageNum-1)*pageSize) + "," + pageSize);
+			where.append(" order by n.top desc, n.create_time desc limit " + ((pageNum-1)*pageSize) + "," + pageSize);
 
 			SQLQuery query = session.createSQLQuery(sql + where);
 			this.setScalarsAndParams(query, columns, params);

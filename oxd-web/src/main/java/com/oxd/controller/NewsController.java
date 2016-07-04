@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oxd.exception.OxdException;
 import com.oxd.model.NewsModel;
 import com.oxd.service.NewsService;
+import com.oxd.util.Constants;
 import com.oxd.vo.MessageVo;
 import com.oxd.vo.PageVo;
 
@@ -39,7 +41,7 @@ public class NewsController {
 			int page, int rows) {
 		PageVo pageVo = new PageVo();
 		try {
-			pageVo = service.findPageByParam(title, typeId, page, rows);
+			pageVo = service.findPageByParam(page, rows, Constants.MENU_INFO);
 		} catch(Exception e) {
 			logger.error("分页查询失败", e);
 		}
@@ -81,7 +83,34 @@ public class NewsController {
 			return MessageVo.fullSuccessMessage("删除成功");
 		} catch(Exception e) {
 			logger.error("根据id查询失败", e);
-			return MessageVo.fullErrorMessage("根据id删除失败");
+			return MessageVo.fullErrorMessage("删除失败");
+		}
+	}
+	
+	@RequestMapping("/top")
+	@ResponseBody
+	public Object top(Model model, int id) {
+		try {
+			service.top(id);
+			return MessageVo.fullSuccessMessage("置顶成功");
+		} catch(OxdException e) {
+			logger.error("置顶失败：" + e.getMessage(), e);
+			return MessageVo.fullErrorMessage("置顶失败：" + e.getMessage());
+		} catch(Exception e) {
+			logger.error("置顶失败", e);
+			return MessageVo.fullErrorMessage("置顶失败");
+		}
+	}
+	
+	@RequestMapping("/cancelTop")
+	@ResponseBody
+	public Object cancelTop(Model model, int id) {
+		try {
+			service.cancelTop(id);
+			return MessageVo.fullSuccessMessage("取消置顶成功");
+		} catch(Exception e) {
+			logger.error("置顶失败", e);
+			return MessageVo.fullErrorMessage("取消置顶失败");
 		}
 	}
 	

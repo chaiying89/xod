@@ -30,8 +30,15 @@ public class AbstractService {
 		setScalarsAndParams(query, scalars, null);
 	}
 	
-	protected int getCount(Session session, String sql) {
+	protected int getCount(Session session, String sql, List<Object> params) {
 		SQLQuery query = session.createSQLQuery(sql);
+		if(params != null) {
+			int i = 0;
+			while(i < params.size()) {
+				query.setParameter(i, params.get(i));
+				i++;
+			}
+		}
 		return ((BigInteger) query.uniqueResult()).intValue();
 	}
 	

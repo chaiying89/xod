@@ -9,6 +9,7 @@ public class NewsVo implements Serializable {
 	private String title;
 	private String type;
 	private int typeId;
+	private int top;
 	private String introduction;//引言（简介）
 	private String prePictureUrl;//前置图url
 	private String content;//内容
@@ -81,6 +82,12 @@ public class NewsVo implements Serializable {
 	}
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
+	}
+	public int getTop() {
+		return top;
+	}
+	public void setTop(int top) {
+		this.top = top;
 	}
 	
 }

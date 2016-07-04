@@ -26,6 +26,8 @@ public class NewsModel extends AbstractEntity {
 	private String introduction;//引言（简介）
 	@Column(length = 255)
 	private String prePictureUrl;//前置图url
+	@Column(nullable = false)
+	private int top;// 是否置顶(0: 不置顶，1：置顶)
 	@ManyToOne
 	private MenuModel type;//类型
 	@Lob  
@@ -68,6 +70,12 @@ public class NewsModel extends AbstractEntity {
 	}
 	public void setType(MenuModel type) {
 		this.type = type;
+	}
+	public int getTop() {
+		return top;
+	}
+	public void setTop(int top) {
+		this.top = top;
 	}
 	
 }
