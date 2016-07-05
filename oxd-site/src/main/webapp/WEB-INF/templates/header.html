@@ -25,14 +25,12 @@
 				</div>
 				<div class="col-md-8">
 					<ul>
-						<li><a href="index">首页<span class="caret"></span></a></li>
-						<li><a href="about">关于我们<span class="caret"></span></a></li>
-						<li><a href="info">资讯中心<span class="caret"></span></a></li>
-						<li><a href="touzi">投资加盟<span class="caret"></span></a></li>
-						<li><a href="fanwei">经营范围<span class="caret"></span></a></li>
-						<li><a href="yangsheng">养生专区<span class="caret"></span></a></li>
-						<li><a href="contact">联系我们<span class="caret"></span></a></li>
-						<li><a href="zhaopin">招聘专栏<span class="caret"></span></a></li>
+						<%
+						var list = menus.getMenus();
+						for(m in list) {
+						%>
+						<li><a href="/oxd-site${m.url}">${m.name}<span class="caret"></span></a></li>
+						<%}%>
 					</ul>
 				</div>                                       
 			</div>

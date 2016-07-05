@@ -39,7 +39,7 @@
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">validate</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
 	</bean>
@@ -82,7 +82,4 @@
         <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
         <property name="filters" value="stat"/> 
     </bean>
-    
-    
-    <import resource="classpath*:spring-shiro-config.xml"/>
 </beans>  

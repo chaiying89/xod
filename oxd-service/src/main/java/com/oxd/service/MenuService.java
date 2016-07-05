@@ -32,6 +32,7 @@ public class MenuService extends AbstractService {
 		return repository.findByName(name);
 	}
 	
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<MenuVo> selectQuery(String parentName) {
 		try {
@@ -43,6 +44,25 @@ public class MenuService extends AbstractService {
 			String sql = "select n.id, n.name from menu_model n left join menu_model p on p.id=n.parent_id where p.name=?";
 			SQLQuery query = session.createSQLQuery(sql);
 			this.setScalarsAndParams(query, columns, params);
+			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();
+			
+			return vos;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<MenuVo> siteMenuQuery() {
+		try {
+			Session session = entityManager.unwrap(Session.class);
+			String[] columns = { "id", "name", "url"};
+	
+			String sql = "select n.id, n.name, n.url from menu_model n where n.level=1";
+			SQLQuery query = session.createSQLQuery(sql);
+			this.setScalars(query, columns);
 			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();
 			
 			return vos;

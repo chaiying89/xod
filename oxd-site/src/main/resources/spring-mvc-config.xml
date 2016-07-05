@@ -35,7 +35,14 @@
 		init-method="init">
 		<property name="configFileResource" value="/WEB-INF/beetl.properties" />
 		<property name="root" value="/WEB-INF/templates/" />
+		<property name="functionPackages">
+			<map>
+				<entry key="menus" value-ref="menusHandler" />
+			</map>
+		</property>
 	</bean>
+	
+	<bean id="menusHandler" class="com.cdxod.cache.CacheHandler"></bean>
 	
 	<bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
 		<property name="contentType" value="text/html;charset=UTF-8" />
@@ -53,4 +60,7 @@
 			</value>
 		</property>
 	</bean>
+	
+	<!-- 网站初始化一些数据 -->
+	<bean id="initMenuData" class="com.cdxod.listener.InitMenuDataHandler"></bean>
 </beans>

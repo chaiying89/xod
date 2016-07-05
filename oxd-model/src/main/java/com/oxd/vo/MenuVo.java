@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class MenuVo implements Serializable {
 	private int id;
 	private String name;
+	private String url;
 	public int getId() {
 		return id;
 	}
@@ -19,4 +20,11 @@ public class MenuVo implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 }
