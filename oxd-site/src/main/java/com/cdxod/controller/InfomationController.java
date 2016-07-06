@@ -13,12 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/info")
 public class InfomationController {
 	
-	@RequestMapping(value = {"", "/index"})
-	public String index(Model model) {
-		return "forward:/info/news";
-	}
-	
-	@RequestMapping("/news")
+	@RequestMapping(value = {"","/index","/news"})
 	public String news(Model model) {
 		return "xod/news";
 	}

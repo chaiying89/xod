@@ -19,6 +19,9 @@
     .dgheight {
     	height: 100%;
     }
+    .datagrid-row {
+    	height: 35px;
+    }
     </style>
 </head>
 <body style="padding:0;margin:0; overflow: hidden;">
@@ -27,37 +30,18 @@
 	<script type="text/javascript" src="/oxd-web/static/js/fastjson-1.0.min.js"></script>
 	<script type="text/javascript" src="/oxd-web/static/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
-	var defImg = "/oxd-web/static/umeditor/dialogs/image/images/upload2.png";
-	$.extend($.fn.validatebox.defaults.rules, { 
-		jianjieValid : { 
-			validator : function(value, param) { 
-				if(value && value.length > 0 && value.length <= 200) 
-					return true; 
-				return false;
-			}, 
-			message : '内容简介字数应在1-200之间。' 
-		},
-		titleValid : { 
-			validator : function(value, param) { 
-				if(value && value.length > 0 && value.length <= 100) 
-					return true; 
-				return false;
-			}, 
-			message : '标题字数应在1-100之间。' 
-		}
-	});
-	
 	$(function(){
 		$('#dg').datagrid({
-			//url:'search',
+			url:'search',
 		    columns:[[
 		        {field:'type',title:'类型'},
-		        {field:'content',title:'是否已添加',formatter:function(value,row,index){
+		        {field:'content',title:'是否创建',formatter:function(value,row,index){
 		        	var val = value;
+		        	console.log(val);
 		        	if(!val) {
-		        		val = '<span style="color:red">未添加</span>';
+		        		val = '<span style="color:red">未创建</span>';
 		        	} else {
-		        		val = '<span style="color:green">已添加</span>';
+		        		val = '<span style="color:green">已创建</span>';
 		        	}
 		        	return val;
 		        }},
@@ -65,12 +49,13 @@
 		        {field:'createUser',title:'创建人', width:60},
 		        {field:'updateTime',title:'修改时间'},
 		        {field:'updateUser',title:'修改人', width:60},
-		        {field:'updateUser',title:'操作', width:100, align:'center', formatter:function(value,row,index){
-		        	var val = row['content'];
+		        {field:'typeId',title:'操作', width:100, align:'center', formatter:function(value,row,index){
+		        	var val = row['id'];
 		        	if(!val) {
-		        		return '<a href="#">添加</a>';
+		        		return '<a href="javascript:void(0);" onclick="addDialog('+index+')">添加</a>';
 		        	} else {
-		        		return '<a href="#">修改</a> | <a href="#">清除</a>';
+		        		return '<a href="javascript:void(0);" onclick="editDialog('+index+')">修改</a>'
+		        			  +' | <a href="javascript:void(0);" onclick="deleteItem('+index+')">删除</a>';
 		        	}
 		        }}
 		    ]],
@@ -82,141 +67,88 @@
 	});
 	
 	
-	//上传文件
-	function ajaxFileUpload(){
-	    if($("#upfile").val() == "") {
-	    	return;
-	    }
-	    $.ajaxFileUpload({
-	            url:'/oxd-web/upload/editorImage',
-	            secureuri:false,
-	            fileElementId:"upfile",
-	            dataType: 'json',
-	            success: function (data, status){
-	                if(data.state == 'SUCCESS'){   
-	                	$.messager.alert("成功","上传成功","info")
-                        $("#imgURL").val(data.originalName + ";" + data.url);
-	                	$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + data.url);
-                        $("#deleteUpload").linkbutton('enable');
-                        $("#buttonUpload").linkbutton('disable');
-	                }
-	            },
-	            error: function (data, status, e){
-	            	$.messager.alert("错误", e, "error");
-	            }
-	        }
-	    )
-	    return false;
-	}
-	
 	// 打开添加页面
-	function addDialog() {
-		var data = $('#type').combobox('getData');
-		$('#type').combobox('select',data[0].id);
-		
-		$("#newsId").val("");
+	function addDialog(index) {
+		$("#dg").datagrid("selectRow", index);
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) return;
+		console.log(JSON.stringify(row));
+		$("#typeId").val(row.typeId);
+		$("#aboutId").val('');
+		$("#dialogTitle").text(row.type);
 		$('#addDialog').dialog({title: "新增"}).dialog('open');
-    	$.parser.parse($('#pwdUpdateForm').parent());
-    	deleteUpload();
-    	$("#pwdUpdateForm input").val("");
     	UM.getEditor('myEditor').setContent("", false);
 	}
 	
 	// 打开编辑页面
-	function editDialog() {
-		UM.getEditor('myEditor').setContent('', false);
-		deleteUpload();
+	function editDialog(index) {
+		$("#dg").datagrid("selectRow", index);
 		var row = $("#dg").datagrid("getSelected");
-		if(row) {
-			$.ajax({
-				url:'findOne',
-				data:{"id":row.id},
-				type:'POST',
-				dataType:'json',
-				success:function(data) {
-					if(data.prePictureUrl) {
-						$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + new String(data.prePictureUrl).split(";")[1]);
-						$("#imgURL").val(data.prePictureUrl);
-						$("#deleteUpload").linkbutton('enable');
-			            $("#buttonUpload").linkbutton('disable');
-					}
-					$("#newsId").val(data.id);
-					$('#newsTitle').val(data.title);
-					$('#introduction').val(data.introduction);
-					$('#type').combobox('setValue',row.typeId);
-					
-					// 将html添加到
-					UM.getEditor('myEditor').execCommand('insertHtml',data.content);
-					$('#addDialog').dialog({title: "修改"}).dialog('open');
-				},
-				error:function(){
-					$.messager.alert("错误","未知错误，请稍后再试","error");
-				}
-			});
-			
-		} else {
-			$.messager.alert("警告","请选择要修改的数据","warning");
-		}
+		if(!row) return;
+		$("#typeId").val(row.typeId);
+		$("#aboutId").val(row.id);
+		$("#dialogTitle").text(row.type);
+		// 将html添加到
+		UM.getEditor('myEditor').setContent(row.content);
+		$('#addDialog').dialog({title: "修改"}).dialog('open');
+		
 	}
 	
 	// 添加或修改的上传接口
 	function addOrEditNews() {
-		if($("#pwdUpdateForm").form("validate")) {
-			var id = $("#newsId").val();
-			var title = $("#newsTitle").val();
-			var type = $("#type").combobox('getValue');
-			var url = $("#imgURL").val();
-			var introduction = $("#introduction").val();
-			var content = UM.getEditor('myEditor').getContent();
-			if(!content) {
-				$.messager.alert("内容不能为空");
-				return;
-			}
-			var jsonData = {"title":title, "prePictureUrl":url, "introduction":introduction, "content":content, "type":{"id":type}};
-			if(id) {
-				jsonData.id = $("#newsId").val();
-			}
-			$.ajax({
-				url:'saveOrUpdate',
-				data:JSON.stringify(jsonData),
-				type:'POST',
-				contentType:'application/json;charset=UTF-8',
-				dataType:'json',
-				success:function(data) {
-					$.messager.alert("提示",data.message,"info");
-					$('#dg').datagrid('reload');
-				},
-				error:function(){
-					$.messager.alert("错误","未知错误，请稍后再试","error");
-				}
-			});
+		var id = $("#aboutId").val();
+		var typeId = $("#typeId").val();
+		var content = UM.getEditor('myEditor').getContent();
+		if(!content) {
+			$.messager.alert("警告","正文内容不能为空","warning");
+			return;
 		}
+		var jsonData = {"content":content, "menuModel":{"id":typeId}};
+		if(id) {
+			jsonData.id = id;
+		}
+		$.ajax({
+			url:'saveOrUpdate',
+			data:JSON.stringify(jsonData),
+			type:'POST',
+			contentType:'application/json;charset=UTF-8',
+			dataType:'json',
+			success:function(data) {
+				$('#addDialog').dialog('close');
+				$.messager.alert("提示",data.message,"info");
+				$('#dg').datagrid('reload');
+			},
+			error:function(){
+				$.messager.alert("错误","未知错误，请稍后再试","error");
+			}
+		});
 	}
 	
-	// 删除news
-	function deleteNews() {
+	// 删除数据
+	function deleteItem(index) {
+		$("#dg").datagrid("selectRow", index);
 		var row = $("#dg").datagrid("getSelected");
-		if(row) {
-			$.messager.confirm("提示", "确定要删除该条记录？",function(r){
-				if(r) {
-					$.ajax({
-						url:'delete',
-						data:{"id":row.id},
-						type:'POST',
-						dataType:'json',
-						success:function(data) {
-							$.messager.alert("提示", data.message, "info");
-							$('#dg').datagrid('reload');
-						},
-						error:function(){
-							$.messager.alert("警告","未知错误，请稍后再试","error");
-						}
-					});
-				}
-			});
-		} else {
+		if(!row) {
 			$.messager.alert("警告","请选择要删除的数据","warning");
+			return;
 		}
+		$.messager.confirm("提示", "删除后将无法找回，确定要删除【"+row.type+"】的相关内容吗？",function(r){
+			if(r) {
+				$.ajax({
+					url:'delete',
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示", data.message, "info");
+						$('#dg').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("警告","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
 	}
 	</script>
 	<div id="addDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"
@@ -224,32 +156,10 @@
 							buttons:[{text:'提交',iconCls:'icon-ok',handler:addOrEditNews},
 									{text:'取消',handler:function(){$('#addDialog').dialog('close');}}]">
 		<div class="easyui-panel" style="padding:10px 40px;height:400px;width:100%;" data-options="style:{margin:'0 auto'}">
-			<input id="newsId" type="hidden" />
-			<form id="pwdUpdateForm">
-			<div style="margin-bottom:10px">
-				<div>标题:</div>
-				<input class="easyui-validatebox textbox" id="newsTitle" data-options="validType:'titleValid'" required="true" missingMessage="请输入资讯标题" style="width:100%;height:26px">
-			</div>
-			<div style="margin-bottom:10px">
-				<div>资讯类型:</div>
-				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'/oxd-web/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
-			</div>
-			<div style="margin-bottom:10px">
-				<div>前置图:</div>
-				<input size="45" name="upfile" id="upfile" type="file" style="height:26px;" />
-				<a href="javascript:void(0);" class="easyui-linkbutton" id="buttonUpload" onclick="ajaxFileUpload();" style="padding:0 5px;">上传</a>
-				<a href="javascript:void(0);" class="easyui-linkbutton" id="deleteUpload" onclick="deleteUpload();" style="padding:0 5px;" data-options="disabled:true">删除</a>
-                <input name="imgURL" id="imgURL" type="hidden" />
-			</div>
-			<img id="upImg" src="/oxd-web/static/umeditor/dialogs/image/images/upload2.png" width="60" height="60" style="border:none; margin-bottom:10px" />
-			<div style="margin-bottom:10px">
-				<div>内容简介:</div>
-				<input class="easyui-validatebox textbox" id="introduction" required="true" validType="jianjieValid" missingMessage="请输入内容简介" style="width:100%;height:26px">
-			</div>
-			<div>正文:</div>
-			<script type="text/plain" id="myEditor" style="width:800px;height:240px;">
-			</script>
-			</form>
+			<input id="typeId" type="hidden" />
+			<input id="aboutId" type="hidden" />
+			<h2 id="dialogTitle"></h2>
+			<script type="text/plain" id="myEditor" style="width:800px;height:240px;"></script>
 		</div>
 	</div>
 </body>

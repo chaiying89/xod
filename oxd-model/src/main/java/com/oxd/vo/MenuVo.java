@@ -5,13 +5,14 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class MenuVo implements Serializable {
-	private int id;
+	private Integer pid;
+	private Integer id;
 	private String name;
 	private String url;
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -25,6 +26,12 @@ public class MenuVo implements Serializable {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public Integer getPid() {
+		return pid;
+	}
+	public void setPid(Integer pid) {
+		this.pid = pid;
 	}
 	
 }

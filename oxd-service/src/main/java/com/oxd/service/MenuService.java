@@ -1,7 +1,9 @@
 package com.oxd.service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -66,6 +68,33 @@ public class MenuService extends AbstractService {
 			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();
 			
 			return vos;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public Map<Integer, List<MenuVo>> site2lMenuQuery() {
+		try {
+			Map<Integer, List<MenuVo>> map = new LinkedHashMap<Integer, List<MenuVo>>();
+			Session session = entityManager.unwrap(Session.class);
+			String[] columns = { "id", "name", "url", "pid"};
+	
+			String sql = "select n.id, n.name, n.url, n.parent_id as pid from menu_model n where n.level=2";
+			SQLQuery query = session.createSQLQuery(sql);
+			this.setScalars(query, columns);
+			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();
+			for(MenuVo vo : vos) {
+				List<MenuVo> list = map.get(vo.getPid());
+				if(list == null) {
+					list = new ArrayList<MenuVo>();
+					map.put(vo.getPid(), list);
+				}
+				list.add(vo);
+			}
+			return map;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

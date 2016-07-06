@@ -4,7 +4,11 @@ public class Constants {
 	/**
 	 * 资讯中心对应id
 	 */
-	public final static int MENU_INFO = 0x02;
+	public final static int MENU_ABOUT = 0x02;
+	/**
+	 * 资讯中心对应id
+	 */
+	public final static int MENU_INFO = 0x03;
 	
 	
 	

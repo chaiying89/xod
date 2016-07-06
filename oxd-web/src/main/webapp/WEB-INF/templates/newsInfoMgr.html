@@ -134,29 +134,29 @@
 	// 修改置顶状态
 	function changeTopStatus() {
 		var row = $("#dg").datagrid("getSelected");
-		if(row) {
-			$.messager.confirm("提示", "确定要执行该操作？",function(r){
-				if(r) {
-					var url = 'top';
-					if(row.top == 1) url = 'cancelTop';
-					$.ajax({
-						url:url,
-						data:{"id":row.id},
-						type:'POST',
-						dataType:'json',
-						success:function(data) {
-							$.messager.alert("提示",data.message,"info");
-							$('#dg').datagrid('reload');
-						},
-						error:function(){
-							$.messager.alert("错误","未知错误，请稍后再试","error");
-						}
-					});
-				}
-			});
-		} else {
+		if(!row) {
 			$.messager.alert("警告","请选择要置顶的数据","warning");
+			return;
 		}
+		$.messager.confirm("提示", "确定要执行该操作？",function(r){
+			if(r) {
+				var url = 'top';
+				if(row.top == 1) url = 'cancelTop';
+				$.ajax({
+					url:url,
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示",data.message,"info");
+						$('#dg').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("错误","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
 	}
 	
 	//上传文件
@@ -204,44 +204,42 @@
     	$.parser.parse($('#pwdUpdateForm').parent());
     	deleteUpload();
     	$("#pwdUpdateForm input").val("");
-    	UM.getEditor('myEditor').setContent("", false);
+    	UM.getEditor('myEditor').setContent("");
 	}
 	
 	// 打开编辑页面
 	function editDialog() {
-		UM.getEditor('myEditor').setContent('', false);
 		deleteUpload();
 		var row = $("#dg").datagrid("getSelected");
-		if(row) {
-			$.ajax({
-				url:'findOne',
-				data:{"id":row.id},
-				type:'POST',
-				dataType:'json',
-				success:function(data) {
-					if(data.prePictureUrl) {
-						$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + new String(data.prePictureUrl).split(";")[1]);
-						$("#imgURL").val(data.prePictureUrl);
-						$("#deleteUpload").linkbutton('enable');
-			            $("#buttonUpload").linkbutton('disable');
-					}
-					$("#newsId").val(data.id);
-					$('#newsTitle').val(data.title);
-					$('#introduction').val(data.introduction);
-					$('#type').combobox('setValue',row.typeId);
-					
-					// 将html添加到
-					UM.getEditor('myEditor').execCommand('insertHtml',data.content);
-					$('#addDialog').dialog({title: "修改"}).dialog('open');
-				},
-				error:function(){
-					$.messager.alert("错误","未知错误，请稍后再试","error");
-				}
-			});
-			
-		} else {
+		if(!row) {
 			$.messager.alert("警告","请选择要修改的数据","warning");
+			return;
 		}
+		$.ajax({
+			url:'findOne',
+			data:{"id":row.id},
+			type:'POST',
+			dataType:'json',
+			success:function(data) {
+				if(data.prePictureUrl) {
+					$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + new String(data.prePictureUrl).split(";")[1]);
+					$("#imgURL").val(data.prePictureUrl);
+					$("#deleteUpload").linkbutton('enable');
+		            $("#buttonUpload").linkbutton('disable');
+				}
+				$("#newsId").val(data.id);
+				$('#newsTitle').val(data.title);
+				$('#introduction').val(data.introduction);
+				$('#type').combobox('setValue',row.typeId);
+				
+				// 将html添加到
+				UM.getEditor('myEditor').setContent(data.content);
+				$('#addDialog').dialog({title: "修改"}).dialog('open');
+			},
+			error:function(){
+				$.messager.alert("错误","未知错误，请稍后再试","error");
+			}
+		});
 	}
 	
 	// 添加或修改的上传接口
@@ -281,27 +279,27 @@
 	// 删除news
 	function deleteNews() {
 		var row = $("#dg").datagrid("getSelected");
-		if(row) {
-			$.messager.confirm("提示", "确定要删除该条记录？",function(r){
-				if(r) {
-					$.ajax({
-						url:'delete',
-						data:{"id":row.id},
-						type:'POST',
-						dataType:'json',
-						success:function(data) {
-							$.messager.alert("提示", data.message, "info");
-							$('#dg').datagrid('reload');
-						},
-						error:function(){
-							$.messager.alert("警告","未知错误，请稍后再试","error");
-						}
-					});
-				}
-			});
-		} else {
+		if(!row) {
 			$.messager.alert("警告","请选择要删除的数据","warning");
+			return;
 		}
+		$.messager.confirm("提示", "删除后将无法找回，确定要删除该条记录？",function(r){
+			if(r) {
+				$.ajax({
+					url:'delete',
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示", data.message, "info");
+						$('#dg').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("警告","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
 	}
 	</script>
 	<div id="addDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"

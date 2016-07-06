@@ -5,18 +5,18 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class AboutVo implements Serializable {
-	private int id;
-	private int typeId;
+	private Integer id;
+	private Integer typeId;
 	private String type;
 	private String content;//内容
 	private String createTime;//创建时间
 	private String updateTime;//更新时间
 	private String createUser;//创建用户
 	private String updateUser;//创建用户
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getType() {
@@ -55,10 +55,10 @@ public class AboutVo implements Serializable {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
-	public int getTypeId() {
+	public Integer getTypeId() {
 		return typeId;
 	}
-	public void setTypeId(int typeId) {
+	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
 	}
 	

@@ -2,7 +2,6 @@ package com.oxd.model;
 
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -25,7 +24,7 @@ public class AboutModel extends AbstractEntity {
 	@Basic(fetch = FetchType.LAZY)
 	private String content;//内容
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = MenuModel.class)
+	@ManyToOne
 	@JoinColumn(name = "m_id", nullable = false, updatable = false)
 	private MenuModel menuModel; // 上层菜单
 
