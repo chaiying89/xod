@@ -62,7 +62,7 @@ public class MenuService extends AbstractService {
 			Session session = entityManager.unwrap(Session.class);
 			String[] columns = { "id", "name", "url"};
 	
-			String sql = "select n.id, n.name, n.url from menu_model n where n.level=1";
+			String sql = "select n.id, n.name, n.url from menu_model n where n.level=1 order by order_by";
 			SQLQuery query = session.createSQLQuery(sql);
 			this.setScalars(query, columns);
 			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();
@@ -82,7 +82,7 @@ public class MenuService extends AbstractService {
 			Session session = entityManager.unwrap(Session.class);
 			String[] columns = { "id", "name", "url", "pid"};
 	
-			String sql = "select n.id, n.name, n.url, n.parent_id as pid from menu_model n where n.level=2";
+			String sql = "select n.id, n.name, n.url, n.parent_id as pid from menu_model n where n.level=2 order by order_by";
 			SQLQuery query = session.createSQLQuery(sql);
 			this.setScalars(query, columns);
 			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();

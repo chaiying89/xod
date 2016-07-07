@@ -2,14 +2,17 @@ package com.oxd.util;
 
 public class Constants {
 	/**
-	 * 资讯中心对应id
+	 * 关于我们对应id
 	 */
 	public final static int MENU_ABOUT = 0x02;
 	/**
 	 * 资讯中心对应id
 	 */
 	public final static int MENU_INFO = 0x03;
-	
+	/**
+	 * 投资加盟对应id
+	 */
+	public final static int MENU_TOUZI = 0x04;
 	
 	
 	/**

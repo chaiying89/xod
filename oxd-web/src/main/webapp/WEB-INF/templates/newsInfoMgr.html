@@ -19,6 +19,9 @@
     .dgheight {
     	height: 100%;
     }
+    .datagrid-row {
+    	height: 30px;
+    }
     </style>
 </head>
 <body style="padding:0;margin:0; overflow: hidden;">
@@ -52,7 +55,7 @@
 			url:'search',
 		    columns:[[  
 				{field:'ck',checkbox: true}, 
-		        {field:'title',title:'标题',styler:function(){return 'height:30px';}},  
+		        {field:'title',title:'标题'},  
 		        {field:'prePictureUrl',title:'前置图地址'},
 		        {field:'type',title:'类型'},
 		        {field:'introduction',title:'内容简介',formatter:function(value,row,index){

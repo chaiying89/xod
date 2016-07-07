@@ -128,7 +128,7 @@ public class NewsService extends AbstractService {
 			StringBuilder where = new StringBuilder(" where 1=1 ");
 			if (type > 0) {
 				params.add(type);
-				where.append(" and e.parent_id = ? ");
+				where.append(" and e.id = ? ");
 			}
 
 			int count = this.getCount(session, countSql + where, params);

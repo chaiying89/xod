@@ -89,8 +89,8 @@ img{
 	color:#ad221e;
 	}
 .h2-ul {
-	width:45%;
-	margin:0 auto;
+	margin: 0 auto;
+	display: table;
 	}
 .h2-ul ul li{
 	float:left;

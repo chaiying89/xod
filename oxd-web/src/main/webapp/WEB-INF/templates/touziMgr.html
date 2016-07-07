@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>投资管理</title>
+	<link rel="stylesheet" type="text/css" href="/oxd-web/static/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/oxd-web/static/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/oxd-web/static/umeditor/themes/default/css/umeditor.css">
+	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/oxd-web/static/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/oxd-web/static/umeditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/oxd-web/static/umeditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="/oxd-web/static/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <style>
+    body,html {
+    	height: 100%;
+    }
+    .dgheight {
+    	height: 100%;
+    }
+    .datagrid-row {
+    	height: 35px;
+    }
+    </style>
+</head>
+<body style="padding:0;margin:0; overflow: hidden;">
+	<table id="dg" title="关于我们" class="easyui-datagrid" style="width:100%; height:100%;" data-options="singleSelect:true,autoRowHeight:false,cls:'dgheight'">
+	</table>
+	<script type="text/javascript" src="/oxd-web/static/js/fastjson-1.0.min.js"></script>
+	<script type="text/javascript" src="/oxd-web/static/js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$('#dg').datagrid({
+			url:'search',
+		    columns:[[
+		        {field:'type',title:'类型'},
+		        {field:'content',title:'是否创建',formatter:function(value,row,index){
+		        	var val = value;
+		        	console.log(val);
+		        	if(!val) {
+		        		val = '<span style="color:red">未创建</span>';
+		        	} else {
+		        		val = '<span style="color:green">已创建</span>';
+		        	}
+		        	return val;
+		        }},
+		        {field:'createTime',title:'创建时间'},
+		        {field:'createUser',title:'创建人', width:60},
+		        {field:'updateTime',title:'修改时间'},
+		        {field:'updateUser',title:'修改人', width:60},
+		        {field:'typeId',title:'操作', width:100, align:'center', formatter:function(value,row,index){
+		        	var val = row['id'];
+		        	if(!val) {
+		        		return '<a href="javascript:void(0);" onclick="addDialog('+index+')">添加</a>';
+		        	} else {
+		        		return '<a href="javascript:void(0);" onclick="editDialog('+index+')">修改</a>'
+		        			  +' | <a href="javascript:void(0);" onclick="deleteItem('+index+')">删除</a>';
+		        	}
+		        }}
+		    ]],
+		    rownumbers:true
+		});
+		
+		//实例化编辑器
+	    UM.getEditor('myEditor');
+	});
+	
+	
+	// 打开添加页面
+	function addDialog(index) {
+		$("#dg").datagrid("selectRow", index);
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) return;
+		console.log(JSON.stringify(row));
+		$("#typeId").val(row.typeId);
+		$("#aboutId").val('');
+		$("#dialogTitle").text(row.type);
+		$('#addDialog').dialog({title: "新增"}).dialog('open');
+    	UM.getEditor('myEditor').setContent("", false);
+	}
+	
+	// 打开编辑页面
+	function editDialog(index) {
+		$("#dg").datagrid("selectRow", index);
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) return;
+		$("#typeId").val(row.typeId);
+		$("#aboutId").val(row.id);
+		$("#dialogTitle").text(row.type);
+		// 将html添加到
+		UM.getEditor('myEditor').setContent(row.content);
+		$('#addDialog').dialog({title: "修改"}).dialog('open');
+		
+	}
+	
+	// 添加或修改的上传接口
+	function addOrEditNews() {
+		var id = $("#aboutId").val();
+		var typeId = $("#typeId").val();
+		var content = UM.getEditor('myEditor').getContent();
+		if(!content) {
+			$.messager.alert("警告","正文内容不能为空","warning");
+			return;
+		}
+		var jsonData = {"content":content, "menuModel":{"id":typeId}};
+		if(id) {
+			jsonData.id = id;
+		}
+		$.ajax({
+			url:'saveOrUpdate',
+			data:JSON.stringify(jsonData),
+			type:'POST',
+			contentType:'application/json;charset=UTF-8',
+			dataType:'json',
+			success:function(data) {
+				$('#addDialog').dialog('close');
+				$.messager.alert("提示",data.message,"info");
+				$('#dg').datagrid('reload');
+			},
+			error:function(){
+				$.messager.alert("错误","未知错误，请稍后再试","error");
+			}
+		});
+	}
+	
+	// 删除数据
+	function deleteItem(index) {
+		$("#dg").datagrid("selectRow", index);
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) {
+			$.messager.alert("警告","请选择要删除的数据","warning");
+			return;
+		}
+		$.messager.confirm("提示", "删除后将无法找回，确定要删除【"+row.type+"】的相关内容吗？",function(r){
+			if(r) {
+				$.ajax({
+					url:'delete',
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示", data.message, "info");
+						$('#dg').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("警告","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
+	}
+	</script>
+	<div id="addDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"
+			data-options="modal:true,doSize:true,resizable:true,iconCls:'icon-save',resizable:true,
+							buttons:[{text:'提交',iconCls:'icon-ok',handler:addOrEditNews},
+									{text:'取消',handler:function(){$('#addDialog').dialog('close');}}]">
+		<div class="easyui-panel" style="padding:10px 40px;height:400px;width:100%;" data-options="style:{margin:'0 auto'}">
+			<input id="typeId" type="hidden" />
+			<input id="aboutId" type="hidden" />
+			<h2 id="dialogTitle"></h2>
+			<script type="text/plain" id="myEditor" style="width:800px;height:240px;"></script>
+		</div>
+	</div>
+</body>
+</html>

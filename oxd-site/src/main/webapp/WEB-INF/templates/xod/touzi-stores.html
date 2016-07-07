@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>门店展示</title>
+<link href="/oxd-site/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/oxd-site/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="/oxd-site/css/touzi-stores.css" rel="stylesheet"
+	type="text/css">
+</head>
+
+<body>
+	<%include("/header.html"){}%>
+	<section class="body-top">
+		<div class="inner">
+			<div class="h2-h2">
+				<h2>投资加盟</h2>
+			</div>
+			<div class="h2-ul">
+				<ul>
+					<% var list = menus.get2lMenus(@com.oxd.util.Constants.MENU_TOUZI);
+					for(m in list) { %>
+					<li><a href="/oxd-site${m.url}" ${m.id== mid?'class="fst"':''}>${m.name}</a></li>
+					<%}%>
+				</ul>
+			</div>
+			<div class="cs"></div>
+			<div class="inner-news">
+				<div class="nav-top">
+					<ul>
+						<li><a href="#">门店组织构架</a></li>
+						<li><a href="#">部门职能</a></li>
+						<li><a href="#">门店形象展示</a></li>
+					</ul>
+				</div>
+				<div class="cs"></div>
+				<div class="img-pp">
+					<ul>
+						<li><a href="#"><img src="/oxd-site/images/banner.jpg"
+								class="img-responsive">
+								<div>
+									<h5>温江店</h5>
+									<p>地址：温江服务区</p>
+								</div> </a></li>
+						<li><a href="#"><img src="/oxd-site/images/banner.jpg"
+								class="img-responsive">
+								<div>
+									<h5>温江店</h5>
+									<p>地址：温江服务区</p>
+								</div> </a></li>
+						<li><a href="#"><img src="/oxd-site/images/banner.jpg"
+								class="img-responsive">
+								<div>
+									<h5>温江店</h5>
+									<p>地址：温江服务区</p>
+								</div> </a></li>
+						<li><a href="#"><img src="/oxd-site/images/banner.jpg"
+								class="img-responsive">
+								<div>
+									<h5>温江店</h5>
+									<p>地址：温江服务区</p>
+								</div> </a></li>
+						<li><a href="#"><img src="/oxd-site/images/banner.jpg"
+								class="img-responsive">
+								<div>
+									<h5>温江店</h5>
+									<p>地址：温江服务区</p>
+								</div> </a></li>
+						<li><a href="#"><img src="/oxd-site/images/banner.jpg"
+								class="img-responsive">
+								<div>
+									<h5>温江店</h5>
+									<p>地址：温江服务区</p>
+								</div> </a></li>
+					</ul>
+				</div>
+				<div class="fanye">
+					<a href="#">上一页</a><a href="#">下一页</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<%include("/footer.html"){}%>
+</body>
+</html>

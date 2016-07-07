@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.oxd.exception.OxdException;
 import com.oxd.model.NewsModel;
 import com.oxd.service.NewsService;
-import com.oxd.util.Constants;
 import com.oxd.vo.MessageVo;
 import com.oxd.vo.PageVo;
 
@@ -41,7 +40,7 @@ public class NewsController {
 			int page, int rows) {
 		PageVo pageVo = new PageVo();
 		try {
-			pageVo = service.findPageByParam(page, rows, Constants.MENU_INFO);
+			pageVo = service.findPageByParam(page, rows, 0);
 		} catch(Exception e) {
 			logger.error("分页查询失败", e);
 		}

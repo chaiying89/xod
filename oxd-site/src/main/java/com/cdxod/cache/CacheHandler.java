@@ -25,4 +25,10 @@ public class CacheHandler {
 		Map<Integer, List<MenuVo>> map = (Map<Integer, List<MenuVo>>) CacheMapFactory.getCacheMap().get("2lmenus");
 		return map.get(id.intValue());
 	}
+	
+	public String[] split(String args, String sp) {
+		return args.split(sp);
+	}
+	
+	
 }

@@ -3,63 +3,67 @@
 <head>
 <meta charset="utf-8">
 <title>index</title>
-<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="css/news.css" rel="stylesheet" type="text/css">
+<link href="/oxd-site/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/oxd-site/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="/oxd-site/css/news.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-<%include("/header.html"){}%>
-<section class="body-top">
-<div class="inner">
-<div class="h2-h2"><h2>资讯中心</h2></div>
-<div class="h2-ul">
-<ul>
-<li><a href="news.html" class="fst">公司新闻</a></li>
-<li><a href="news-gong.html">公告公示</a></li>
-<li><a href="news-hang.html">行业新闻</a></li>
-<li><a href="news-tou.html">投资新闻</a></li>
-</ul>
-</div>
-<div class="cs"></div>
-<div class="big-left">
-<div class="sma-left"><img src="images/banner.jpg"/></div>
-<div class="sma-right"><div><h4>摘要：</h4><span>热烈祝贺欧鑫顿成立20周年....</span></div>
-<div class="p2p">欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。
-欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦...
-<span style="float:right;font-size:14px;padding-right:10px"><a href="#" >更多</a></span></div>
-</div>
-</div>
-<div class="big-left">
-<div class="sma-left"><img src="images/banner.jpg"/></div>
-<div class="sma-right"><div><h4>摘要：</h4><span>热烈祝贺欧鑫顿成立20周年....</span></div>
-<div class="p2p">欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。
-欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦...
-<span style="float:right;font-size:14px;padding-right:10px"><a href="#" >更多</a></span></div>
-</div>
-</div>
-<div class="big-left">
-<div class="sma-left"><img src="images/banner.jpg"/></div>
-<div class="sma-right"><div><h4>摘要：</h4><span>热烈祝贺欧鑫顿成立20周年....</span></div>
-<div class="p2p">欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。
-欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦...
-<span style="float:right;font-size:14px;padding-right:10px"><a href="#" >更多</a></span></div>
-</div>
-</div>
-<div class="big-left">
-<div class="sma-left"><img src="images/banner.jpg"/></div>
-<div class="sma-right"><div><h4>摘要：</h4><span>热烈祝贺欧鑫顿成立20周年....</span></div>
-<div class="p2p">欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦。
-欧鑫顿公司成立20周年庆生会于8月8号在希尔顿酒店举办，请各位准时到场，还有意外惊喜不断哦...
-<span style="float:right;font-size:14px;padding-right:10px"><a href="#" >更多</a></span></div>
-</div>
-</div>
-
-<div class="cs"></div>
-<div class="fanye"><a href="#">上一页</a><a href="#">下一页</a></div>
-</div>
-</div>
-</section>
-<%include("/footer.html"){}%>
+	<%include("/header.html"){}%>
+	<section class="body-top">
+		<div class="inner container">
+			<div class="h2-h2">
+				<h2>资讯中心</h2>
+			</div>
+			<div class="h2-ul">
+				<ul>
+					<%
+					var list = menus.get2lMenus(@com.oxd.util.Constants.MENU_INFO);
+					var currUrl = "";
+					for(m in list) { 
+						if(m.id == mid) currUrl = m.url;
+					%>
+					<li><a href="/oxd-site${m.url}?pageNum=1" ${m.id== mid?'class="fst"':''}>${m.name}</a></li>
+					<%}%>
+				</ul>
+			</div>
+			<div class="cs"></div>
+			<%
+			var datas = pages.rows;
+			for(o in datas) {
+			var imgUrl = o.prePictureUrl != null ? menus.split(o.prePictureUrl, ";")[1] : "";
+			%>
+			<div class="big-left">
+				<div class="sma-left">
+					<img src="${imgUrl}" />
+				</div>
+				<div class="sma-right">
+					<div>
+						<h4>摘要：</h4>
+						<span>${o.title}</span>
+					</div>
+					<div class="p2p">
+						${o.introduction} 
+						<span style="float: right; font-size: 14px; padding-right: 10px"><a href="#">更多</a></span>
+					</div>
+				</div>
+			</div>
+			<%}%>
+			<div class="cs"></div>
+			<div class="fanye">
+				<% 
+				var totalPage = pages.total % pageSize > 0 ? pages.total / pageSize + 1 : pages.total / pageSize;
+				%>
+				<% if(totalPage > 1 && pageNum - 1 > 0){ %>
+				<a href="/oxd-site${currUrl}?pageNum=${pageNum - 1}">上一页</a>
+				<%}%>
+				<%if(totalPage >= (pageNum + 1)){ %>
+				<a href="/oxd-site${currUrl}?pageNum=${pageNum + 1}">下一页</a>
+				<%}%>
+			</div>
+		</div>
+		</div>
+	</section>
+	<%include("/footer.html"){}%>
 </body>
 </html>
