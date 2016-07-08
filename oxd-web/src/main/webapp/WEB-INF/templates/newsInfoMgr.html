@@ -56,14 +56,12 @@
 		    columns:[[  
 				{field:'ck',checkbox: true}, 
 		        {field:'title',title:'标题'},  
-		        {field:'prePictureUrl',title:'前置图地址'},
+		        {field:'prePictureUrl',title:'前置图地址',formatter:function(value,row,index){
+		        	return cut(value, 30);
+		        }},
 		        {field:'type',title:'类型'},
 		        {field:'introduction',title:'内容简介',formatter:function(value,row,index){
-		        	var val = value;
-		        	if(val && val.length > 20) {
-		        		val = '<span title="' + val + '">' + val.substring(0, 20) + '...</span>';
-		        	}
-		        	return val;
+		        	return cut(value, 20);
 		        }},
 		        {field:'top',title:'是否置顶',formatter:function(value,row,index){
 		        	var val = value;
@@ -117,6 +115,13 @@
 	        	}
 	        }
 		});
+		
+		function cut(val, maxLength) {
+        	if(val && val.length > 20) {
+        		val = '<span title="' + val + '">' + val.substring(0, maxLength) + '...</span>';
+        	}
+        	return val;
+		}
 		
 		//实例化编辑器
 	    UM.getEditor('myEditor');

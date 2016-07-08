@@ -72,4 +72,12 @@ public class TouziController {
 			return MessageVo.fullErrorMessage("删除失败");
 		}
 	}
+	
+	
+	
+	
+	@RequestMapping("/store")
+	public String storePage(Model model) {
+		return "storesMgr";
+	}
 }

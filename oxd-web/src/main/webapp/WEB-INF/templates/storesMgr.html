@@ -25,8 +25,17 @@
     </style>
 </head>
 <body style="padding:0;margin:0; overflow: hidden;">
-	<table id="dg" title="资讯管理" class="easyui-datagrid" style="width:100%; height:100%;" data-options="singleSelect:true,autoRowHeight:false,cls:'dgheight'">
-	</table>
+	<div id="stab" class="easyui-tabs" style="width:100%;height:100%; overflow:hidden;">
+		<div title="门店架构与职能" style="padding:10px">
+			<table id="storeDothing" class="easyui-datagrid" style="width:100%; height:100%;" data-options="singleSelect:true,autoRowHeight:false,cls:'dgheight'">
+			</table>
+		</div>
+		<div title="门店展示" style="padding:10px">
+			<table id="dg" title="资讯管理" class="easyui-datagrid" style="width:100%; height:100%;" data-options="singleSelect:true,autoRowHeight:false,cls:'dgheight'">
+			</table>
+		</div>
+	</div>
+	
 	<script type="text/javascript" src="/oxd-web/static/js/fastjson-1.0.min.js"></script>
 	<script type="text/javascript" src="/oxd-web/static/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
@@ -51,19 +60,51 @@
 	});
 	
 	$(function(){
+		// 门店职能datagrid
+		$('#storeDothing').datagrid({
+			 columns:[[ 
+				{field:'type',title:'类型'},
+				{field:'content',title:'是否创建',formatter:function(value,row,index){
+					var val = value;
+					console.log(val);
+					if(!val) {
+						val = '<span style="color:red">未创建</span>';
+					} else {
+						val = '<span style="color:green">已创建</span>';
+					}
+					return val;
+				}},
+				{field:'createTime',title:'创建时间'},
+				{field:'createUser',title:'创建人', width:60},
+				{field:'updateTime',title:'修改时间'},
+				{field:'updateUser',title:'修改人', width:60},
+				{field:'typeId',title:'操作', width:100, align:'center', formatter:function(value,row,index){
+					var val = row['id'];
+					if(!val) {
+						return '<a href="javascript:void(0);" onclick="addDialog('+index+')">添加</a>';
+					} else {
+						return '<a href="javascript:void(0);" onclick="editDialog('+index+')">修改</a>'
+							  +' | <a href="javascript:void(0);" onclick="deleteItem('+index+')">删除</a>';
+					}
+				}}
+			]],
+			rownumbers:true
+		});
+		
+		var datas = [{type:"门店组织架构"},{type:"部门职能"}];
+		$('#storeDothing').datagrid("loadData", datas);
+		
+		// 门店展示相关datagrid
 		$('#dg').datagrid({
 			url:'search',
 		    columns:[[  
 				{field:'ck',checkbox: true}, 
-		        {field:'title',title:'标题'},  
-		        {field:'prePictureUrl',title:'前置图地址'},
-		        {field:'type',title:'类型'},
+		        {field:'title',title:'门店名称'},  
+		        {field:'prePictureUrl',title:'前置图地址',formatter:function(value,row,index){
+		        	return cut(value, 30);
+		        }},
 		        {field:'introduction',title:'内容简介',formatter:function(value,row,index){
-		        	var val = value;
-		        	if(val && val.length > 20) {
-		        		val = '<span title="' + val + '">' + val.substring(0, 20) + '...</span>';
-		        	}
-		        	return val;
+		        	return cut(value, 20);
 		        }},
 		        {field:'top',title:'是否置顶',formatter:function(value,row,index){
 		        	var val = value;
@@ -117,6 +158,13 @@
 	        	}
 	        }
 		});
+		
+		function cut(val, maxLength) {
+        	if(val && val.length > 20) {
+        		val = '<span title="' + val + '">' + val.substring(0, maxLength) + '...</span>';
+        	}
+        	return val;
+		}
 		
 		//实例化编辑器
 	    UM.getEditor('myEditor');
