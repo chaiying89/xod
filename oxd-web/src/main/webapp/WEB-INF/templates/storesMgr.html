@@ -62,11 +62,11 @@
 	$(function(){
 		// 门店职能datagrid
 		$('#storeDothing').datagrid({
+			url:'base/search',
 			 columns:[[ 
 				{field:'type',title:'类型'},
 				{field:'content',title:'是否创建',formatter:function(value,row,index){
 					var val = value;
-					console.log(val);
 					if(!val) {
 						val = '<span style="color:red">未创建</span>';
 					} else {
@@ -81,9 +81,9 @@
 				{field:'typeId',title:'操作', width:100, align:'center', formatter:function(value,row,index){
 					var val = row['id'];
 					if(!val) {
-						return '<a href="javascript:void(0);" onclick="addDialog('+index+')">添加</a>';
+						return '<a href="javascript:void(0);" onclick="showAddDialog('+index+')">添加</a>';
 					} else {
-						return '<a href="javascript:void(0);" onclick="editDialog('+index+')">修改</a>'
+						return '<a href="javascript:void(0);" onclick="updateDialog('+index+')">修改</a>'
 							  +' | <a href="javascript:void(0);" onclick="deleteItem('+index+')">删除</a>';
 					}
 				}}
@@ -91,9 +91,101 @@
 			rownumbers:true
 		});
 		
-		var datas = [{type:"门店组织架构"},{type:"部门职能"}];
-		$('#storeDothing').datagrid("loadData", datas);
+		//实例化编辑器
+	    UM.getEditor('myEditor2');
+	});
+
+	// 打开添加页面
+	function showAddDialog(index) {
+		$("#storeDothing").datagrid("selectRow", index);
+		var row = $("#storeDothing").datagrid("getSelected");
+		if(!row) return;
+		console.log(JSON.stringify(row));
+		$("#typeId").val(row.typeId);
+		$("#aboutId").val('');
+		$("#dialogTitle").text(row.type);
+		$('#addStoreDialog').dialog({title: "新增"}).dialog('open');
+    	UM.getEditor('myEditor2').setContent("", false);
+	}
+	
+	// 打开编辑页面
+	function updateDialog(index) {
+		$("#storeDothing").datagrid("selectRow", index);
+		var row = $("#storeDothing").datagrid("getSelected");
+		if(!row) return;
+		$("#typeId").val(row.typeId);
+		$("#aboutId").val(row.id);
+		$("#dialogTitle").text(row.type);
+		// 将html添加到
+		UM.getEditor('myEditor2').setContent(row.content);
+		$('#addStoreDialog').dialog({title: "修改"}).dialog('open');
 		
+	}
+	
+	// 添加或修改的上传接口
+	function addOrEditMgInfo() {
+		var id = $("#aboutId").val();
+		var typeId = $("#typeId").val();
+		var content = UM.getEditor('myEditor2').getContent();
+		if(!content) {
+			$.messager.alert("警告","正文内容不能为空","warning");
+			return;
+		}
+		var jsonData = {"content":content, "menuModel":{"id":typeId}};
+		if(id) {
+			jsonData.id = id;
+		}
+		$.ajax({
+			url:'base/saveOrUpdate',
+			data:JSON.stringify(jsonData),
+			type:'POST',
+			contentType:'application/json;charset=UTF-8',
+			dataType:'json',
+			success:function(data) {
+				$('#addStoreDialog').dialog('close');
+				$.messager.alert("提示",data.message,"info");
+				$('#storeDothing').datagrid('reload');
+			},
+			error:function(){
+				$.messager.alert("错误","未知错误，请稍后再试","error");
+			}
+		});
+	}
+	
+	// 删除数据
+	function deleteItem(index) {
+		$("#storeDothing").datagrid("selectRow", index);
+		var row = $("#storeDothing").datagrid("getSelected");
+		if(!row) {
+			$.messager.alert("警告","请选择要删除的数据","warning");
+			return;
+		}
+		$.messager.confirm("提示", "删除后将无法找回，确定要删除【"+row.type+"】的相关内容吗？",function(r){
+			if(r) {
+				$.ajax({
+					url:'base/delete',
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示", data.message, "info");
+						$('#storeDothing').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("警告","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
+	}
+		
+		
+		
+		
+		
+		
+		/*----------------------------以下为门店形象展示相关js--------------------------------*/
+	$(function(){	
 		// 门店展示相关datagrid
 		$('#dg').datagrid({
 			url:'search',
@@ -103,7 +195,7 @@
 		        {field:'prePictureUrl',title:'前置图地址',formatter:function(value,row,index){
 		        	return cut(value, 30);
 		        }},
-		        {field:'introduction',title:'内容简介',formatter:function(value,row,index){
+		        {field:'address',title:'地址',formatter:function(value,row,index){
 		        	return cut(value, 20);
 		        }},
 		        {field:'top',title:'是否置顶',formatter:function(value,row,index){
@@ -158,17 +250,16 @@
 	        	}
 	        }
 		});
-		
-		function cut(val, maxLength) {
-        	if(val && val.length > 20) {
-        		val = '<span title="' + val + '">' + val.substring(0, maxLength) + '...</span>';
-        	}
-        	return val;
-		}
-		
 		//实例化编辑器
 	    UM.getEditor('myEditor');
 	});
+		
+	function cut(val, maxLength) {
+    	if(val && val.length > 20) {
+    		val = '<span title="' + val + '">' + val.substring(0, maxLength) + '...</span>';
+    	}
+    	return val;
+	}
 	
 	// 切换置顶文字
 	function setZhidingText(data) {
@@ -247,9 +338,6 @@
 	
 	// 打开添加页面
 	function addDialog() {
-		var data = $('#type').combobox('getData');
-		$('#type').combobox('select',data[0].id);
-		
 		$("#newsId").val("");
 		$('#addDialog').dialog({title: "新增"}).dialog('open');
     	$.parser.parse($('#pwdUpdateForm').parent());
@@ -273,15 +361,14 @@
 			dataType:'json',
 			success:function(data) {
 				if(data.prePictureUrl) {
-					$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + new String(data.prePictureUrl).split(";")[1]);
+					$("#upImg").attr("src", new String(data.prePictureUrl).split(";")[1]);
 					$("#imgURL").val(data.prePictureUrl);
 					$("#deleteUpload").linkbutton('enable');
 		            $("#buttonUpload").linkbutton('disable');
 				}
 				$("#newsId").val(data.id);
 				$('#newsTitle').val(data.title);
-				$('#introduction').val(data.introduction);
-				$('#type').combobox('setValue',row.typeId);
+				$('#address').val(data.address);
 				
 				// 将html添加到
 				UM.getEditor('myEditor').setContent(data.content);
@@ -298,15 +385,14 @@
 		if($("#pwdUpdateForm").form("validate")) {
 			var id = $("#newsId").val();
 			var title = $("#newsTitle").val();
-			var type = $("#type").combobox('getValue');
 			var url = $("#imgURL").val();
-			var introduction = $("#introduction").val();
+			var address = $("#address").val();
 			var content = UM.getEditor('myEditor').getContent();
 			if(!content) {
 				$.messager.alert("内容不能为空");
 				return;
 			}
-			var jsonData = {"title":title, "prePictureUrl":url, "introduction":introduction, "content":content, "type":{"id":type}};
+			var jsonData = {"title":title, "prePictureUrl":url, "address":address, "content":content};
 			if(id) {
 				jsonData.id = $("#newsId").val();
 			}
@@ -361,12 +447,8 @@
 			<input id="newsId" type="hidden" />
 			<form id="pwdUpdateForm">
 			<div style="margin-bottom:10px">
-				<div>标题:</div>
+				<div>门店名称:</div>
 				<input class="easyui-validatebox textbox" id="newsTitle" data-options="validType:'titleValid'" required="true" missingMessage="请输入资讯标题" style="width:100%;height:26px">
-			</div>
-			<div style="margin-bottom:10px">
-				<div>资讯类型:</div>
-				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'/oxd-web/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>前置图:</div>
@@ -377,13 +459,24 @@
 			</div>
 			<img id="upImg" src="/oxd-web/static/umeditor/dialogs/image/images/upload2.png" width="60" height="60" style="border:none; margin-bottom:10px" />
 			<div style="margin-bottom:10px">
-				<div>内容简介:</div>
-				<input class="easyui-validatebox textbox" id="introduction" required="true" validType="jianjieValid" missingMessage="请输入内容简介" style="width:100%;height:26px">
+				<div>地址:</div>
+				<input class="easyui-validatebox textbox" id="address" required="true" validType="jianjieValid" missingMessage="请输入地址" style="width:100%;height:26px">
 			</div>
-			<div>正文:</div>
+			<div>门店介绍:</div>
 			<script type="text/plain" id="myEditor" style="width:800px;height:240px;">
 			</script>
 			</form>
+		</div>
+	</div>
+	<div id="addStoreDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"
+			data-options="modal:true,doSize:true,resizable:true,iconCls:'icon-save',resizable:true,
+							buttons:[{text:'提交',iconCls:'icon-ok',handler:addOrEditMgInfo},
+									{text:'取消',handler:function(){$('#addStoreDialog').dialog('close');}}]">
+		<div class="easyui-panel" style="padding:10px 40px;height:400px;width:100%;" data-options="style:{margin:'0 auto'}">
+			<input id="typeId" type="hidden" />
+			<input id="aboutId" type="hidden" />
+			<h2 id="dialogTitle"></h2>
+			<script type="text/plain" id="myEditor2" style="width:800px;height:240px;"></script>
 		</div>
 	</div>
 </body>

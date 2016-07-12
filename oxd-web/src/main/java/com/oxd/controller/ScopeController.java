@@ -13,30 +13,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oxd.model.TouziModel;
-import com.oxd.service.TouziService;
+import com.oxd.model.ScopeModel;
+import com.oxd.service.ScopeService;
 import com.oxd.vo.MessageVo;
-import com.oxd.vo.TouziVo;
+import com.oxd.vo.ScopeVo;
 
+/**
+ * 经营范围后台controller
+ * @author chaiying
+ *
+ */
 @Controller
-@RequestMapping("/touzi")
-public class TouziController {
+@RequestMapping("/scope")
+public class ScopeController {
 	
-	protected static final Logger logger = Logger.getLogger(TouziController.class);
+	protected static final Logger logger = Logger.getLogger(ScopeController.class);
 
 	@Autowired
-	private TouziService service;
+	private ScopeService service;
 	
 	@RequestMapping(value = {"/", "/main"})
 	public String main() {
-		return "touziMgr";
+		return "scopeMgr";
 	}
 	
 	
 	@RequestMapping("/search")
 	@ResponseBody
 	public Object search(Model model) {
-		List<TouziVo> list = new ArrayList<TouziVo>();
+		List<ScopeVo> list = new ArrayList<ScopeVo>();
 		try {
 			list = service.search();
 		} catch(Exception e) {
@@ -47,13 +52,13 @@ public class TouziController {
 	
 	@RequestMapping("/saveOrUpdate")
 	@ResponseBody
-	public Object saveOrUpdate(Model model, @RequestBody TouziModel aboutModel) {
+	public Object saveOrUpdate(Model model, @RequestBody ScopeModel scopeModel) {
 		try {
 			String msg = "新增成功";
-			if(aboutModel.getId() != 0) {
+			if(scopeModel.getId() != 0) {
 				msg = "修改成功";
 			}
-			service.saveOrUpdate(aboutModel);
+			service.saveOrUpdate(scopeModel);
 			return MessageVo.fullSuccessMessage(msg);
 		} catch(Exception e) {
 			logger.error("更新或修改失败", e);
