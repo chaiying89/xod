@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>栏目管理</title>
+	<link rel="stylesheet" type="text/css" href="/oxd-web/static/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/oxd-web/static/easyui/themes/icon.css">
+	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/oxd-web/static/easyui/easyui-lang-zh_CN.js"></script>
+    <style>
+    body,html {
+    	height: 100%;
+    }
+    .dgheight {
+    	float:left; 
+    	margin-right:10px;
+    }
+    </style>
+</head>
+<body style="padding:10px;margin:0; overflow: hidden;">
+	<div id="p" class="easyui-panel" title="网站栏目" data-options="cls:'dgheight'" style="width:300px;height:90%;padding:10px;overflow-y:scroll;">
+		<ul id="menus"></ul>
+	</div>
+	<div id="p" class="easyui-panel" style="height:90%;padding:20px;">
+		<table id="dg" class="easyui-datagrid" style="width:100%;" data-options="singleSelect:true,autoRowHeight:false">
+		</table>
+	</div>
+	<script type="text/javascript">
+	$(function(){
+		$("#menus").tree({
+			onClick: function(node){
+				$('#dg').datagrid("loadData", node.children);
+			}
+		});
+		var datas = [{"text":"公司简介", attributes:{"name":"公司简介","url":"/about/9","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
+		            {"text":"组织构架", attributes:{"name":"组织构架","url":"/about/10","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
+		            {"text":"公司资质", attributes:{"name":"公司资质","url":"/about/11","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
+		            {"text":"发展历程", attributes:{"name":"发展历程","url":"/about/12","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
+		            {"text":"企业文化", attributes:{"name":"企业文化","url":"/about/13","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}}];
+		$("#menus").tree("loadData", [{"id":1, "text":"首页"},
+		                              {"id":2, "text":"关于我们", "state":"closed", "children":datas}]);
+		
+		
+		$('#dg').datagrid({
+			url:'search',
+		    columns:[[  
+		        {field:'attributes.name',title:'栏目名称',formatter:function(value,row,index){return getData(row,"name");}},  
+		        {field:'attributes.url',title:'访问地址',formatter:function(value,row,index){return getData(row,"url");}},
+		        {field:'attributes.level',title:'栏目级别',formatter:function(value,row,index){return getData(row,"level");}},
+		        {field:'attributes.parentName',title:'父级栏目',formatter:function(value,row,index){return getData(row,"parentName");}},
+		        {field:'attributes.hasChild',title:'是否拥能有子栏目',formatter:function(value,row,index){return getData(row,"hasChild");}},
+		        {field:'attributes.editable',title:'是否可编辑',formatter:function(value,row,index){return getData(row,"editable");}},
+		        {field:'attributes.oderBy',title:'排序',formatter:function(value,row,index){return getData(row,"orderBy");}}
+		    ]],
+		    toolbar: [{ 
+	            text: '添加', 
+	            iconCls: 'icon-add', 
+	            handler: function() { 
+	            } 
+	        }, '-', { 
+	            text: '修改', 
+	            iconCls: 'icon-edit', 
+	            handler: function() { 
+	            } 
+	        }, '-',{ 
+	            text: '删除', 
+	            iconCls: 'icon-remove', 
+	            handler: function(){ 
+	            } 
+	        }]
+		});
+		
+		function getData(value, filed) {
+			return value["attributes"][filed];
+		}
+	});
+	</script>
+</body>
+</html>

@@ -22,12 +22,16 @@ public class MenuController {
 	@Autowired
 	private MenuService service;
 	
+	@RequestMapping(value = {"/", "/main"})
+	public String index() {
+		return "menuMgr";
+	}
+	
 	@RequestMapping("/seletor")
 	@ResponseBody
 	public List<MenuVo> selectQuery(Model model, String name) {
 		try {
 			List<MenuVo> list = service.selectQuery(name);
-			System.out.println(list.size() + "     " + list);
 			return list;
 		} catch(Exception e) {
 			logger.error("查询菜单出错", e);
