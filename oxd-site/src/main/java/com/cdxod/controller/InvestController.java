@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.oxd.service.TouziService;
 import com.oxd.vo.TouziVo;
 
-
+/**
+ * 投资加盟
+ * @author chaiying
+ *
+ */
 @Controller
 @RequestMapping("/touzi")
-public class TouZiController {
+public class InvestController {
 	
 	@Autowired
 	private TouziService service;
@@ -28,12 +32,7 @@ public class TouZiController {
 	@RequestMapping("/stores/{mid}")
 	public String store(Model model, @PathVariable("mid") Integer mid) {
 		model.addAttribute("mid", mid);
-		return "xod/touzi-stores";
+		return "xod/stores";
 	}
 	
-	@RequestMapping("/questions/{mid}")
-	public String questions(Model model, @PathVariable("mid") Integer mid) {
-		model.addAttribute("mid", mid);
-		return "xod/touzi-questions";
-	}
 }

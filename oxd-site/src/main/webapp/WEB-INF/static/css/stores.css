@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+.inner-news{
+	padding:5px 30px 30px;
+	height:700px;
+	margin:20px 0 0;
+    border-top:10px solid  rgba(200,200,200,0.25);    
+	border-right:10px solid  rgba(200,200,200,0.5);    
+	border-bottom: 10px solid  rgba(200,200,200,0.75);    
+	border-left:10px solid  rgba(200,200,200,1);
+	position:relative;
+	background-image:url(../images/mendiantu1.jpg);
+    background-position:center; 
+	background-repeat:no-repeat;
+	background-size:cover}
+.inner-news .p-news{
+	white-space:2px;
+	}
+.inner-news h5{
+	margin:0;
+	}
+.nav-top ul li{
+	float:left;
+	margin:5px 10px 5px 0}
+.nav-top ul li a{
+	color:black;
+	}
+.nav-top ul li a:hover{
+	color:#ad221e;
+	}
+.img-pp ul li{
+	width:260px;
+	height:220px;
+	background-color:#a98263;
+	float:left;
+	border:4px #a98263 solid;
+	text-align:center;
+	margin-top:10px;
+	transition:all 0.5s;
+	margin:20px 40px 20px 0
+	}
+.img-pp ul li:hover{
+	background-color:#711e1b;
+	border:4px #711e1b solid;
+
+	}
+.img-pp h5 {
+	color:black;
+	text-align:center;
+	font-size:16px;
+	font-weight:bold;
+	line-height:20px
+	}
+.img-pp p{
+	color:black;
+	text-align:center;
+	line-height:20px
+	}
+.img-pp ul li div {
+    width:250px;
+	height:160px;
+	text-align:center;
+	padding-top:10px;
+	font-family: '微软雅黑',"Helvetica Neue",Helvetica,Arial,sans-serif;
+	 color:#61201e;
+	}
+.img-pp img{
+	width:250px;
+	height:160px;
+
+	}
+.fanye {
+	bottom: 60px;
+	right: 200px;
+}
+
