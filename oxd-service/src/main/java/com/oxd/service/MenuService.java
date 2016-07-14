@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oxd.dao.MenuRepository;
 import com.oxd.model.MenuModel;
 import com.oxd.vo.MenuVo;
+import com.oxd.vo.TreeVo;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -95,6 +96,46 @@ public class MenuService extends AbstractService {
 				list.add(vo);
 			}
 			return map;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<TreeVo> getAllTree() {
+		try {
+			Session session = entityManager.unwrap(Session.class);
+			String[] columns = { "id", "text", "name", "parentName", "url", "pid", "level", "hasChild", "editable", "orderBy"};
+	
+			String sql = "select n.id, n.name, n.name as text, n.url, n.parent_id as pid, m.name as parentName, n.level, n.order_by as orderBy, "
+					+ " if(n.has_child = TRUE, 'true', 'false') as hasChild, if(n.editable = TRUE, 'true', 'false') as editable "
+					+ " from menu_model n left join menu_model m on m.id=n.parent_id where n.level=1 order by n.order_by";
+			SQLQuery query = session.createSQLQuery(sql);
+			this.setScalars(query, columns);
+			List<TreeVo> vos = query.setResultTransformer(Transformers.aliasToBean(TreeVo.class)).list();
+			return vos;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TreeVo> findByParentId(int pid) {
+		try {
+			Session session = entityManager.unwrap(Session.class);
+			String[] columns = { "id", "text", "name", "parentName", "url", "pid", "level", "hasChild", "editable", "orderBy"};
+			List<Object> params = new ArrayList<Object>(1);
+			params.add(pid);
+			String sql = "select n.id, n.name, n.name as text, n.url, n.parent_id as pid, m.name as parentName, n.level, n.order_by as orderBy, "
+					+ " if(n.has_child = TRUE, 'true', 'false') as hasChild, if(n.editable = TRUE, 'true', 'false') as editable "
+					+ " from menu_model n left join menu_model m on m.id=n.parent_id where m.id=? order by n.order_by";
+			SQLQuery query = session.createSQLQuery(sql);
+			this.setScalarsAndParams(query, columns, params);
+			List<TreeVo> vos = query.setResultTransformer(Transformers.aliasToBean(TreeVo.class)).list();
+			return vos;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

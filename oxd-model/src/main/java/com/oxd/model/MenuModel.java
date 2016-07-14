@@ -32,7 +32,7 @@ public class MenuModel {
 	@Column(columnDefinition = "BIT", length = 1)
 	private boolean editable;//是否可编辑
 	@Column(columnDefinition = "BIT", length = 1)
-	private boolean hashChild;//能否有孩子（子集）
+	private boolean hasChild;//能否有孩子（子集）
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent_id")
@@ -72,11 +72,11 @@ public class MenuModel {
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
-	public boolean isHashChild() {
-		return hashChild;
+	public boolean isHasChild() {
+		return hasChild;
 	}
-	public void setHashChild(boolean hashChild) {
-		this.hashChild = hashChild;
+	public void setHasChild(boolean hashChild) {
+		this.hasChild = hashChild;
 	}
 	public MenuModel getParent() {
 		return parent;

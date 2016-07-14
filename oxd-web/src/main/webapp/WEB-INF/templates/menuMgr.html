@@ -16,6 +16,20 @@
     	float:left; 
     	margin-right:10px;
     }
+    b.yes {
+    	display:block;
+    	margin: 0 auto;
+    	width:16px;
+    	height:16px;
+    	background: url(/oxd-web/static/easyui/themes/icons/ok.png)
+    }
+     b.no {
+    	display:block;
+    	margin: 0 auto;
+    	width:16px;
+    	height:16px;
+    	background: url(/oxd-web/static/easyui/themes/icons/cancel.png)
+    }
     </style>
 </head>
 <body style="padding:10px;margin:0; overflow: hidden;">
@@ -28,30 +42,70 @@
 	</div>
 	<script type="text/javascript">
 	$(function(){
-		$("#menus").tree({
-			onClick: function(node){
-				$('#dg').datagrid("loadData", node.children);
-			}
+		$.post("allTree",function(data){
+			$("#menus").tree({
+				data:data,
+				onClick: function(node){
+					if(!node.children) {
+						node.children = [];
+					}
+					$('#dg').datagrid("loadData", node.children);
+					if(!$(this).tree("isLeaf", node.target)) {
+						if(!node.isClosed) {
+							$(this).tree('expand',node.target);
+							node.isClosed = true;
+						} else {
+							$(this).tree('collapse',node.target);
+							node.isClosed = false;
+						}
+					}
+					
+				},
+				onBeforeExpand: function(node) {
+					$.ajax({
+						url: "findByPid",
+						async: false,
+						data: {"id": node.id},
+						dataType: "json",
+						success: function(data){
+							$('#dg').datagrid("loadData", node.children);
+							var all = $("#menus").tree('getChildren',node.target);
+							$(all).each(function() {
+								$("#menus").tree('remove', this.target);
+							});
+							$("#menus").tree("append", {
+								parent: node.target,
+								data:data
+							});
+						}
+					});
+				},
+				onExpand: function(node) { 
+					node.isClosed = true; 
+					if($(this).tree("getSelected") == node) {
+						$('#dg').datagrid("loadData", node.children);
+					}
+				},
+				onCollapse: function(node) { node.isClosed = false;}
+			});
 		});
-		var datas = [{"text":"公司简介", attributes:{"name":"公司简介","url":"/about/9","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
-		            {"text":"组织构架", attributes:{"name":"组织构架","url":"/about/10","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
-		            {"text":"公司资质", attributes:{"name":"公司资质","url":"/about/11","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
-		            {"text":"发展历程", attributes:{"name":"发展历程","url":"/about/12","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}},
-		            {"text":"企业文化", attributes:{"name":"企业文化","url":"/about/13","level":2, "parentName":"关于我们", "hasChild":false, "editable":true, "orderBy":1}}];
-		$("#menus").tree("loadData", [{"id":1, "text":"首页"},
-		                              {"id":2, "text":"关于我们", "state":"closed", "children":datas}]);
 		
 		
 		$('#dg').datagrid({
-			url:'search',
 		    columns:[[  
-		        {field:'attributes.name',title:'栏目名称',formatter:function(value,row,index){return getData(row,"name");}},  
-		        {field:'attributes.url',title:'访问地址',formatter:function(value,row,index){return getData(row,"url");}},
-		        {field:'attributes.level',title:'栏目级别',formatter:function(value,row,index){return getData(row,"level");}},
-		        {field:'attributes.parentName',title:'父级栏目',formatter:function(value,row,index){return getData(row,"parentName");}},
-		        {field:'attributes.hasChild',title:'是否拥能有子栏目',formatter:function(value,row,index){return getData(row,"hasChild");}},
-		        {field:'attributes.editable',title:'是否可编辑',formatter:function(value,row,index){return getData(row,"editable");}},
-		        {field:'attributes.oderBy',title:'排序',formatter:function(value,row,index){return getData(row,"orderBy");}}
+		        {field:'id', title:'ID'},
+		        {field:'text',title:'栏目名称'},  
+		        {field:'url',title:'访问地址'},
+		        {field:'level',title:'栏目级别'},
+		        {field:'parentName',title:'父级栏目'},
+		        {field:'pid', title:'PID'},
+		        {field:'hasChild',title:'是否有子栏目', formatter: function(value, row, index){
+		        	return value?"<b class='yes'></b>":"<b class='no'></b>";
+		        }},
+		        {field:'editable',title:'是否可修改',formatter: function(value, row, index){
+		        	return value?"<b class='yes'></b>":"<b class='no'></b>";
+		        }},
+		        {field:'orderBy',title:'排序'}
 		    ]],
 		    toolbar: [{ 
 	            text: '添加', 
@@ -62,19 +116,81 @@
 	            text: '修改', 
 	            iconCls: 'icon-edit', 
 	            handler: function() { 
+	            	openDialog("修改");
 	            } 
 	        }, '-',{ 
 	            text: '删除', 
 	            iconCls: 'icon-remove', 
-	            handler: function(){ 
+	            handler: function(){
 	            } 
 	        }]
 		});
-		
-		function getData(value, filed) {
-			return value["attributes"][filed];
-		}
 	});
+	
+	
+	function openDialog(title){
+		var row = $("#dg").datagrid("getSelected");
+		if(row) {
+			$('#saveOrUpdateDialog').dialog({title: title}).dialog('open');
+		}
+	}
+	
+	
+	function updateTree(pid) {
+		var node = $("#menus").tree('find', pid);
+		$("#menus").tree('collapse',node.target);
+		$("#menus").tree('expand',node.target);
+	}
 	</script>
+	
+	<div id="saveOrUpdateDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"
+			data-options="modal:true,doSize:true,resizable:true,iconCls:'icon-save',resizable:true,
+							buttons:[{text:'提交',iconCls:'icon-ok',handler:function(){}},
+									{text:'取消',handler:function(){$('saveOrUpdateDialog').dialog('close');}}]">
+		<div class="easyui-panel" style="padding:10px 40px;height:400px;width:80%;" data-options="style:{margin:'0 auto'}">
+			<input id="menuId" type="hidden" />
+			<form id="pwdUpdateForm" style="display:block; margin:0 auto;">
+			<div style="margin-bottom:10px">
+				<div>栏目名称:</div>
+				<input class="easyui-validatebox textbox" id="menuTitle" required="true" missingMessage="请输入栏目标题" style="width:50%;height:26px">
+			</div>
+			<div style="margin-bottom:10px">
+				<div>父级栏目:</div>
+				<input class="easyui-textbox" id="parentName" style="width:50%;height:26px">
+				<input type="hidden" id="pid" >
+			</div>
+			<div style="margin-bottom:10px">
+				<div>网站访问URL:</div>
+				<input class="easyui-textbox" id="siteURL" style="width:50%;height:26px">
+			</div>
+			<div style="margin-bottom:10px">
+				<div>栏目级别:</div>
+				<select class="easyui-combobox easyui-validatebox" required="true" name="level" data-options="editable:false" style="width:50%;height:26px">
+					<option selected value="1">一级</option>
+					<option value="2">二级</option>
+					<option value="3">三级</option>
+				</select>
+			</div>
+			<div style="margin-bottom:10px">
+				<div>是否有子栏目:</div>
+				<select class="easyui-combobox easyui-validatebox" required="true" name="level" data-options="editable:false" style="width:50%;height:26px">
+					<option selected value="1">是</option>
+					<option value="0">否</option>
+				</select>
+			</div>
+			<div style="margin-bottom:10px">
+				<div>是否可编辑:</div>
+				<select class="easyui-combobox easyui-validatebox" required="true" name="level" data-options="editable:false" style="width:50%;height:26px">
+					<option selected value="1">是</option>
+					<option value="0">否</option>
+				</select>
+			</div>
+			<div style="margin-bottom:10px">
+				<div>显示顺序:</div>
+				<input class="easyui-textbox" id="siteURL" style="width:50%;height:26px" style="width:100%;height:26px">
+			</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oxd.service.MenuService;
 import com.oxd.vo.MenuVo;
+import com.oxd.vo.TreeVo;
 
 @Controller
 @RequestMapping("/menu")
@@ -27,6 +28,28 @@ public class MenuController {
 		return "menuMgr";
 	}
 	
+	@RequestMapping("/allTree")
+	@ResponseBody
+	public List<TreeVo> getAllTree() {
+		try {
+			return service.getAllTree();
+		} catch(Exception e) {
+			logger.error("查询菜单树出错", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping("/findByPid")
+	@ResponseBody
+	public List<TreeVo> find(Model model, int id) {
+		try {
+			return service.findByParentId(id);
+		} catch(Exception e) {
+			logger.error("查询菜单树出错", e);
+		}
+		return null;
+	}
+	
 	@RequestMapping("/seletor")
 	@ResponseBody
 	public List<MenuVo> selectQuery(Model model, String name) {
@@ -35,8 +58,8 @@ public class MenuController {
 			return list;
 		} catch(Exception e) {
 			logger.error("查询菜单出错", e);
-			return null;
 		}
+		return null;
 	}
 	
 }
