@@ -317,12 +317,12 @@
 			<form id="pwdUpdateForm">
 			<input id="newsId" type="hidden" />
 			<div style="margin-bottom:10px">
-				<div>标题:</div>
+				<div>养生项目:</div>
 				<input class="easyui-validatebox easyui-textbox" id="newsTitle" data-options="validType:'titleValid'" required="true" missingMessage="请输入资讯标题" style="width:100%;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
-				<div>资讯类型:</div>
-				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'/oxd-web/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
+				<div>养生类型:</div>
+				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'/oxd-web/menu/seletor?name=养生专区',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>前置图:</div>
@@ -333,10 +333,10 @@
 			</div>
 			<img id="upImg" src="/oxd-web/static/umeditor/dialogs/image/images/upload2.png" width="60" height="60" style="border:none; margin-bottom:10px" />
 			<div style="margin-bottom:10px">
-				<div>内容简介:</div>
+				<div>养生项目简介:</div>
 				<input class="easyui-validatebox easyui-textbox" id="introduction" required="true" validType="jianjieValid" missingMessage="请输入内容简介" style="width:100%;height:26px">
 			</div>
-			<div>正文:</div>
+			<div>养生项目详细介绍:</div>
 			<script type="text/plain" id="myEditor" style="width:800px;height:240px;">
 			</script>
 			</form>

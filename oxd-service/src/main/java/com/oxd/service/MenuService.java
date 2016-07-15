@@ -147,7 +147,16 @@ public class MenuService extends AbstractService {
 	 * @param news
 	 */
 	public void saveOrUpdate(MenuModel news) {
+		this.fillEntity(news);
 		repository.save(news);
+	}
+	
+	/**
+	 * 删除栏目
+	 * @param id
+	 */
+	public void delete(int id) {
+		repository.delete(id);
 	}
 
 }

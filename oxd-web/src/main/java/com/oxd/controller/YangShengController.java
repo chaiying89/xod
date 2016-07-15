@@ -13,23 +13,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oxd.exception.OxdException;
-import com.oxd.model.NewsModel;
-import com.oxd.service.NewsService;
+import com.oxd.model.YangShengModel;
+import com.oxd.service.YangShengService;
 import com.oxd.vo.MessageVo;
 import com.oxd.vo.PageVo;
 
 @Controller
-@RequestMapping("/newsInfo")
-public class NewsController {
+@RequestMapping("/yangsheng")
+public class YangShengController {
 	
-	protected static final Logger logger = Logger.getLogger(NewsController.class);
+	protected static final Logger logger = Logger.getLogger(YangShengController.class);
 
 	@Autowired
-	private NewsService service;
+	private YangShengService service;
 	
 	@RequestMapping(value = {"/", "/main"})
 	public String main() {
-		return "newsInfoMgr";
+		return "yangshengMgr";
 	}
 	
 	@RequestMapping("/search")
@@ -49,7 +49,7 @@ public class NewsController {
 	
 	@RequestMapping("/findOne")
 	@ResponseBody
-	public NewsModel findOne(Model model, int id) {
+	public YangShengModel findOne(Model model, int id) {
 		try {
 			return service.findOne(id);
 		} catch(Exception e) {
@@ -60,7 +60,7 @@ public class NewsController {
 	
 	@RequestMapping(value = "/saveOrUpdate", method = {RequestMethod.POST})
 	@ResponseBody
-	public Object saveOrUpdate(Model model, @RequestBody NewsModel news) {
+	public Object saveOrUpdate(Model model, @RequestBody YangShengModel news) {
 		try {
 			String msg = "新增成功";
 			if(news.getId() != 0) {

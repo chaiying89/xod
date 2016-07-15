@@ -11,7 +11,7 @@ public class TreeVo implements Serializable {
 	private Integer pid;
 	private String name;
 	private String url;
-	private String level;
+	private Integer level;
 	private boolean hasChild;
 	private boolean editable;
 	private Integer orderBy;
@@ -77,13 +77,11 @@ public class TreeVo implements Serializable {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
-	public void setLevel(Character level) {
-		if(level != null) {
-			this.level = level.toString();
-		}
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 	
 }

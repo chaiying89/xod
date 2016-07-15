@@ -111,6 +111,7 @@
 	            text: '添加', 
 	            iconCls: 'icon-add', 
 	            handler: function() { 
+	            	openDialog("新增");
 	            } 
 	        }, '-', { 
 	            text: '修改', 
@@ -122,20 +123,122 @@
 	            text: '删除', 
 	            iconCls: 'icon-remove', 
 	            handler: function(){
+	            	deleteMenu();
 	            } 
 	        }]
 		});
 	});
 	
-	
+	// 打开编辑窗口
 	function openDialog(title){
-		var row = $("#dg").datagrid("getSelected");
-		if(row) {
-			$('#saveOrUpdateDialog').dialog({title: title}).dialog('open');
+		clear();
+		if(title == "修改") {
+			var row = $("#dg").datagrid("getSelected");
+			if(!row) {$.messager.alert("警告","请选择要修改的数据！","warning"); return;}
+			if(!row.editable) { $.messager.alert("警告","该栏目不允许修改！","warning"); return;}
+			$("#menuId").val(row.id);
+			$("#menuTitle").textbox("setValue",row.name);
+			$("#siteURL").textbox("setValue", row.url);
+			$('#hasChild').combobox('setValue', row.hasChild ? "1" : "0");
+			$('#editable').combobox('setValue', row.editable ? "1" : "0");
+			$("#orderBy").textbox("setValue", row.orderBy);
+			
+			$("#parentName").textbox("setValue",row.parentName);
+			$("#pid").val(row.pid);
+			$("#level").val(row.level);
+			$("#levelName").textbox("setValue", (parseInt(row.level) == 2)?"二级栏目":"三级栏目");
+		} else {
+			var node = $("#menus").tree("getSelected");
+			if(!node || !node.hasChild || parseInt(node.level) >= 3 ) {
+				$.messager.alert("警告","该栏目不允许添加子栏目！","warning");
+				return;
+			}
+			$("#parentName").textbox("setValue", node.text);
+			$("#pid").val(node.id);
+			$("#level").val(parseInt(node.level)+1);
+			$("#levelName").textbox("setValue", (parseInt(node.level)+1 == 2)?"二级栏目":"三级栏目");
+		}
+		$("#saveOrUpdateDialog").dialog({title: title}).dialog("open");
+	}
+	
+	// 初始化弹出框中所有数据
+	function clear() {
+		$("#menuId").val("");
+		$("#menuTitle").textbox("setValue","");
+		$("#siteURL").textbox("setValue", "");
+		$('#hasChild').combobox('setValue', "1");
+		$('#editable').combobox('setValue', "1");
+		$("#orderBy").textbox("setValue", "1");
+		$("#parentName").textbox("setValue","");
+		$("#pid").val("");
+		$("#level").val("");
+		$("#levelName").textbox("setValue", "");
+	}
+	
+	
+	function saveOrUpdate() {
+		if($("#pwdUpdateForm").form("validate")) {
+			var id = $("#menuId").val();
+			var name = $("#menuTitle").textbox("getValue");
+			var url = $("#siteURL").textbox("getValue");
+			var hasChild = $('#hasChild').combobox("getValue");
+			var editable = $('#editable').combobox("getValue");
+			var orderBy = $("#orderBy").textbox("getValue");
+			var pid = $("#pid").val();
+			var level = $("#level").val();
+			
+			var jsonData = {"name":name, "url":url, "level":level, 
+					"orderBy":orderBy, "editable":(editable=="1"?true:false), "hasChild":(hasChild=="1"?true:false), 
+					"parent":{"id":pid}};
+			if(id) {
+				jsonData.id = id;
+			}
+			$.ajax({
+				url:'saveOrUpdate',
+				data:JSON.stringify(jsonData),
+				type:'POST',
+				contentType:'application/json;charset=UTF-8',
+				dataType:'json',
+				success:function(data) {
+					$.messager.alert("提示",data.message,"info");
+					$('#saveOrUpdateDialog').dialog('close');
+					updateTree(parseInt(pid));
+				},
+				error:function(){
+					$.messager.alert("错误","未知错误，请稍后再试","error");
+				}
+			});
 		}
 	}
 	
 	
+	function deleteMenu() {
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) {
+			$.messager.alert("警告","请选择要删除的数据","warning");
+			return;
+		}
+		$.messager.confirm("提示", "删除后将无法找回，确定要删除该条记录？",function(r){
+			if(r) {
+				$.ajax({
+					url:'delete',
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示", data.message, "info");
+						updateTree(parseInt(row.pid));
+					},
+					error:function(){
+						$.messager.alert("警告","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
+	}
+	
+	
+	// 更新树节点
 	function updateTree(pid) {
 		var node = $("#menus").tree('find', pid);
 		$("#menus").tree('collapse',node.target);
@@ -143,51 +246,48 @@
 	}
 	</script>
 	
-	<div id="saveOrUpdateDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"
+	<div id="saveOrUpdateDialog" class="easyui-dialog" closed="true" style="display:block;width:400px;overflow-y:auto;top:10px;;padding:10px"
 			data-options="modal:true,doSize:true,resizable:true,iconCls:'icon-save',resizable:true,
-							buttons:[{text:'提交',iconCls:'icon-ok',handler:function(){}},
-									{text:'取消',handler:function(){$('saveOrUpdateDialog').dialog('close');}}]">
+							buttons:[{text:'提交',iconCls:'icon-ok',handler:saveOrUpdate},
+									{text:'取消',handler:function(){$('#saveOrUpdateDialog').dialog('close');}}]">
 		<div class="easyui-panel" style="padding:10px 40px;height:400px;width:80%;" data-options="style:{margin:'0 auto'}">
-			<input id="menuId" type="hidden" />
 			<form id="pwdUpdateForm" style="display:block; margin:0 auto;">
+			<input id="menuId" type="hidden" />
 			<div style="margin-bottom:10px">
 				<div>栏目名称:</div>
-				<input class="easyui-validatebox textbox" id="menuTitle" required="true" missingMessage="请输入栏目标题" style="width:50%;height:26px">
+				<input class="easyui-validatebox easyui-textbox" id="menuTitle" required="true" missingMessage="请输入栏目标题" style="width:200px;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>父级栏目:</div>
-				<input class="easyui-textbox" id="parentName" style="width:50%;height:26px">
+				<input class="easyui-textbox" id="parentName" disabled="disabled" style="width:200px;height:26px">
 				<input type="hidden" id="pid" >
 			</div>
 			<div style="margin-bottom:10px">
 				<div>网站访问URL:</div>
-				<input class="easyui-textbox" id="siteURL" style="width:50%;height:26px">
+				<input class="easyui-textbox" id="siteURL" style="width:200px;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>栏目级别:</div>
-				<select class="easyui-combobox easyui-validatebox" required="true" name="level" data-options="editable:false" style="width:50%;height:26px">
-					<option selected value="1">一级</option>
-					<option value="2">二级</option>
-					<option value="3">三级</option>
-				</select>
+				<input class="easyui-textbox" id="levelName" disabled="disabled" style="width:100px;height:26px">
+				<input type="hidden" id="level">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>是否有子栏目:</div>
-				<select class="easyui-combobox easyui-validatebox" required="true" name="level" data-options="editable:false" style="width:50%;height:26px">
+				<select class="easyui-combobox easyui-validatebox" required="true" name="hasChild" id="hasChild" data-options="editable:false" style="width:100px;height:26px">
 					<option selected value="1">是</option>
 					<option value="0">否</option>
 				</select>
 			</div>
 			<div style="margin-bottom:10px">
 				<div>是否可编辑:</div>
-				<select class="easyui-combobox easyui-validatebox" required="true" name="level" data-options="editable:false" style="width:50%;height:26px">
+				<select class="easyui-combobox easyui-validatebox" required="true" name="editable" id="editable" data-options="editable:false" style="width:100px;height:26px">
 					<option selected value="1">是</option>
 					<option value="0">否</option>
 				</select>
 			</div>
 			<div style="margin-bottom:10px">
 				<div>显示顺序:</div>
-				<input class="easyui-textbox" id="siteURL" style="width:50%;height:26px" style="width:100%;height:26px">
+				<input class="easyui-textbox" id="orderBy" style="width:100px;height:26px">
 			</div>
 			</form>
 		</div>
