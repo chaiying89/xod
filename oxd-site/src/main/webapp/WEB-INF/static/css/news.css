@@ -1,6 +1,7 @@
 ﻿@charset "utf-8";
 .inner{
-	min-height: 930px;
+	min-height: 700px;
+	position: relative;
 	}
 
 
@@ -28,3 +29,6 @@
 .news-left ul li a:hover{
 	color:#ad221e;
 	}
+.sma-right div {
+	width:280px;
+}

@@ -1,9 +1,13 @@
 package com.cdxod.controller;
 
-import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.oxd.service.ScopeService;
 
 /**
  * 经营范围controller
@@ -14,8 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/scope")
 public class ScopeController {
 	
+	protected static final Logger logger = Logger.getLogger(ScopeController.class);
+	
+	@Autowired
+	private ScopeService scopeService;
+	
 	@RequestMapping(value = {"", "/index"})
-	public String index(HttpSession session) {
+	public String index(Model model) {
+		try {
+		model.addAttribute("scope", scopeService.searchForSite());
+		} catch(Exception e) {
+			logger.error("查询业务数据出错：" + e.getMessage());
+		}
 		return "xod/scope";
 	}
 }

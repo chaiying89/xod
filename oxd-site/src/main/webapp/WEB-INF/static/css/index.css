@@ -1,12 +1,8 @@
 @charset "utf-8";
 /* CSS Document */	
-/*--------------以下是about区---------------
-*/#about{
+#about{
 	background-color:#61201e;
 	}
-.banner{
-	width:1300px;
-}
 .banner img{
 	width:80%;
 	padding-top:10%;
@@ -76,30 +72,30 @@
 	background-color:#61201e;
 	}
 
-.inner>div{
+.inners>div{
 	margin-top:3px;}
-.inner img{
+.inners img{
 	width:100%;
 	padding:4px;
 	}
-.inner{
+.inners{
 	padding-bottom:105px;}
-.inner a{
+.inners a{
 	display:block;
 	text-align:center;
 	background-color:#a98263;
 	transition:all 0.5s;
 	color:#020202;}
-.inner h5{
+.inners h5{
 	font-weight:bold;
 	line-height:24px;
 	padding-top:9px;
 	font-size:16px;}
-.inner p{
+.inners p{
 	line-height:23px;
 	padding-bottom:11px;}
 
-.inner>div:hover a{
+.inners>div:hover a{
 	background-color:#61201e;}
 /*------以下是website区------
 */

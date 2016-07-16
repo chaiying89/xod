@@ -1,12 +1,13 @@
-﻿<!doctype html>
+﻿<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>关于我们-四川鑫欧顿商务服务有限公司</title>
-<link href="/oxd-site/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/public.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/about.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/public.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/about.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -22,7 +23,7 @@
 					var list = menus.get2lMenus(@com.oxd.util.Constants.MENU_ABOUT);
 					for(m in list) {
 					%>
-					<li><a href="/oxd-site${m.url}" ${m.id == mid?'class="fsc"':''}>${m.name}</a></li>
+					<li><a href="${root}${m.url}" ${m.id == mid?'class="fst"':''}>${m.name}</a></li>
 					<%}%>
 				</ul>
 			</div>

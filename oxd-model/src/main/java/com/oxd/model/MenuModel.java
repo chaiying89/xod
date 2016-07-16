@@ -29,7 +29,7 @@ public class MenuModel extends AbstractEntity {
 	@Column(columnDefinition = "BIT", length = 1)
 	private boolean hasChild;//能否有孩子（子集）
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent_id")
 	private MenuModel parent; // 父节点
 	

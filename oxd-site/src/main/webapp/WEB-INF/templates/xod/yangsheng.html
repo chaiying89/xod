@@ -1,12 +1,12 @@
-﻿<!doctype html>
+﻿<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>养生专区-四川鑫欧顿商务服务有限公司</title>
-<link href="/oxd-site/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/public.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/yangsheng.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/yangsheng.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -18,35 +18,101 @@
 			</div>
 			<div class="h2-ul">
 				<ul>
-					<li><a href="#" class="fst">理疗类</a></li>
-					<li><a href="#">按摩类</a></li>
+					<%
+					var list = menus.get2lMenus(@com.oxd.util.Constants.MENU_YANGSHENG);
+					var currUrl = "";
+					for(m in list) {
+						if(m.id == mid) currUrl = m.url;
+					%>
+					<li><a href="${root}${m.url}" ${m.id == mid?'class="fst"':''}>${m.name}</a></li>
+					<%}%>
 				</ul>
 			</div>
 			<div class="cs"></div>
 			<div class="inner-news">
 				<div class="news-tu">
 					<div class="div1">
-						<img src="/oxd-site/images/yangshengbig1.jpg" /><a></a>
-						<p onclick="window.location.href='#'">特色香薰理疗法.......</p>
+						<%
+						var datas = pages.rows;
+						if(datas.~size > 0) {
+							var temp = datas[0];
+							var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+						%>
+						<img src="${imgUrl}" /><a></a>
+						<p onclick="window.location.href='#'">${temp.title}</p>
+						<%}%>
 					</div>
 					<div class="div2">
-						<ul>
-							<li><img src="/oxd-site/images/sam1.jpg" /><a class="img-cov"></a>
-								<p onclick="window.location.href='#'">特色香薰理疗法.......</p></li>
-							<li><img src="/oxd-site/images/sam2.jpg" /><a class="img-cov"></a>
-								<p onclick="window.location.href='#'">特色香薰理疗法.......</p></li>
-							<li><img src="/oxd-site/images/sam3.jpg" /><a class="img-cov"></a>
-								<p onclick="window.location.href='#'">特色香薰理疗法.......</p></li>
-							<li><img src="/oxd-site/images/sam4.jpg" /><a class="img-cov"></a>
-								<p onclick="window.location.href='#'">特色香薰理疗法.......</p></li>
+						<ul>						
+							<%
+							if(datas.~size > 1) {
+								var temp = datas[1];
+								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+							%>
+							<li>
+								<img src="${imgUrl}" />
+								<a class="img-cov"></a>
+								<p onclick="window.location.href='#'">${temp.title}</p>
+							</li>
+							<%}%>
+							<%
+							if(datas.~size > 2) {
+								var temp = datas[2];
+								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+							%>
+							<li>
+								<img src="${imgUrl}" />
+								<a class="img-cov"></a>
+								<p onclick="window.location.href='#'">${temp.title}</p>
+							</li>
+							<%}%>
+							<%
+							if(datas.~size > 3) {
+								var temp = datas[3];
+								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+							%>
+							<li>
+								<img src="${imgUrl}" />
+								<a class="img-cov"></a>
+								<p onclick="window.location.href='#'">${temp.title}</p>
+							</li>
+							<%}%>
+							<%
+							if(datas.~size > 4) {
+								var temp = datas[4];
+								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+							%>
+							<li>
+								<img src="${imgUrl}" />
+								<a class="img-cov"></a>
+								<p onclick="window.location.href='#'">${temp.title}</p>
+							</li>
+							<%}%>
 						</ul>
 					</div>
 					<div class="div3">
-						<img src="/oxd-site/images/yangshengbig2.jpg" /><a></a>
-						<p onclick="window.location.href='#'">特色香薰理疗法.......</p>
+						<%
+						if(datas.~size > 5) {
+							var temp = datas[5];
+							var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+						%>
+						<img src="${imgUrl}" /><a></a>
+						<p onclick="window.location.href='#'">${temp.title}</p>
+						<%}%>
 					</div>
 				</div>
 				<div class="cs"></div>
+			</div>
+			<div class="fanye">
+				<% 
+				var totalPage = pages.total % pageSize > 0 ? pages.total / pageSize + 1 : pages.total / pageSize;
+				%>
+				<% if(totalPage > 1 && pageNum - 1 > 0){ %>
+				<a href="${root}${currUrl}?pageNum=${pageNum - 1}">上一页</a>
+				<%}%>
+				<%if(totalPage >= (pageNum + 1)){ %>
+				<a href="${root}${currUrl}?pageNum=${pageNum + 1}">下一页</a>
+				<%}%>
 			</div>
 		</div>
 	</section>

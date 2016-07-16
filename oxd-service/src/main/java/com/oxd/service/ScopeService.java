@@ -89,5 +89,25 @@ public class ScopeService extends AbstractService {
 		}
 		return null;
 	}
+	
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<ScopeVo> searchForSite() {
+		try {
+			Session session = entityManager.unwrap(Session.class);
+			String[] columns = { "id", "introduction", "type", "prePictureUrl"};
+	
+			String sql = "select a.id, a.introduction, m.name as type, a.pre_picture_url as prePictureUrl from menu_model m "
+					+ " left join scope_model a on a.m_id=m.id  where m.parent_id=5";
+			SQLQuery query = session.createSQLQuery(sql);
+			this.setScalars(query, columns);
+			List<ScopeVo> vos = query.setResultTransformer(Transformers.aliasToBean(ScopeVo.class)).list();
+			return vos;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

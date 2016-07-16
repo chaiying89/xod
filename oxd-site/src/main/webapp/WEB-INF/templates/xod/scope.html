@@ -1,12 +1,12 @@
-﻿<!doctype html>
+﻿<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>经营范围-四川鑫欧顿商务服务有限公司</title>
-<link href="/oxd-site/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/public.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/scope.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/scope.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -21,21 +21,19 @@
 			<div class="inner-news">
 				<div class="neirong">
 					<ul>
-						<li><img src="/oxd-site/images/yangshengbig1.jpg"><a></a>
-						<p onclick="window.location.href='#'">
-								浴足连锁<br>
-								<span>内容描述</span>
-							</p></li>
-						<li><img src="/oxd-site/images/yangshengbig2.jpg"><a></a>
-						<p onclick="window.location.href='#'">
-								酒店管理<br>
-								<span>内容描述</span>
-							</p></li>
-						<li><img src="/oxd-site/images/yangshengbig1.jpg"><a></a>
-						<p onclick="window.location.href='#'">
-								企业人才培训<br>
-								<span>内容描述</span>
-							</p></li>
+						<%
+						for(sp in scope) {
+							var imgUrl = sp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(sp.prePictureUrl, ";")[1];
+						%>
+						<li>
+							<img src="${imgUrl}">
+							<a></a>
+							<p onclick="window.location.href='#'">
+								${sp.type!''}<br>
+								<span>${sp.introduction!''}</span>
+							</p>
+						</li>
+						<%}%>
 					</ul>
 				</div>
 			</div>

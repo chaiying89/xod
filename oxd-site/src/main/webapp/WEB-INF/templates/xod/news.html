@@ -1,12 +1,13 @@
-﻿<!doctype html>
+﻿<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>资讯中心-四川鑫欧顿商务服务有限公司</title>
-<link href="/oxd-site/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/public.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/news.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/public.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/news.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -24,7 +25,7 @@
 					for(m in list) { 
 						if(m.id == mid) currUrl = m.url;
 					%>
-					<li><a href="/oxd-site${m.url}?pageNum=1" ${m.id== mid?'class="fst"':''}>${m.name}</a></li>
+					<li><a href="${root}${m.url}?pageNum=1" ${m.id== mid?'class="fst"':''}>${m.name}</a></li>
 					<%}%>
 				</ul>
 			</div>
@@ -32,7 +33,7 @@
 			<%
 			var datas = pages.rows;
 			for(o in datas) {
-			var imgUrl = o.prePictureUrl != null ? menus.split(o.prePictureUrl, ";")[1] : "";
+			var imgUrl = o.prePictureUrl == "" ? root + "/images/banner.jpg" : menus.split(o.prePictureUrl, ";")[1];
 			%>
 			<div class="big-left">
 				<div class="sma-left">
@@ -56,10 +57,10 @@
 				var totalPage = pages.total % pageSize > 0 ? pages.total / pageSize + 1 : pages.total / pageSize;
 				%>
 				<% if(totalPage > 1 && pageNum - 1 > 0){ %>
-				<a href="/oxd-site${currUrl}?pageNum=${pageNum - 1}">上一页</a>
+				<a href="${root}${currUrl}?pageNum=${pageNum - 1}">上一页</a>
 				<%}%>
 				<%if(totalPage >= (pageNum + 1)){ %>
-				<a href="/oxd-site${currUrl}?pageNum=${pageNum + 1}">下一页</a>
+				<a href="${root}${currUrl}?pageNum=${pageNum + 1}">下一页</a>
 				<%}%>
 			</div>
 		</div>

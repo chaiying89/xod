@@ -1,12 +1,13 @@
-﻿<!doctype html>
+﻿<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>首页-四川鑫欧顿商务服务有限公司</title>
-<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="/oxd-site/css/public.css" rel="stylesheet" type="text/css">
-<link href="css/index.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/public.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/index.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -32,8 +33,8 @@
 		<div class="container">
 			<h3>公司简介</h3>
 			<div class="p-div">
-				四川省鑫欧顿商务服务有限公司成立于2011年，坐落于著有“天府之国”之称的四川省成都市，是一家集酒店、保健、浴足为一体的大型综合性连锁企业。公司拥有独立的自主商标和知识产权，负责“鑫欧顿”“伯爵丽都”两大品牌的推广、运营、管理，已发展成中国养生行业最具潜力的加盟连锁机构。经过短短5年时间的跨越式发展，公司目前已经拥有直营店与加盟店近40家，总投资金额达1.8亿元，实现年产值3亿元，现有员工2000余人。公司预计2018年底打造100家实体店面，覆盖全国各省会城市，实现真正意义的全国连锁；2019年底分别成立陕西分公司，河北分公司，北京分公司，山东分公司，上海分公司，广东分公司，福建分公司，实现市场战略部署；2020年底整合养生行业资源，实现融资上市的发展规划，让企业正式走上产业化、多元化、规模化的发展道路。<a
-					href="about.html" style="color: #7d1e1b">更多...</a>
+				${menus.firstPTag(jianjie.content!'暂无')}
+				<a href="about.html" style="color: #7d1e1b">更多...</a>
 			</div>
 
 			<div class="row">
@@ -45,35 +46,17 @@
 						<li><a href="touzi-mendianxingxiangzhanshi.html">了解更多</a></li>
 				</div>
 			</div>
-			<div class="row inner">
+			<div class="row inners">
+				<%
+				for(s in stores) {
+				%>
 				<div class="col-xs-6 col-sm-3">
-					<a href="#"> <img src="images/banner.jpg"
-						class="img-responsive">
-						<h5>温江店</h5>
-						<p>地址：温江服务区</p>
+					<a href="#"> <img src="${s.prePictureUrl == ''?'images/banner.jpg':menus.split(s.prePictureUrl, ';')[1]}" class="img-responsive">
+						<h5>${s.title!'未命名'}</h5>
+						<p>地址：${s.address!'暂缺'}</p>
 					</a>
 				</div>
-				<div class="col-xs-6 col-sm-3">
-					<a href="#"> <img src="images/banner.jpg"
-						class="img-responsive">
-						<h5>温江店</h5>
-						<p>地址：温江服务区</p>
-					</a>
-				</div>
-				<div class="col-xs-6 col-sm-3">
-					<a href="#"> <img src="images/banner.jpg"
-						class="img-responsive">
-						<h5>温江店</h5>
-						<p>地址：温江服务区</p>
-					</a>
-				</div>
-				<div class="col-xs-6 col-sm-3">
-					<a href="#"> <img src="images/banner.jpg"
-						class="img-responsive">
-						<h5>温江店</h5>
-						<p>地址：温江服务区</p>
-					</a>
-				</div>
+				<%}%>
 			</div>
 		</div>
 	</section>
@@ -87,23 +70,15 @@
 	<section id="service">
 		<div class="container">
 			<div class="row myfull">
+				<%
+				for(sp in scope) {
+				%>
 				<div class="col-sm-4">
 					<a href="about-fanwei.html" class="glyphicon glyphicon-star"></a>
-					<h4>足浴连锁</h4>
-					<p>开健康服务之先河，创自然疗法之奇迹;用智慧去创新，用心灵去服务；诚信永在心，以德换真情!</p>
+					<h4>${sp.type}</h4>
+					<p>${sp.introduction!'暂无'}</p>
 				</div>
-				<div class="col-sm-4">
-					<a href="about-fanwei.html" class="glyphicon glyphicon-star"></a>
-					<h4>酒店管理</h4>
-					<p>尽职尽责，至诚服务;以人为本，和谐发展;宾客至上，服务第一;清风雅致，怡然自在;一流服务，以心换心！</p>
-
-				</div>
-				<div class="col-sm-4">
-					<a href="about-fanwei.html" class="glyphicon glyphicon-star"></a>
-					<h4>企业人才培养</h4>
-					<p>今天的教育明天的成功，现在的培训未来的发展；培训员工是企业成功最好的捷径；企业给员工最好的福利就是学习；教育培训坚持做上线操作不会错！
-					</p>
-				</div>
+				<%}%>
 			</div>
 			<div class="row row-bot">
 				<div class="col-md-8">
@@ -119,36 +94,29 @@
 									<span class="glyphicon glyphicon-plus"></span>资讯中心
 								</h4></a>
 							<ul class="news">
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">热烈祝贺成都温江店开业十周年庆...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">热烈祝贺成都温江店开业十周年庆...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">热烈祝贺成都温江店开业十周年庆...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">热烈祝贺成都温江店开业十周年庆...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">热烈祝贺成都温江店开业十周年庆...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">热烈祝贺成都温江店开业十周年庆...</a></li>
+								<%
+								for(g in gsgg) {
+								%>
+								<li>
+									<b class="glyphicon glyphicon-star stars"></b>
+									<a href="#" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
+								</li>
+								<%}%>
 							</ul></li>
 						<li><a href="news.html"><h4>
 									<span class="glyphicon glyphicon-plus"></span>养生专区
 								</h4></a>
 							<ul class="news">
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">身体经络，针灸，养生集于一体...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">身体经络，针灸，养生集于一体...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">身体经络，针灸，养生集于一体...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">身体经络，针灸，养生集于一体...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">身体经络，针灸，养生集于一体...</a></li>
-								<li><b class="glyphicon glyphicon-star stars"></b><a
-									href="#">身体经络，针灸，养生集于一体...</a></li>
-							</ul></li>
+								<%
+								for(g in liliao) {
+								%>
+								<li>
+									<b class="glyphicon glyphicon-star stars"></b>
+									<a href="#" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
+								</li>
+								<%}%>
+							</ul>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -158,7 +126,7 @@
 		<div class="container">
 			<h3>品牌加盟</h3>
 			<p class="team-p">品牌是大家的，共赢是品牌自我发展的硬性主张。让我们携手共进，协力共赢。</p>
-			<div class="row inner">
+			<div class="row inners">
 				<div class="col-xs-6 col-sm-3">
 					<a href="touzi-guanyuxiangmu.html"> <img
 						src="images/xiangmu.jpg" class="img-circle">

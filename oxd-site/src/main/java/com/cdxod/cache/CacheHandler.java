@@ -31,4 +31,17 @@ public class CacheHandler {
 	}
 	
 	
+	public String firstPTag(String args) {
+		if(args.contains("</p>")) {
+			return args.substring(0, args.indexOf("</p>") + 4);
+		}
+		return args;
+	}
+	
+	public String textOverflow(String args) {
+		if(args.length() > 20) {
+			return args.substring(0, 20) + "...";
+		}
+		return args;
+	}
 }
