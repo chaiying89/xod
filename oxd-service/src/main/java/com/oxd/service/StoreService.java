@@ -19,7 +19,6 @@ import com.oxd.exception.OxdException;
 import com.oxd.model.StoreInfoModel;
 import com.oxd.model.StoreManagerModel;
 import com.oxd.util.Constants;
-import com.oxd.vo.AboutVo;
 import com.oxd.vo.PageVo;
 import com.oxd.vo.StoreInfoVo;
 import com.oxd.vo.TouziVo;
