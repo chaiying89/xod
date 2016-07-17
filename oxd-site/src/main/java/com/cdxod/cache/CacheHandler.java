@@ -26,6 +26,16 @@ public class CacheHandler {
 		return map.get(id.intValue());
 	}
 	
+	/**
+	 * 获取三级菜单根据父级ID
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<MenuVo> get3lMenus(Integer id) {
+		Map<Integer, List<MenuVo>> map = (Map<Integer, List<MenuVo>>) CacheMapFactory.getCacheMap().get("3lmenus");
+		return map.get(id.intValue());
+	}
+	
 	public String[] split(String args, String sp) {
 		return args.split(sp);
 	}

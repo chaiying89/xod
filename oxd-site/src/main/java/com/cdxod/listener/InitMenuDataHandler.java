@@ -20,7 +20,8 @@ public class InitMenuDataHandler implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		CacheMapFactory.getCacheMap().put("menus", service.siteMenuQuery());
-		CacheMapFactory.getCacheMap().put("2lmenus", service.site2lMenuQuery());
+		CacheMapFactory.getCacheMap().put("2lmenus", service.siteMenuQuery(2));
+		CacheMapFactory.getCacheMap().put("3lmenus", service.siteMenuQuery(3));
 	}
 
 }

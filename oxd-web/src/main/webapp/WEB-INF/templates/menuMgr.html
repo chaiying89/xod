@@ -1,13 +1,14 @@
+<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>栏目管理</title>
-	<link rel="stylesheet" type="text/css" href="/oxd-web/static/easyui/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="/oxd-web/static/easyui/themes/icon.css">
-	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.min.js"></script>
-	<script type="text/javascript" src="/oxd-web/static/easyui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="/oxd-web/static/easyui/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="${root}/static/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${root}/static/easyui/themes/icon.css">
+	<script type="text/javascript" src="${root}/static/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="${root}/static/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${root}/static/easyui/easyui-lang-zh_CN.js"></script>
     <style>
     body,html {
     	height: 100%;
@@ -21,14 +22,14 @@
     	margin: 0 auto;
     	width:16px;
     	height:16px;
-    	background: url(/oxd-web/static/easyui/themes/icons/ok.png)
+    	background: url(${root}/static/easyui/themes/icons/ok.png)
     }
      b.no {
     	display:block;
     	margin: 0 auto;
     	width:16px;
     	height:16px;
-    	background: url(/oxd-web/static/easyui/themes/icons/cancel.png)
+    	background: url(${root}/static/easyui/themes/icons/cancel.png)
     }
     </style>
 </head>

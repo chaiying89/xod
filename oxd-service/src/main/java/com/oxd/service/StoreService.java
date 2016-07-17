@@ -1,5 +1,6 @@
 package com.oxd.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import com.oxd.exception.OxdException;
 import com.oxd.model.StoreInfoModel;
 import com.oxd.model.StoreManagerModel;
 import com.oxd.util.Constants;
+import com.oxd.vo.AboutVo;
 import com.oxd.vo.PageVo;
 import com.oxd.vo.StoreInfoVo;
 import com.oxd.vo.TouziVo;
@@ -183,6 +185,24 @@ public class StoreService extends AbstractService {
 	public void saveOrUpdateManager(StoreManagerModel entity) {
 		this.fillEntity(entity);
 		storeManagerRepository.save(entity);
+	}
+	
+	/**
+	 * 网站页面内容查询
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public TouziVo findOneManager(int id) {
+		Session session = entityManager.unwrap(Session.class);
+		String[] columns = { "content"};
+		String sql = "select a.content from store_manager_model a where a.m_id=?";
+		List<Object> params = new ArrayList<Object>(1);
+		params.add(id);
+		SQLQuery query = session.createSQLQuery(sql);
+		this.setScalarsAndParams(query, columns, params);
+		TouziVo vos = (TouziVo) query.setResultTransformer(Transformers.aliasToBean(TouziVo.class)).uniqueResult();
+		return vos;
 	}
 
 }

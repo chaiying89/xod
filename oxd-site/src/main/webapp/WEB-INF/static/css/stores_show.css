@@ -113,16 +113,10 @@ img{
 	border-bottom: 10px solid  rgba(200,200,200,0.75);    
 	border-left:10px solid  rgba(200,200,200,1);
 	position:relative;
-	background-image:url(../images/bg-0.jpg);
+	background-image:url(../images/mendiantu1.jpg);
     background-position:center; 
 	background-repeat:no-repeat;
 	background-size:cover}
-.inner-news h1 {margin: 0.67em 0;}
-.inner-news h2 {margin: 0.83em 0;}
-.inner-news h3 {margin: 1em 0;}
-.inner-news h4 {margin: 1.33em 0;}
-.inner-news h5 {margin: 1.67em 0;}
-.inner-news h6 {margin: 2.33em 0;}
 .inner-news .p-news{
 	white-space:2px;
 	}
@@ -138,9 +132,6 @@ img{
 .nav-top ul li a:hover{
 	color:#ad221e;
 	}
-#content {
-	padding-top:10px;
-}
 .fanye{
 	float:right;
 	padding:0 ;

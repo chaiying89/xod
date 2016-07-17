@@ -28,11 +28,4 @@ public class InvestController {
 		model.addAttribute("content", vo == null ? "": vo.getContent());
 		return "xod/touzi";
 	}
-	
-	@RequestMapping("/stores/{mid}")
-	public String store(Model model, @PathVariable("mid") Integer mid) {
-		model.addAttribute("mid", mid);
-		return "xod/stores";
-	}
-	
 }

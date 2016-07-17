@@ -14,12 +14,12 @@
 	<section class="body-top">
 		<div class="inner container">
 			<div class="h2-h2">
-				<h2>关于我们</h2>
+				<h2>${pname}</h2>
 			</div>
 			<div class="h2-ul">
 				<ul>
 					<%
-					var list = menus.get2lMenus(@com.oxd.util.Constants.MENU_ABOUT);
+					var list = menus.get2lMenus(menu2level);
 					for(m in list) {
 					%>
 					<li><a href="${root}${m.url}" ${m.id == mid?'class="fst"':''}>${m.name}</a></li>

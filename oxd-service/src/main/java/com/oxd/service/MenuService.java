@@ -77,15 +77,16 @@ public class MenuService extends AbstractService {
 	
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
-	public Map<Integer, List<MenuVo>> site2lMenuQuery() {
+	public Map<Integer, List<MenuVo>> siteMenuQuery(int level) {
 		try {
 			Map<Integer, List<MenuVo>> map = new LinkedHashMap<Integer, List<MenuVo>>();
 			Session session = entityManager.unwrap(Session.class);
 			String[] columns = { "id", "name", "url", "pid"};
-	
-			String sql = "select n.id, n.name, n.url, n.parent_id as pid from menu_model n where n.level=2 order by order_by";
+			List<Object> params = new ArrayList<Object>();
+			params.add(level);
+			String sql = "select n.id, n.name, n.url, n.parent_id as pid from menu_model n where n.level=? order by order_by";
 			SQLQuery query = session.createSQLQuery(sql);
-			this.setScalars(query, columns);
+			this.setScalarsAndParams(query, columns, params);
 			List<MenuVo> vos = query.setResultTransformer(Transformers.aliasToBean(MenuVo.class)).list();
 			for(MenuVo vo : vos) {
 				List<MenuVo> list = map.get(vo.getPid());

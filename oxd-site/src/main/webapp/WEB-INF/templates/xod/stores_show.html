@@ -6,7 +6,7 @@
 <title>门店展示-四川鑫欧顿商务服务有限公司</title>
 <link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="${root}/css/stores.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/stores_show.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -29,14 +29,44 @@
 				<div class="nav-top">
 					<ul>
 					<% var list1 = menus.get3lMenus(@com.oxd.util.Constants.TOUZI_STORE);
-					for(n in list1) { %>
+					var currUrl = "";
+					for(n in list1) {
+						if(n.id == url) currUrl = n.url; 
+					%>
 					<li><a href="${root}${n.url}" ${n.url==url?'class="fst"':''}>${n.name}</a></li>
 					<%}%>
 					</ul>
 				</div>
 				<div class="cs"></div>
-				<div id="content">
-				${content}
+				<div class="img-pp">
+					<ul>
+						<%
+						var datas = pages.rows;
+						for(o in datas) {
+						var imgUrl = o.prePictureUrl == "" ? root + "/images/banner.jpg" : menus.split(o.prePictureUrl, ";")[1];
+						%>
+						<li>
+							<a href="${root}/stores/detail?id=${o.id}">
+								<img src="${imgUrl}" class="img-responsive" />
+								<div>
+									<h5>${o.title!'未命名'}</h5>
+									<p>地址：${o.address!'暂缺'}</p>
+								</div> 
+							</a>
+						</li>
+						<%}%>
+					</ul>
+				</div>
+				<div class="fanye">
+					<% 
+					var totalPage = pages.total % pageSize > 0 ? pages.total / pageSize + 1 : pages.total / pageSize;
+					%>
+					<% if(totalPage > 1 && pageNum - 1 > 0){ %>
+					<a href="${root}${currUrl}?pageNum=${pageNum - 1}">上一页</a>
+					<%}%>
+					<%if(totalPage >= (pageNum + 1)){ %>
+					<a href="${root}${currUrl}?pageNum=${pageNum + 1}">下一页</a>
+					<%}%>
 				</div>
 			</div>
 		</div>

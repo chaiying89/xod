@@ -41,6 +41,19 @@ public class Constants {
 	public final static int ABOUT_ME = 13;
 	
 	/**
+	 * 投资加盟-门店管理对应id
+	 */
+	public final static int TOUZI_STORE = 22;
+	/**
+	 * 门店管理-组织架构对应id
+	 */
+	public final static int STORE_ORG = 25;
+	/**
+	 * 门店管理-门店管理对应id
+	 */
+	public final static int STORE_MGR = 26;
+	
+	/**
 	 * 养生专区-理疗类对应id
 	 */
 	public final static int YANGSHENG_LILIAO = 33;

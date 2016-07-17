@@ -1,12 +1,13 @@
+<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>鑫欧顿网站后台管理系统</title>
-	<link rel="stylesheet" type="text/css" href="static/easyui/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="static/easyui/themes/icon.css">
-	<script type="text/javascript" src="static/easyui/jquery.min.js"></script>
-	<script type="text/javascript" src="static/easyui/jquery.easyui.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="${root}/static/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${root}/static/easyui/themes/icon.css">
+	<script type="text/javascript" src="${root}/static/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="${root}/static/easyui/jquery.easyui.min.js"></script>
 	<style type="text/css">
 	.menu-ul {
 		margin: 0; padding: 2px 0; list-style: none;
@@ -35,8 +36,9 @@
 		overflow: hidden;
 	}
 	.test{border:none;}
-	.top-bar{
-		margin-top:35px;
+	.top-title{
+		height:35px;
+		border-bottom:none;
 	}
 	.top-bar div{
 		background:#E0ECFF;
@@ -47,6 +49,9 @@
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;">
+		<div class="easyui-panel top-title">
+			<div style="text-align:center;line-height:35px;font-size:16px;">四川鑫欧顿网站后台管理系统</div>
+		</div>
 		<div class="easyui-panel top-bar">
 			<div>你好，${so.loginUser() }！ <a href="javascript:void(0)" id="pwdUpdate">修改密码</a> | <a href="logout">退出</a></div>
 		</div>
@@ -55,38 +60,38 @@
 		<div class="easyui-accordion" data-options="multiple:true" style="width:100%;">
 			<div title="企业信息" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('about/main', '关于我们')">关于我们</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/about/main', '关于我们')">关于我们</a></li>
 				</ul>
 			</div>
 			<div title="信息中心" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('newsInfo/main', '咨讯管理')">资讯管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/newsInfo/main', '咨讯管理')">资讯管理</a></li>
 				</ul>
 			</div>
 			<div title="投资加盟" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('touzi/main', '投资信息管理')">投资信息管理</a></li>
-					<li><a href="javascript:void(0);" onclick="addPanel('store/main', '门店管理')">门店管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/touzi/main', '投资信息管理')">投资信息管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/store/main', '门店管理')">门店管理</a></li>
 				</ul>
 			</div>
 			<div title="经营范围" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('scope/main', '经营范围管理')">经营范围管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/scope/main', '经营范围管理')">经营范围管理</a></li>
 				</ul>
 			</div>
 			<div title="养生专区" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('yangsheng/main', '养生专区管理')">养生专区管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/yangsheng/main', '养生专区管理')">养生专区管理</a></li>
 				</ul>
 			</div>
 			<div title="招聘专栏" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('zhaopin/main', '招聘专栏管理')">招聘专栏管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/zhaopin/main', '招聘专栏管理')">招聘专栏管理</a></li>
 				</ul>
 			</div>
 			<div title="网站栏目" style="padding:6px;">
 				<ul class="menu-ul">
-					<li><a href="javascript:void(0);" onclick="addPanel('menu/main', '网站栏目管理')">网站栏目管理</a></li>
+					<li><a href="javascript:void(0);" onclick="addPanel('${root}/menu/main', '网站栏目管理')">网站栏目管理</a></li>
 				</ul>
 			</div>
 		</div>
@@ -123,7 +128,7 @@
 					var newPwd = $("#newPwd").val();
 					var reNewPwd = $("#reNewPwd").val();
 					$.ajax({
-						url:'user/pwd_update',
+						url:'${root}/user/pwd_update',
 						data:{"oldPwd":oldPwd, "newPwd":newPwd, "reNewPwd":reNewPwd},
 						type:'POST',
 						dataType:'json',

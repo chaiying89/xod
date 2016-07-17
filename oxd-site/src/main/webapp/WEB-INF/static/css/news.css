@@ -32,3 +32,54 @@
 .sma-right div {
 	width:280px;
 }
+
+
+/*------以下是footer区------*/
+footer{
+	text-align:center;
+	background-color:#282f37;
+	padding:40px 0;
+	}
+
+footer h6{
+	line-height:30px;
+	color:#fff;}
+footer .chevron{
+	width: 36px;
+    height: 36px;
+	padding-top:8px;
+	border-radius:50%;
+	background-color:#ad221e;
+	color:#fff;
+	position:fixed;
+	right:60px;
+	bottom:20px;
+	transition:all 0.5s;
+}
+footer .chevron:hover{
+	transform:scale(1.5);}
+@media screen and (max-width:1300px){
+	.banner{
+		width:100%;
+		}
+	}
+
+@media screen and (max-width:768px){
+	.myvisible a{
+	color:#fff;
+	float:right;
+	line-height:37px;
+	}
+	.contant{
+		float:left;}
+	.header-bot ul a{
+		padding:0 1px;}
+	}
+@media screen and (max-width:992px){
+	.banner img{
+		width:60%;
+		padding-left:30%;}
+	#about h2,#about p{
+		padding-top:20px;
+		text-align:center;}
+	}

@@ -34,7 +34,7 @@
 			<h3>公司简介</h3>
 			<div class="p-div">
 				${menus.firstPTag(jianjie.content!'暂无')}
-				<a href="about.html" style="color: #7d1e1b">更多...</a>
+				<a href="${root}/about/13" style="color: #7d1e1b">更多...</a>
 			</div>
 
 			<div class="row">
@@ -43,7 +43,7 @@
 				</div>
 				<div class="col-sm-10">
 					<ul>
-						<li><a href="touzi-mendianxingxiangzhanshi.html">了解更多</a></li>
+						<li><a href="${root}/stores/show">了解更多</a></li>
 				</div>
 			</div>
 			<div class="row inners">
@@ -51,7 +51,7 @@
 				for(s in stores) {
 				%>
 				<div class="col-xs-6 col-sm-3">
-					<a href="#"> <img src="${s.prePictureUrl == ''?'images/banner.jpg':menus.split(s.prePictureUrl, ';')[1]}" class="img-responsive">
+					<a href="${root}/stores/detail?id=${s.id}"> <img src="${s.prePictureUrl == ''?'images/banner.jpg':menus.split(s.prePictureUrl, ';')[1]}" class="img-responsive">
 						<h5>${s.title!'未命名'}</h5>
 						<p>地址：${s.address!'暂缺'}</p>
 					</a>
@@ -64,7 +64,7 @@
 		<div class="container">
 			<h2>品牌市场优势</h2>
 			<p>六大荣誉称号：中国足疗保健十大最具潜力品牌、中国足疗连锁机构最具影响力品牌、常务理事单位、消费者满意品牌、优秀足疗保健行业明星、中国质量万里行质量信的过单位。</p>
-			<a href="about-gong.html" class="btn btn-default btn-lg">了解更多...</a>
+			<a href="${root}/about/15" class="btn btn-default btn-lg">了解更多...</a>
 		</div>
 	</section>
 	<section id="service">
@@ -74,7 +74,7 @@
 				for(sp in scope) {
 				%>
 				<div class="col-sm-4">
-					<a href="about-fanwei.html" class="glyphicon glyphicon-star"></a>
+					<a class="glyphicon glyphicon-star"></a>
 					<h4>${sp.type}</h4>
 					<p>${sp.introduction!'暂无'}</p>
 				</div>
@@ -90,7 +90,7 @@
 				<div class="col-md-4 managent">
 					<h4>资讯与养生</h4>
 					<ul>
-						<li><a href="news.html"><h4>
+						<li><a href="${root}/info/10"><h4>
 									<span class="glyphicon glyphicon-plus"></span>资讯中心
 								</h4></a>
 							<ul class="news">
@@ -99,11 +99,11 @@
 								%>
 								<li>
 									<b class="glyphicon glyphicon-star stars"></b>
-									<a href="#" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
+									<a href="${root}/info/detail?id=${g.id}" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
 								</li>
 								<%}%>
 							</ul></li>
-						<li><a href="news.html"><h4>
+						<li><a href="${root}/yangsheng/33"><h4>
 									<span class="glyphicon glyphicon-plus"></span>养生专区
 								</h4></a>
 							<ul class="news">
@@ -112,7 +112,7 @@
 								%>
 								<li>
 									<b class="glyphicon glyphicon-star stars"></b>
-									<a href="#" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
+									<a href="${root}/yangsheng/detail?id=${g.id}" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
 								</li>
 								<%}%>
 							</ul>
@@ -128,25 +128,25 @@
 			<p class="team-p">品牌是大家的，共赢是品牌自我发展的硬性主张。让我们携手共进，协力共赢。</p>
 			<div class="row inners">
 				<div class="col-xs-6 col-sm-3">
-					<a href="touzi-guanyuxiangmu.html"> <img
+					<a href="${root}/touzi/18"> <img
 						src="images/xiangmu.jpg" class="img-circle">
 						<h5>关于项目</h5>
 					</a>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<a href="touzi-guanyuxiangmu-us.html"> <img
+					<a href="${root}/touzi/19"> <img
 						src="images/zhichi.jpg" class="img-circle">
 						<h5>我们的支持</h5>
 					</a>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<a href="touzi-guanyuxiangmu-guan.html"> <img
+					<a href="${root}/touzi/20"> <img
 						src="images/guanli.jpg" class="img-circle">
 						<h5>管理一体化</h5>
 					</a>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<a href="touzi-he.html"> <img src="images/hezuo.jpg"
+					<a href="${root}/touzi/23"> <img src="images/hezuo.jpg"
 						class="img-circle">
 						<h5>如何合作</h5>
 					</a>
