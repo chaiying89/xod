@@ -2,6 +2,8 @@ package com.oxd.controller;
 
 
 
+import java.util.UUID;
+
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -50,5 +52,13 @@ public class UserController {
 		} catch(Exception e) {
 			return MessageVo.fullErrorMessage("密码修改失败");
 		}
+	}
+	
+	public static void main(String args[]) {
+		String username = "admin";
+		String password = "scxodadmin";
+		String salt = UUID.randomUUID().toString().replaceAll("-", "");
+		String pwd = new Md5Hash(password, username + salt, 2).toBase64();
+		System.out.println("用户名：" + username + "\r\n" + "密码(明文)：" + password + "\r\n" + "盐(salt)：" + salt + "\r\n" + "密码(密文)：" + pwd);
 	}
 }
