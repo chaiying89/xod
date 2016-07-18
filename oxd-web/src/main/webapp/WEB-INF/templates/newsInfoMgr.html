@@ -323,7 +323,7 @@
 			</div>
 			<div style="margin-bottom:10px">
 				<div>资讯类型:</div>
-				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'/oxd-web/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
+				<input class="easyui-combobox" id="type" data-options="valueField:'id', textField:'name', editable:false, url:'${root}/menu/seletor?name=资讯中心',onLoadSuccess:function(data){ $('#type').combobox('setValue',data[0].id);}" style="width:50%;height:26px">
 			</div>
 			<div style="margin-bottom:10px">
 				<div>前置图:</div>
