@@ -36,7 +36,7 @@
 						var datas = pages.rows;
 						if(datas.~size > 0) {
 							var temp = datas[0];
-							var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+							var imgUrl = temp.prePictureUrl == null ||temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
 						%>
 						<img src="${imgUrl}" /><a></a>
 						<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
@@ -47,7 +47,7 @@
 							<%
 							if(datas.~size > 1) {
 								var temp = datas[1];
-								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
 							%>
 							<li>
 								<img src="${imgUrl}" />
@@ -58,7 +58,7 @@
 							<%
 							if(datas.~size > 2) {
 								var temp = datas[2];
-								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
 							%>
 							<li>
 								<img src="${imgUrl}" />
@@ -69,7 +69,7 @@
 							<%
 							if(datas.~size > 3) {
 								var temp = datas[3];
-								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
 							%>
 							<li>
 								<img src="${imgUrl}" />
@@ -80,7 +80,7 @@
 							<%
 							if(datas.~size > 4) {
 								var temp = datas[4];
-								var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
 							%>
 							<li>
 								<img src="${imgUrl}" />
@@ -94,7 +94,7 @@
 						<%
 						if(datas.~size > 5) {
 							var temp = datas[5];
-							var imgUrl = temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
+							var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
 						%>
 						<img src="${imgUrl}" /><a></a>
 						<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>

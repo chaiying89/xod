@@ -23,7 +23,7 @@
 					<ul>
 						<%
 						for(sp in scope) {
-							var imgUrl = sp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(sp.prePictureUrl, ";")[1];
+							var imgUrl = sp.prePictureUrl == null || sp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(sp.prePictureUrl, ";")[1];
 						%>
 						<li>
 							<img src="${imgUrl}">

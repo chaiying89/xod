@@ -43,7 +43,7 @@
 						<%
 						var datas = pages.rows;
 						for(o in datas) {
-						var imgUrl = o.prePictureUrl == "" ? root + "/images/banner.jpg" : menus.split(o.prePictureUrl, ";")[1];
+						var imgUrl = o.prePictureUrl == null || o.prePictureUrl == "" ? root + "/images/banner.jpg" : menus.split(o.prePictureUrl, ";")[1];
 						%>
 						<li>
 							<a href="${root}/stores/detail?id=${o.id}">

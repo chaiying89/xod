@@ -38,7 +38,6 @@
 		        {field:'type',title:'类型'},
 		        {field:'content',title:'是否创建',formatter:function(value,row,index){
 		        	var val = value;
-		        	console.log(val);
 		        	if(!val) {
 		        		val = '<span style="color:red">未创建</span>';
 		        	} else {
@@ -73,7 +72,6 @@
 		$("#dg").datagrid("selectRow", index);
 		var row = $("#dg").datagrid("getSelected");
 		if(!row) return;
-		console.log(JSON.stringify(row));
 		$("#typeId").val(row.typeId);
 		$("#aboutId").val('');
 		$("#dialogTitle").text(row.type);

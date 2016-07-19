@@ -101,7 +101,6 @@
 		$("#storeDothing").datagrid("selectRow", index);
 		var row = $("#storeDothing").datagrid("getSelected");
 		if(!row) return;
-		console.log(JSON.stringify(row));
 		$("#typeId").val(row.typeId);
 		$("#aboutId").val('');
 		$("#dialogTitle").text(row.type);
