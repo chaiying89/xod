@@ -53,7 +53,14 @@
 				<div class="col-xs-6 col-sm-3">
 					<a href="${root}/stores/detail?id=${s.id}"> <img src="${s.prePictureUrl!'' == ''?'images/banner.jpg':menus.split(s.prePictureUrl, ';')[1]}" class="img-responsive">
 						<h5>${s.title!'未命名'}</h5>
-						<p>地址：${s.address!'暂缺'}</p>
+						<p title=${s.address!'暂缺'}>
+						地址：
+						<%if(strutil.length(s.address) > 10){%>
+						${strutil.subStringTo(s.address,0,10)}...
+						<%} else {%>
+						${s.address!'暂缺'}
+						<%}%>
+						</p>
 					</a>
 				</div>
 				<%}%>

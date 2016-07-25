@@ -31,7 +31,7 @@
 					<% var list1 = menus.get3lMenus(@com.oxd.util.Constants.TOUZI_STORE);
 					var currUrl = "";
 					for(n in list1) {
-						if(n.id == url) currUrl = n.url; 
+						if(n.url == url) currUrl = n.url; 
 					%>
 					<li><a href="${root}${n.url}" ${n.url==url?'class="fst"':''}>${n.name}</a></li>
 					<%}%>
@@ -50,7 +50,14 @@
 								<img src="${imgUrl}" class="img-responsive" />
 								<div>
 									<h5>${o.title!'未命名'}</h5>
-									<p>地址：${o.address!'暂缺'}</p>
+									<p title=${o.address!'暂缺'}>
+									地址：
+									<%if(strutil.length(o.address) > 10){%>
+									${strutil.subStringTo(o.address,0,10)}...
+									<%} else {%>
+									${o.address!'暂缺'}
+									<%}%>
+									</p>
 								</div> 
 							</a>
 						</li>
