@@ -8,7 +8,6 @@
 <meta name="keywords" content="鑫欧顿 伯爵丽都 足浴 养生 保健 招商加盟 足浴投资 全国连锁">
 <link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="${root}/css/public.css" rel="stylesheet" type="text/css">
 <link href="${root}/css/news.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -32,29 +31,29 @@
 				</ul>
 			</div>
 			<div class="cs"></div>
-			<%
-			var datas = pages.rows;
-			for(o in datas) {
-			var imgUrl = o.prePictureUrl == null || o.prePictureUrl == "" ? root + "/images/banner.jpg" : menus.split(o.prePictureUrl, ";")[1];
-			%>
-			<div class="big-left">
-				<div class="sma-left">
-					<img src="${imgUrl}" />
-				</div>
-				<div class="sma-right">
-					<div>
-						<h4>摘要：</h4>
-						<span>${o.title}</span>
+			<div class="inner-news">
+				<%
+				var datas = pages.rows;
+				for(o in datas) {
+				var imgUrl = o.prePictureUrl == null || o.prePictureUrl == "" ? root + "/images/banner.jpg" : menus.split(o.prePictureUrl, ";")[1];
+				%>
+				<div class="big-left">
+					<div class="sma-left">
+						<img src="${imgUrl}" />
 					</div>
-					<div class="p2p">
-						${o.introduction} 
-						<span style="float: right; font-size: 14px; padding-right: 10px"><a href="${root}/info/detail?id=${o.id}">更多</a></span>
+					<div class="sma-right">
+						<div>
+							<span>${o.title}</span>
+						</div>
+						<div class="p2p">
+							${o.introduction} 
+							<span style="float: right; font-size: 14px; padding-right: 10px"><a href="${root}/info/detail?id=${o.id}">更多</a></span>
+						</div>
 					</div>
 				</div>
-			</div>
-			<%}%>
-			<div class="cs"></div>
-			<div class="fanye">
+				<%}%>
+				<div class="cs"></div>
+				<div class="fanye">
 				<% 
 				var totalPage = pages.total % pageSize > 0 ? pages.total / pageSize + 1 : pages.total / pageSize;
 				%>
@@ -65,7 +64,8 @@
 				<a href="${root}${currUrl}?pageNum=${pageNum + 1}">下一页</a>
 				<%}%>
 			</div>
-		</div>
+			</div>
+			
 		</div>
 	</section>
 	<%include("/footer.html"){}%>

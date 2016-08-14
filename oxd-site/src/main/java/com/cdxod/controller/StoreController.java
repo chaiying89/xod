@@ -29,17 +29,25 @@ public class StoreController {
 	
 	@RequestMapping("/orgstruct")
 	public String orgStruct(Model model) {
-		model.addAttribute("url", "/stores/orgstruct");
-		TouziVo vo = service.findOneManager(Constants.STORE_ORG);
-		model.addAttribute("content", vo == null ? "": vo.getContent());
+		try {
+			model.addAttribute("url", "/stores/orgstruct");
+			TouziVo vo = service.findOneManager(Constants.STORE_ORG);
+			model.addAttribute("content", vo == null ? "": vo.getContent());
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+		}
 		return "xod/stores";
 	}
 	
 	@RequestMapping("/manager")
 	public String mamger(Model model) {
-		model.addAttribute("url", "/stores/manager");
-		TouziVo vo = service.findOneManager(Constants.STORE_MGR);
-		model.addAttribute("content", vo == null ? "": vo.getContent());
+		try {
+			model.addAttribute("url", "/stores/manager");
+			TouziVo vo = service.findOneManager(Constants.STORE_MGR);
+			model.addAttribute("content", vo == null ? "": vo.getContent());
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+		}
 		return "xod/stores";
 	}
 	

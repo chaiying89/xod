@@ -1,40 +1,29 @@
 <% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
 <header>
 	<div class="header-top">
-		<div class="container">
-			<div class="row ">
-			<div class="col-sm-9">
-					<ul class="contant">
-						<li><a href="#" class="glyphicon glyphicon-earphone"> 18780389999|028-87565566</a></li>
-						<li><a href="#" class="glyphicon glyphicon-envelope"> 1404853101@qq.com</a></li>
-					</ul>
-				</div>
-			<div class=" col-sm-3">
-					
-				</div>
-			</div>
-		</div>
+		<ul class="contant">
+			<li><a href="#" class="glyphicon glyphicon-earphone"> 18780389999|028-87565566</a></li>
+			<li><a href="#" class="glyphicon glyphicon-envelope"> 1404853101@qq.com</a></li>
+		</ul>
 	</div>
 	<div class="header-bot">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="logo">
-						 <span class="logo-one"><img src="${root}/images/one.png" style="height: 54px ;"/></span>
-            <span class="logo-two"><img src="${root}/images/two.png" style="height: 54px;margin-left:30px"/> </span>
-					</div>
-				</div>
-				<div class="col-md-8">
-					<ul>
-						<%
-						var list = menus.getMenus();
-						for(m in list) {
-						%>
-						<li><a href="${root}${m.url}">${m.name}<span class="caret"></span></a></li>
-						<%}%>
-					</ul>
-				</div>                                       
+		<div class="logo-menu">
+			<div class="logo">
+				 <span class="logo-one"><img src="${root}/images/one.png" style="height: 54px ;"/></span>
+	         			<span class="logo-two"><img src="${root}/images/two.png" style="height: 54px;margin-left:20px"/> </span>
 			</div>
+			<div class="menu">
+				<ul>
+					<%
+					var list = menus.getMenus();
+					for(m in list) {
+					%>
+					<li><a href="${root}${m.url}">${m.name}<span class="caret"></span></a></li>
+					<%}%>
+				</ul>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
 		</div>
    </div>
 </header>

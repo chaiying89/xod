@@ -78,7 +78,7 @@ public class ScopeService extends AbstractService {
 	public ScopeVo findOne(int id) {
 		Session session = entityManager.unwrap(Session.class);
 		String[] columns = { "content", "type" };
-		String sql = "select a.content, m.name as type from scope_model inner join menu_model m on a.m_id=m.id where a.m_id=?";
+		String sql = "select a.content, m.name as type from scope_model a inner join menu_model m on a.m_id=m.id where a.id=?";
 		List<Object> params = new ArrayList<Object>(1);
 		params.add(id);
 		SQLQuery query = session.createSQLQuery(sql);

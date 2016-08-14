@@ -1,0 +1,168 @@
+﻿<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="四川省鑫欧顿商务服务有限公司成立于2011年，坐落于著有“天府之国”之称的四川省成都市，是一家集酒店、保健、浴足为一体的大型综合性连锁企业。公司拥有独立的自主商标和知识产权，负责“鑫欧顿”与“伯爵丽都”两大品牌的推广、运营、管理，已发展成中国养生行业最具潜力的加盟连锁机构。">
+<title>首页-四川鑫欧顿商务服务有限公司，鑫欧顿，伯爵丽都，足浴，养生，保健，招商加盟，足浴投资，全国连锁</title>
+<meta name="keywords" content="鑫欧顿 伯爵丽都 足浴 养生 保健 招商加盟 足浴投资 全国连锁">
+<link href="${root}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/public.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/index.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<%include("/header.html"){}%>
+	<section id="about">
+		<div class="container banner">
+			<div class="row">
+				<div class="col-md-6 hidden-xs">
+					<img src="images/banner.jpg">
+				</div>
+				<div class="col-md-6">
+					<h2>鑫欧顿--伯爵丽都</h2>
+					<div class="label-detail">——精致生活的缔造者</div>
+					<p>
+						愿景：创诚信品牌，造连锁传奇。<br>价值观：注重细节、追求完美、居安思危、自强不息。<br>理念：保证服务品质，追求技术巅峰。<br>使命：带同伴创业，共享健康人生。<br>
+						宗旨：微笑服务，顾客满意。
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="features">
+		<div class="container">
+			<h3>公司简介</h3>
+			<div class="p-div">
+				${menus.firstPTag(jianjie.content!'暂无')}
+				<a href="${root}/about/13" style="color: #7d1e1b">更多...</a>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<h4>金牌门店</h4>
+				</div>
+				<div class="col-sm-10">
+					<ul>
+						<li><a href="${root}/stores/show">了解更多</a></li>
+				</div>
+			</div>
+			<div class="row inners">
+				<%
+				for(s in stores) {
+				%>
+				<div class="col-xs-6 col-sm-3">
+					<a href="${root}/stores/detail?id=${s.id}"> <img src="${s.prePictureUrl!'' == ''?'images/banner.jpg':menus.split(s.prePictureUrl, ';')[1]}" class="img-responsive">
+						<h5>${s.title!'未命名'}</h5>
+						<p title=${s.address!'暂缺'}>
+						地址：
+						<%if(strutil.length(s.address) > 10){%>
+						${strutil.subStringTo(s.address,0,10)}...
+						<%} else {%>
+						${s.address!'暂缺'}
+						<%}%>
+						</p>
+					</a>
+				</div>
+				<%}%>
+			</div>
+		</div>
+	</section>
+	<section id="website">
+		<div class="container">
+			<h2>品牌市场优势</h2>
+			<p>六大荣誉称号：中国足疗保健十大最具潜力品牌、中国足疗连锁机构最具影响力品牌、常务理事单位、消费者满意品牌、优秀足疗保健行业明星、中国质量万里行质量信的过单位。</p>
+			<a href="${root}/about/15" class="btn btn-default btn-lg">了解更多...</a>
+		</div>
+	</section>
+	<section id="service">
+		<div class="container">
+			<div class="row myfull">
+				<%
+				for(sp in scope) {
+				%>
+				<div class="col-sm-4">
+					<a class="glyphicon glyphicon-star"></a>
+					<h4>${sp.type}</h4>
+					<p>${sp.introduction!'暂无'}</p>
+				</div>
+				<%}%>
+			</div>
+			<div class="row row-bot">
+				<div class="col-md-8">
+					<div class="title">
+						<h4>志存高远</h4>
+					</div>
+					<div class="small-banner"></div>
+				</div>
+				<div class="col-md-4 managent">
+					<h4>资讯与养生</h4>
+					<ul>
+						<li><a href="${root}/info/10"><h4>
+									<span class="glyphicon glyphicon-plus"></span>资讯中心
+								</h4></a>
+							<ul class="news">
+								<%
+								for(g in gsgg) {
+								%>
+								<li>
+									<b class="glyphicon glyphicon-star stars"></b>
+									<a href="${root}/info/detail?id=${g.id}" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
+								</li>
+								<%}%>
+							</ul></li>
+						<li><a href="${root}/yangsheng/33"><h4>
+									<span class="glyphicon glyphicon-plus"></span>养生专区
+								</h4></a>
+							<ul class="news">
+								<%
+								for(g in liliao) {
+								%>
+								<li>
+									<b class="glyphicon glyphicon-star stars"></b>
+									<a href="${root}/yangsheng/detail?id=${g.id}" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
+								</li>
+								<%}%>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="features team">
+		<div class="container">
+			<h3>品牌加盟</h3>
+			<p class="team-p">品牌是大家的，共赢是品牌自我发展的硬性主张。让我们携手共进，协力共赢。</p>
+			<div class="row inners">
+				<div class="col-xs-6 col-sm-3">
+					<a href="${root}/touzi/18"> <img
+						src="images/xiangmu.jpg" class="img-circle">
+						<h5>关于项目</h5>
+					</a>
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					<a href="${root}/touzi/19"> <img
+						src="images/zhichi.jpg" class="img-circle">
+						<h5>我们的支持</h5>
+					</a>
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					<a href="${root}/touzi/20"> <img
+						src="images/guanli.jpg" class="img-circle">
+						<h5>管理一体化</h5>
+					</a>
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					<a href="${root}/touzi/23"> <img src="images/hezuo.jpg"
+						class="img-circle">
+						<h5>如何合作</h5>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<%include("/footer.html"){}%>
+</body>
+</html>

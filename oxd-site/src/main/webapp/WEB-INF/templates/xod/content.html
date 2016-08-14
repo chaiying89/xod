@@ -21,16 +21,17 @@
 			<div class="h2-ul">
 				<ul>
 					<%
-					var list = menus.get2lMenus(menu2level);
+					var list = menus.get2lMenus(isEmpty(menu2level)?0:menu2level);
+					if(list != null) {
 					for(m in list) {
 					%>
 					<li><a href="${root}${m.url}" ${m.id == mid?'class="fst"':''}>${m.name}</a></li>
-					<%}%>
+					<%}}%>
 				</ul>
 			</div>
 			<div class="cs"></div>
 			<div class="inner-news">
-				${content}
+				${content!''}
 			</div>
 		</div>
 	</section>

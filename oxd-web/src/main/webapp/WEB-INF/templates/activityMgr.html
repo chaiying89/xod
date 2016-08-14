@@ -1,0 +1,320 @@
+<% var root = request.scheme+"://"+request.serverName+":"+request.serverPort+request.contextPath;%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>广告活动管理</title>
+	<link rel="stylesheet" type="text/css" href="${root}/static/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${root}/static/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="${root}/static/umeditor/themes/default/css/umeditor.css">
+	<script type="text/javascript" src="${root}/static/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="${root}/static/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${root}/static/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${root}/static/umeditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${root}/static/umeditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="${root}/static/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <style>
+    body,html {
+    	height: 100%;
+    }
+    .dgheight {
+    	height: 100%;
+    }
+    .datagrid-row {
+    	height: 30px;
+    }
+    </style>
+</head>
+<body style="padding:0;margin:0; overflow: hidden;">
+	<table id="dg" title="广告活动" class="easyui-datagrid" style="width:100%; height:100%;" data-options="singleSelect:true,autoRowHeight:false,cls:'dgheight'">
+	</table>
+	<script type="text/javascript" src="${root}/static/js/fastjson-1.0.min.js"></script>
+	<script type="text/javascript" src="${root}/static/js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+	var defImg = "${root}/static/umeditor/dialogs/image/images/upload2.png";
+	$.extend($.fn.validatebox.defaults.rules, { 
+		titleValid : { 
+			validator : function(value, param) { 
+				if(value && value.length > 0 && value.length <= 100) 
+					return true; 
+				return false;
+			}, 
+			message : '标题字数应在1-100之间。' 
+		}
+	});
+	
+	$(function(){
+		$('#dg').datagrid({
+			url:'search',
+		    columns:[[  
+				{field:'ck',checkbox: true}, 
+		        {field:'title',title:'标题'},  
+		        {field:'imgUrl',title:'前置图地址',formatter:function(value,row,index){
+		        	return cut(value, 30);
+		        }},
+		        {field:'top',title:'首页显示',formatter:function(value,row,index){
+		        	var val = value;
+		        	if(val == 0) {
+		        		return '否';
+		        	} else {
+		        		return '是';
+		        	}
+		        }},
+		        {field:'createTime',title:'创建时间'},
+		        {field:'createUser',title:'创建人', width:60},
+		        {field:'updateTime',title:'修改时间'},
+		        {field:'updateUser',title:'修改人', width:60}
+		    ]],
+		    rownumbers:true,
+		    toolbar: [{ 
+	            text: '添加', 
+	            iconCls: 'icon-add', 
+	            handler: function() { 
+	            	addDialog();
+	            } 
+	        }, '-', { 
+	            text: '修改', 
+	            iconCls: 'icon-edit', 
+	            handler: function() { 
+	            	editDialog(); 
+	            } 
+	        }, '-',{ 
+	            text: '删除', 
+	            iconCls: 'icon-remove', 
+	            handler: function(){ 
+	            	deleteNews();
+	            } 
+	        }, '-',{ 
+	        	id: 'zhiding',
+	            text: '首页显示', 
+	            iconCls: 'icon-up', 
+	            handler: function(){ 
+	            	changeTopStatus();
+	            } 
+	        }],
+	        onClickRow:function(rIndex, rData) {
+	        	if(this.myIndex == rIndex) {
+	        		$(this).datagrid('unselectRow', rIndex);
+	        		this.myIndex = -1;
+	        		setZhidingText(0);
+	        	} else {
+	        		this.myIndex = rIndex;
+	        		setZhidingText(rData.top);
+	        	}
+	        }
+		});
+		
+		function cut(val, maxLength) {
+        	if(val && val.length > 20) {
+        		val = '<span title="' + val + '">' + val.substring(0, maxLength) + '...</span>';
+        	}
+        	return val;
+		}
+		
+		//实例化编辑器
+	    UM.getEditor('myEditor');
+	});
+	
+	// 切换置顶文字
+	function setZhidingText(data) {
+		if(data == 0) {
+			$("#zhiding span[class='l-btn-text']").html("首页显示");
+			$("#zhiding span[class='l-btn-icon icon-cancel']").attr("class","l-btn-icon icon-up");
+		} else {
+			$("#zhiding span[class='l-btn-text']").html("取消首页显示");
+			$("#zhiding span[class='l-btn-icon icon-up']").attr("class","l-btn-icon icon-cancel");
+		}
+		
+	}
+	
+	// 修改置顶状态
+	function changeTopStatus() {
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) {
+			$.messager.alert("警告","请选择要置顶的数据","warning");
+			return;
+		}
+		$.messager.confirm("提示", "确定要执行该操作？",function(r){
+			if(r) {
+				var url = 'top';
+				if(row.top == 1) url = 'cancelTop';
+				$.ajax({
+					url:url,
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示",data.message,"info");
+						$('#dg').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("错误","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
+	}
+	
+	//上传文件
+	function ajaxFileUpload(){
+	    if($("#upfile").val() == "") {
+	    	return;
+	    }
+	    $.ajaxFileUpload({
+	            url:'${root}/upload/editorImage',
+	            secureuri:false,
+	            fileElementId:"upfile",
+	            dataType: 'json',
+	            success: function (data, status){
+	                if(data.state == 'SUCCESS'){   
+	                	$.messager.alert("成功","上传成功","info")
+                        $("#imgURL").val(data.originalName + ";" + data.url);
+	                	$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + data.url);
+                        $("#deleteUpload").linkbutton('enable');
+                        $("#buttonUpload").linkbutton('disable');
+	                }
+	            },
+	            error: function (data, status, e){
+	            	$.messager.alert("错误", e, "error");
+	            }
+	        }
+	    )
+	    return false;
+	}
+	
+	// 删除上传的文件
+	function deleteUpload() {
+		$("#upImg").attr("src", defImg);
+		$("#imgURL").val("");
+		$("#deleteUpload").linkbutton('disable');
+		$("#buttonUpload").linkbutton('enable');
+	}
+	
+	// 打开添加页面
+	function addDialog() {
+		$('#aid').val("");
+		$('#title').textbox("setValue", "");
+    	deleteUpload();
+    	UM.getEditor('myEditor').setContent("");
+    	$('#addDialog').dialog({title: "新增"}).dialog('open');
+	}
+	
+	// 打开编辑页面
+	function editDialog() {
+		deleteUpload();
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) {
+			$.messager.alert("警告","请选择要修改的数据","warning");
+			return;
+		}
+		$.ajax({
+			url:'findOne',
+			data:{"id":row.id},
+			type:'POST',
+			dataType:'json',
+			success:function(data) {
+				if(data.imgUrl) {
+					$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + new String(data.imgUrl).split(";")[1]);
+					$("#imgURL").val(data.imgUrl);
+					$("#deleteUpload").linkbutton('enable');
+		            $("#buttonUpload").linkbutton('disable');
+				}
+				$("#aid").val(data.id);
+				$('#title').textbox("setValue", data.title);
+				
+				// 将html添加到
+				UM.getEditor('myEditor').setContent(data.content);
+				$('#addDialog').dialog({title: "修改"}).dialog('open');
+			},
+			error:function(){
+				$.messager.alert("错误","未知错误，请稍后再试","error");
+			}
+		});
+	}
+	
+	// 添加或修改的上传接口
+	function addOrEditNews() {
+		if($("#pwdUpdateForm").form("validate")) {
+			var id = $("#aid").val();
+			var title = $("#title").textbox("getValue");
+			var url = $("#imgURL").val();
+			var content = UM.getEditor('myEditor').getContent();
+			if(!content) {
+				$.messager.alert("内容不能为空");
+				return;
+			}
+			var jsonData = {"title":title, "imgUrl":url, "content":content};
+			if(id) {
+				jsonData.id = id;
+			}
+			$.ajax({
+				url:'saveOrUpdate',
+				data:JSON.stringify(jsonData),
+				type:'POST',
+				contentType:'application/json;charset=UTF-8',
+				dataType:'json',
+				success:function(data) {
+					$.messager.alert("提示",data.message,"info");
+					$('#dg').datagrid('reload');
+				},
+				error:function(){
+					$.messager.alert("错误","未知错误，请稍后再试","error");
+				}
+			});
+		}
+	}
+	
+	// 删除news
+	function deleteNews() {
+		var row = $("#dg").datagrid("getSelected");
+		if(!row) {
+			$.messager.alert("警告","请选择要删除的数据","warning");
+			return;
+		}
+		$.messager.confirm("提示", "删除后将无法找回，确定要删除该条记录？",function(r){
+			if(r) {
+				$.ajax({
+					url:'delete',
+					data:{"id":row.id},
+					type:'POST',
+					dataType:'json',
+					success:function(data) {
+						$.messager.alert("提示", data.message, "info");
+						$('#dg').datagrid('reload');
+					},
+					error:function(){
+						$.messager.alert("警告","未知错误，请稍后再试","error");
+					}
+				});
+			}
+		});
+	}
+	</script>
+	<div id="addDialog" class="easyui-dialog" closed="true" style="display:block;width:90%;overflow-y:auto;top:10px;;padding:10px"
+			data-options="modal:true,doSize:true,resizable:true,iconCls:'icon-save',resizable:true,
+							buttons:[{text:'提交',iconCls:'icon-ok',handler:addOrEditNews},
+									{text:'取消',handler:function(){$('#addDialog').dialog('close');}}]">
+		<div class="easyui-panel" style="padding:10px 40px;height:400px;width:100%;" data-options="style:{margin:'0 auto'}">
+			<form id="pwdUpdateForm">
+			<input id="aid" type="hidden" />
+			<div style="margin-bottom:10px">
+				<div>标题:</div>
+				<input class="easyui-validatebox easyui-textbox" id="title" data-options="validType:'titleValid'" required="true" missingMessage="请输入资讯标题" style="width:100%;height:26px">
+			</div>
+			<div style="margin-bottom:10px">
+				<div>前置图:</div>
+				<input size="45" name="upfile" id="upfile" type="file" style="height:26px;" />
+				<a href="javascript:void(0);" class="easyui-linkbutton" id="buttonUpload" onclick="ajaxFileUpload();" style="padding:0 5px;">上传</a>
+				<a href="javascript:void(0);" class="easyui-linkbutton" id="deleteUpload" onclick="deleteUpload();" style="padding:0 5px;" data-options="disabled:true">删除</a>
+                <input name="imgURL" id="imgURL" type="hidden" />
+			</div>
+			<img id="upImg" src="${root}/static/umeditor/dialogs/image/images/upload2.png" width="60" height="60" style="border:none; margin-bottom:10px" />
+			
+			<div>正文:</div>
+			<script type="text/plain" id="myEditor" style="width:800px;height:240px;">
+			</script>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

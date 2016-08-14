@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.oxd.service.ScopeService;
+import com.oxd.vo.ScopeVo;
 
 /**
  * 经营范围controller
@@ -31,5 +32,17 @@ public class ScopeController {
 			logger.error("查询业务数据出错：" + e.getMessage());
 		}
 		return "xod/scope";
+	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model, Integer id) {
+		model.addAttribute("pname", "经营范围");
+		try {
+			ScopeVo news = scopeService.findOne(id);
+			model.addAttribute("content", news.getContent());
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+		}
+		return "xod/content";
 	}
 }

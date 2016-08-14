@@ -1,14 +1,12 @@
 @charset "utf-8";
 /* CSS Document */	
-#about a {
-	display: block;
-}
-#about img{
-	width:1140px;
-	height:400px;
-	display: block;
-	margin: 0 auto;
-}
+#about{
+	background-color:#61201e;
+	}
+.banner img{
+	width:80%;
+	padding-top:10%;
+	}
 #about h2{
 	font-size:50px;
 	padding-top:66px;
@@ -33,25 +31,18 @@
 	color:#61201e;
 	text-align:center;
 	font-size:36px;
-	padding-top:20px;
-	line-height:50px;
+	padding-top:35px;
+	line-height:80px;
 	}
-#service {
-	width:100%;
-}
-#service .container .p-div{
+.features>.container>.p-div{
 	color:#363636;
-	padding-bottom:10px;
+	padding-bottom:73px;
 	text-align:left;
 	text-indent:2em
 	}
-#service .container .p-div a{
+.features>.container>.p-div a{
 	float:right
 		}
-.features {
-	width:100%;
-	background-color: #61201e;
-}
 .features h4{
 	line-height:40px;
 	 font-family: '微软雅黑',"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -69,54 +60,26 @@
 	}
 .features ul li:last-child{
 	border-right:none;}
-.stores-shows {
-	width: 1140px;
-	margin: 0 auto;
-}
-.store-title {
-	position: relative;
-}
-.title-left h4 {
-	line-height: 40px;
-    font-family: '微软雅黑',"Helvetica Neue",Helvetica,Arial,sans-serif;
-    color: #61201e;
-    font-weight: bold;
-}
-.title-right {
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-.title-right li a{
-    border: 1px #bf9f62 solid;
-    border-radius: 4px;
+.features li a{
 	display:block;
-	width: 96px;
-	padding:0 18px;
-	line-height: 37px;
-    height: 37px;
+	padding:0 20px;
+	line-height:34px;
+	height:34px;
 	transition:all 0.5s;
-	color:#fff;
-	background-color:#802523;
 	}
-	
-	
 .features li:nth-child(1) a{
 	color:#fff;
-	background-color:#802523;
+	background-color:#61201e;
 	}
 
 .inners>div{
 	margin-top:3px;}
 .inners img{
-	width:80%;
+	width:100%;
 	padding:4px;
 	}
-.stores .inners img {
-	width:100%;
-}
 .inners{
-	padding-bottom:30px;}
+	padding-bottom:105px;}
 .inners a{
 	display:block;
 	text-align:center;
@@ -125,14 +88,15 @@
 	color:#020202;}
 .inners h5{
 	font-weight:bold;
-	line-height: 35px;
-    padding-bottom: 8px;
+	line-height:24px;
+	padding-top:9px;
 	font-size:16px;}
 .inners p{
 	line-height:23px;
 	padding-bottom:11px;}
 
-
+.inners>div:hover a{
+	background-color:#61201e;}
 /*------以下是website区------
 */
 #website{
@@ -158,12 +122,13 @@
 	#website a:hover{
 		background-color:#61201e;}
 /*------以下是service区------*/
-
 .myfull{
 	position:relative;
+	margin-top:60px;
+	margin-bottom:30px;
 	}
 .myfull a{
-	font-size:20px;
+	font-size:30px;
 	border:1px #ad221e solid;
 	color:#fff;
 	padding:12px;
@@ -199,7 +164,7 @@
 .title1{
 	height:55px;}
 .row-bot{
-	margin-bottom:10px
+	margin-bottom:50px
 	}
 .managent>h4{
 	line-height:55px;
@@ -228,7 +193,7 @@ b.stars{
 	background-color:#61201e;}	
 .team h3{
 	color:#fff;}
-.team .container>.team-p{
+.team>.container>.team-p{
 	color:#fff;
 	text-align:center;
 	font-size:20px;
@@ -238,72 +203,4 @@ b.stars{
 	color:#fff;
 	transition:all 0.5s;}
 .team a:hover{
-	transform:scale(1.1);}
-
-
-
-.guding	{
-	width: 1170px;
-	margin: 0 auto;
-}
-/*--------二维码--------*/
-#qrCode {
-	width: 210px;
-	position:fixed;
-	left:10px;
-	bottom:30px;
-}
-.cursor{
-	cursor: pointer;
-}
-
-
-/*-----------门店轮播----------*/
-#mrq{width:1140px; }
-#Marquee_x { overflow:hidden; width: 1140px } 
-#Marquee_x ul li,#Marquee_x ul li div{ float:left;line-height:25px;overflow:hidden} /* 横向滚动必须让所有li左浮动 */
-#Marquee_x ul li div{ float:left;line-height:25px;width:265px; height:234px; overflow:hidden}
-#Marquee_x ul li div img{width:265px; height:182px; display:block}
-#Marquee_x ul li div span{ display:block;}
-#Marquee_x ul li div a:hover{ background-color:#61201e;}
-
-/*----------首页内容展示--------*/
-#model {
-	display: none;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	background: black;
-	opacity:0.2;
-	filter:alpha(opacity=20);
-	position: fixed;
-	z-index: 99998;
-}
-#content-window {
-	display: none;
-	width: 80%;
-	height: 80%;
-	top: 10%;
-	left: 10%;
-	background: #fdf5eb;
-	border: 10px solid #aaa;
-	position: fixed;
-	z-index: 99999;
-}
-
-#close-bar {
-	width: 20px;
-	height: 20px;
-	right: 0;
-	top: -2px;
-	position: absolute;
-	color: #ad221e;
-	font-size: 20px;
-	cursor: pointer;
-}
-#content-container {
-	height: 100%;
-	padding: 20px;
-	overflow-y: auto; 
-}
+	transform:scale(1.2);}

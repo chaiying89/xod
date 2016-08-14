@@ -26,8 +26,13 @@ img{
 }
 .header-top{
 	background-color:#262938;
-	border-bottom:1px #3c434b solid;
-	}
+}
+.header-top .contant {
+	width: 1140px;
+	margin:0 auto;
+	background-color: #262938;
+    border-bottom: 1px #3c434b solid;
+}
 .header-top li{
 	display:inline-block;
 	padding-right:30px;}
@@ -41,7 +46,23 @@ img{
 .header-bot{
 	background-color:white;
 	padding-top:10px;
-	}
+}
+.header-bot .logo-menu {
+	width: 1140px;
+	margin: 0 auto;
+}
+.header-bot .logo{
+	width:114px;
+	float: left;
+}
+.header-bot .logo span {
+	float:left;	
+	height:58px;
+}
+.header-bot .menu{
+	width:1026px;
+	float: left;
+}
 .header-bot ul{
 	float:right;}
 .header-bot li{
@@ -51,7 +72,7 @@ img{
 .header-bot ul a{
 	display:block;
 	padding:0 9px;
-	color:#bf9f62;
+	color:#61201e;
 	line-height:54px;
 	border-top:4px white solid;
 	position:relative;
@@ -67,10 +88,14 @@ img{
 	margin-left:5px;}
 .header-bot ul a:hover{
 	border-top:4px white solid;
-	color:#61201e;
+	color:#ad221e;
 	}
 .header-bot ul a:hover .caret{
-	color:#61201e;}
+	color:#ad221e;}
+	
+.clear {
+	clear: both;
+}
 	
 /*--------------以下是zhaopin区----------------*/
 .body-top{
@@ -78,8 +103,10 @@ img{
 	background-color:#f2e4d1;
 	}
 .inner{
+		width: 1140px;
     	margin: 0 auto;
     	padding-bottom: 80px;
+    	background-color: #f2e4d1;
 	}
 
 .h2-h2{
@@ -107,19 +134,12 @@ img{
 .inner-news{
 	min-height:700px;
 	margin:20px 0 0;
-    border-top:10px solid  rgba(200,200,200,0.25);    
-	border-right:10px solid  rgba(200,200,200,0.5);    
-	border-bottom: 10px solid  rgba(200,200,200,0.75);    
-	border-left:10px solid  rgba(200,200,200,1);
 	position:relative;
 	border-top:10px solid  rgba(200,200,200,0.25);    
 	border-right:10px solid  rgba(200,200,200,0.5);    
 	border-bottom: 10px solid  rgba(200,200,200,0.75);    
 	border-left:10px solid  rgba(200,200,200,1);
-	background-image:url(../images/bg-0.jpg);
-    background-position:center; 
-	background-repeat:no-repeat;
-	background-size:cover}
+	background-color:#fdf5eb;}
 .inner-news h1 {margin: 0.67em 0;}
 .inner-news h2 {margin: 0.83em 0;}
 .inner-news h3 {margin: 1em 0;}
@@ -146,12 +166,16 @@ img{
 footer{
 	text-align:center;
 	background-color:#282f37;
-	padding:40px 0;
-	}
+}
 
 footer h6{
+	padding:40px 0;
+	width: 1140px;
+    margin: 0 auto;
 	line-height:30px;
-	color:#fff;}
+	color:#fff;
+	background-color:#282f37;
+}
 footer .chevron{
 	width: 36px;
     height: 36px;
@@ -165,29 +189,5 @@ footer .chevron{
 	transition:all 0.5s;
 }
 footer .chevron:hover{
-	transform:scale(1.5);}
-@media screen and (max-width:1300px){
-	.banner{
-		width:100%;
-		}
-	}
-
-@media screen and (max-width:768px){
-	.myvisible a{
-	color:#fff;
-	float:right;
-	line-height:37px;
-	}
-	.contant{
-		float:left;}
-	.header-bot ul a{
-		padding:0 1px;}
-	}
-@media screen and (max-width:992px){
-	.banner img{
-		width:60%;
-		padding-left:30%;}
-	#about h2,#about p{
-		padding-top:20px;
-		text-align:center;}
-	}
+	transform:scale(1.5);
+}

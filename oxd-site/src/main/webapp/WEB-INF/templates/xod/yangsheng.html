@@ -22,9 +22,7 @@
 				<ul>
 					<%
 					var list = menus.get2lMenus(@com.oxd.util.Constants.MENU_YANGSHENG);
-					var currUrl = "";
 					for(m in list) {
-						if(m.id == mid) currUrl = m.url;
 					%>
 					<li><a href="${root}${m.url}" ${m.id == mid?'class="fst"':''}>${m.name}</a></li>
 					<%}%>
@@ -33,88 +31,20 @@
 			<div class="cs"></div>
 			<div class="inner-news">
 				<div class="news-tu">
-					<div class="div1">
-						<%
-						var datas = pages.rows;
-						if(datas.~size > 0) {
-							var temp = datas[0];
-							var imgUrl = temp.prePictureUrl == null ||temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
-						%>
-						<img src="${imgUrl}" /><a></a>
-						<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
-						<%}%>
+					<%
+					var datas = pages.rows;
+					for(data in datas) {
+					var imgUrl = data.prePictureUrl == null ||data.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(data.prePictureUrl, ";")[1];
+					%>
+					<div class="item">
+						<span onclick="window.location.href='${root}/yangsheng/detail?id=${data.id}'"></span>
+						<img src="${imgUrl}" />
+						<h3>${data.title}</h3>
+						<p>${data.introduction}</p>
 					</div>
-					<div class="div2">
-						<ul>						
-							<%
-							if(datas.~size > 1) {
-								var temp = datas[1];
-								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
-							%>
-							<li>
-								<img src="${imgUrl}" />
-								<a class="img-cov"></a>
-								<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
-							</li>
-							<%}%>
-							<%
-							if(datas.~size > 2) {
-								var temp = datas[2];
-								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
-							%>
-							<li>
-								<img src="${imgUrl}" />
-								<a class="img-cov"></a>
-								<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
-							</li>
-							<%}%>
-							<%
-							if(datas.~size > 3) {
-								var temp = datas[3];
-								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
-							%>
-							<li>
-								<img src="${imgUrl}" />
-								<a class="img-cov"></a>
-								<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
-							</li>
-							<%}%>
-							<%
-							if(datas.~size > 4) {
-								var temp = datas[4];
-								var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
-							%>
-							<li>
-								<img src="${imgUrl}" />
-								<a class="img-cov"></a>
-								<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
-							</li>
-							<%}%>
-						</ul>
-					</div>
-					<div class="div3">
-						<%
-						if(datas.~size > 5) {
-							var temp = datas[5];
-							var imgUrl = temp.prePictureUrl == null || temp.prePictureUrl == "" ? root + "/images/yangshengbig1.jpg" : menus.split(temp.prePictureUrl, ";")[1];
-						%>
-						<img src="${imgUrl}" /><a></a>
-						<p onclick="window.location.href='${root}/yangsheng/detail?id=${temp.id}'">${temp.title}</p>
-						<%}%>
-					</div>
+					<%}%>
 				</div>
 				<div class="cs"></div>
-			</div>
-			<div class="fanye">
-				<% 
-				var totalPage = pages.total % pageSize > 0 ? pages.total / pageSize + 1 : pages.total / pageSize;
-				%>
-				<% if(totalPage > 1 && pageNum - 1 > 0){ %>
-				<a href="${root}${currUrl}?pageNum=${pageNum - 1}">上一页</a>
-				<%}%>
-				<%if(totalPage >= (pageNum + 1)){ %>
-				<a href="${root}${currUrl}?pageNum=${pageNum + 1}">下一页</a>
-				<%}%>
 			</div>
 		</div>
 	</section>
