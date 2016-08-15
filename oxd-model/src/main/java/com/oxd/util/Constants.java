@@ -31,9 +31,9 @@ public class Constants {
 	public final static int MENU_ZHAOPIN = 8;
 	
 	/**
-	 * 资讯中心-公示公告对应id
+	 * 资讯中心-公司新闻id
 	 */
-	public final static int INFO_GSGG = 10;
+	public final static int INFO_GSNEW = 9;
 	
 	/**
 	 * 关于我们-公司简介对应id

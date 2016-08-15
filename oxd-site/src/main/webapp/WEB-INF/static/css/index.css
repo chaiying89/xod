@@ -28,7 +28,9 @@
 	text-indent:5em;}
 /*--------------以下是section2-----------------------
 */
-
+.features {
+	padding-bottom: 40px;
+}
 .features h3{
 	color:#61201e;
 	text-align:center;
@@ -48,10 +50,6 @@
 #service .container .p-div a{
 	float:right
 		}
-.features {
-	width:100%;
-	background-color: #61201e;
-}
 .features h4{
 	line-height:40px;
 	 font-family: '微软雅黑',"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -228,7 +226,7 @@ b.stars{
 	background-color:#61201e;}	
 .team h3{
 	color:#fff;}
-.team .container>.team-p{
+.team .team-p{
 	color:#fff;
 	text-align:center;
 	font-size:20px;
@@ -240,18 +238,25 @@ b.stars{
 .team a:hover{
 	transform:scale(1.1);}
 
-
+.insert {
+	float: left;
+	width: 285px;
+}
+.insert a {
+	margin: 0 auto;
+	width: 258px;
+}
 
 .guding	{
-	width: 1170px;
+	width: 1140px;
 	margin: 0 auto;
 }
 /*--------二维码--------*/
 #qrCode {
-	width: 210px;
+	width: 180px;
 	position:fixed;
-	left:10px;
-	bottom:30px;
+	top: 100px;
+	right:20px;
 }
 .cursor{
 	cursor: pointer;
