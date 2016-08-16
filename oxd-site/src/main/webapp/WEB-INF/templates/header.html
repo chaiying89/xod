@@ -7,23 +7,34 @@
 		</ul>
 	</div>
 	<div class="header-bot">
+		<div class="logo-top"></div>
 		<div class="logo-menu">
-			<div class="logo">
-				 <span class="logo-one"><img src="${root}/images/one.png" style="height: 54px ;"/></span>
-	         			<span class="logo-two"><img src="${root}/images/two.png" style="height: 54px;margin-left:20px"/> </span>
-			</div>
-			<div class="menu">
-				<ul>
-					<%
-					var list = menus.getMenus();
-					for(m in list) {
-					%>
-					<li><a href="${root}${m.url}">${m.name}<span class="caret"></span></a></li>
-					<%}%>
-				</ul>
-				<div class="clear"></div>
-			</div>
-			<div class="clear"></div>
+			<ul class="logo-menu-list">
+				<%
+				var list = menus.getMenus();
+				var cout = 0;
+				for(m in list) {
+				%>
+				<li menu-id="menu${cout}"><a href="${root}${m.url}">${m.name}</a></li>
+				<%cout++;}%>
+			</ul>
+			<%
+			cout = 0;
+			for(m1 in list) {
+			var m2list = menus.get2lMenus(m1.id);
+			if(m2list != null) {
+			%>
+			<ul id="menu${cout}" class="hiden-menu">
+				<%
+				for(m2 in m2list) {	
+				%>
+				<li><a href="${root}${m2.url}">${m2.name}</a></li>
+				<%}%>
+			</ul>
+			<%}
+			cout++;
+			}
+			%>
 		</div>
    </div>
 </header>
