@@ -31,6 +31,17 @@
 	<script type="text/javascript" src="${root}/static/js/fastjson-1.0.min.js"></script>
 	<script type="text/javascript" src="${root}/static/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
+	var defImg = "${root}/static/umeditor/dialogs/image/images/upload2.png";
+	$.extend($.fn.validatebox.defaults.rules, { 
+		jianjieValid : { 
+			validator : function(value, param) { 
+				if(value && value.length > 0 && value.length <= 500) 
+					return true; 
+				return false;
+			}, 
+			message : '内容简介字数应在1-500之间。' 
+		}
+	});
 	$(function(){
 		$('#dg').datagrid({
 			url:'search',
@@ -67,6 +78,41 @@
 	});
 	
 	
+	//上传文件
+	function ajaxFileUpload(){
+	    if($("#upfile").val() == "") {
+	    	return;
+	    }
+	    $.ajaxFileUpload({
+	            url:'${root}/upload/editorImage',
+	            secureuri:false,
+	            fileElementId:"upfile",
+	            dataType: 'json',
+	            success: function (data, status){
+	                if(data.state == 'SUCCESS'){   
+	                	$.messager.alert("成功","上传成功","info")
+                        $("#imgURL").val(data.originalName + ";" + data.url);
+	                	$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + data.url);
+                        $("#deleteUpload").linkbutton('enable');
+                        $("#buttonUpload").linkbutton('disable');
+	                }
+	            },
+	            error: function (data, status, e){
+	            	$.messager.alert("错误", e, "error");
+	            }
+	        }
+	    )
+	    return false;
+	}
+	
+	// 删除上传的文件
+	function deleteUpload() {
+		$("#upImg").attr("src", defImg);
+		$("#imgURL").val("");
+		$("#deleteUpload").linkbutton('disable');
+		$("#buttonUpload").linkbutton('enable');
+	}
+	
 	// 打开添加页面
 	function addDialog(index) {
 		$("#dg").datagrid("selectRow", index);
@@ -74,7 +120,9 @@
 		if(!row) return;
 		$("#typeId").val(row.typeId);
 		$("#aboutId").val('');
+		$('#introduction').textbox("setValue", "");
 		$("#dialogTitle").text(row.type);
+		deleteUpload();
 		$('#addDialog').dialog({title: "新增"}).dialog('open');
     	UM.getEditor('myEditor').setContent("", false);
 	}
@@ -84,9 +132,17 @@
 		$("#dg").datagrid("selectRow", index);
 		var row = $("#dg").datagrid("getSelected");
 		if(!row) return;
+		deleteUpload();
 		$("#typeId").val(row.typeId);
 		$("#aboutId").val(row.id);
+		$('#introduction').textbox("setValue", row.introduction);
 		$("#dialogTitle").text(row.type);
+		if(row.prePictureUrl) {
+			$("#upImg").attr("src", window.UMEDITOR_CONFIG.imagePath + new String(row.prePictureUrl).split(";")[1]);
+			$("#imgURL").val(row.prePictureUrl);
+			$("#deleteUpload").linkbutton('enable');
+            $("#buttonUpload").linkbutton('disable');
+		}
 		// 将html添加到
 		UM.getEditor('myEditor').setContent(row.content);
 		$('#addDialog').dialog({title: "修改"}).dialog('open');
@@ -97,12 +153,14 @@
 	function addOrEditNews() {
 		var id = $("#aboutId").val();
 		var typeId = $("#typeId").val();
+		var url = $("#imgURL").val();
+		var introduction = $("#introduction").textbox("getValue");
 		var content = UM.getEditor('myEditor').getContent();
 		if(!content) {
 			$.messager.alert("警告","正文内容不能为空","warning");
 			return;
 		}
-		var jsonData = {"content":content, "menuModel":{"id":typeId}};
+		var jsonData = {"content":content, "prePictureUrl":url, "introduction":introduction, "menuModel":{"id":typeId}};
 		if(id) {
 			jsonData.id = id;
 		}
@@ -158,6 +216,19 @@
 			<input id="typeId" type="hidden" />
 			<input id="aboutId" type="hidden" />
 			<h2 id="dialogTitle"></h2>
+			<div style="margin-bottom:10px">
+				<div>前置图</div>
+				<input size="45" name="upfile" id="upfile" type="file" style="height:26px;" />
+				<a href="javascript:void(0);" class="easyui-linkbutton" id="buttonUpload" onclick="ajaxFileUpload();" style="padding:0 5px;">上传</a>
+				<a href="javascript:void(0);" class="easyui-linkbutton" id="deleteUpload" onclick="deleteUpload();" style="padding:0 5px;" data-options="disabled:true">删除</a>
+                <input name="imgURL" id="imgURL" type="hidden" />
+			</div>
+			<img id="upImg" src="${root}/static/umeditor/dialogs/image/images/upload2.png" width="60" height="60" style="border:none; margin-bottom:10px" />
+			<div style="margin-bottom:10px">
+				<div>内容简介</div>
+				<input class="easyui-validatebox easyui-textbox" id="introduction" required="true" validType="jianjieValid" missingMessage="请输入内容简介" style="width:100%;height:26px">
+			</div>
+			<div>正文</div>
 			<script type="text/plain" id="myEditor" style="width:800px;height:240px;"></script>
 		</div>
 	</div>

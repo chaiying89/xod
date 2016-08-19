@@ -9,6 +9,8 @@ public class TouziVo implements Serializable {
 	private Integer typeId;
 	private String type;
 	private String content;//内容
+	private String introduction;//内容简介
+	private String prePictureUrl;//前置图url
 	private String createTime;//创建时间
 	private String updateTime;//更新时间
 	private String createUser;//创建用户
@@ -60,6 +62,18 @@ public class TouziVo implements Serializable {
 	}
 	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
+	}
+	public String getIntroduction() {
+		return introduction;
+	}
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
+	public String getPrePictureUrl() {
+		return prePictureUrl;
+	}
+	public void setPrePictureUrl(String prePictureUrl) {
+		this.prePictureUrl = prePictureUrl;
 	}
 	
 }

@@ -27,8 +27,7 @@
 .flickerplate ul.flicks>li {
     background-position: center 0;
     background-repeat: no-repeat;
-    background-size: contain;
-    display: table;
+    background-size: inherit;
 }
 </style>
 <script>
@@ -68,6 +67,20 @@ $(document).ready(function(){
 		$('#content-window').show();
 		$('#content-container').html(content);
 	}
+	
+	$('.menu-ul1').each(function(i, d){
+		var olis = $(d).find('li');
+		var cid = $(d).attr('data-id');
+		var cdivs = $('#'+cid).find('div.normal');
+		$(olis).mouseover(function(){
+			$(olis).removeClass("current");
+			$(this).addClass("current");
+			$(cdivs).removeClass("content-curr");
+			var currid = $(this).attr('data-id');
+			$('#'+currid).addClass("content-curr");
+		});
+	});
+	
 });
 </script>
 </head>
@@ -93,65 +106,64 @@ $(document).ready(function(){
 		</div>
 	</section>
 	
-	<section id="service">
-		<div class="guding">
-		<div class="container">
-			<div class="row row-bot">
-				<div class="col-md-8">
-					<div class="title">
-						<h4>公司简介</h4>
-						<div class="p-div">
-							${menus.firstPTag(jianjie.content!'暂无')}
-							<a href="${root}/about/13" style="color: #7d1e1b">更多</a>
-						</div>
-						<h4>经营项目</h4>
-						<div class="myfull">
-							<%
-							for(sp in scope) {
-							%>
-							<div class="col-sm-4">
-								<a href="${root}/scope/detail?id=${sp.id}" class="glyphicon glyphicon-star"></a>
-								<h4>${sp.type}</h4>
-							</div>
-							<%}%>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 managent">
-					<h4>资讯与养生</h4>
-					<ul>
-						<li><a href="${root}/info/9"><h4>
-									<span class="glyphicon glyphicon-plus"></span>资讯中心
-								</h4></a>
-							<ul class="news">
-								<%
-								for(g in gsgg) {
-								%>
-								<li>
-									<b class="glyphicon glyphicon-star stars"></b>
-									<a href="${root}/info/detail?id=${g.id}" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
-								</li>
-								<%}%>
-							</ul></li>
-						<li><a href="${root}/yangsheng/33"><h4>
-									<span class="glyphicon glyphicon-plus"></span>养生专区
-								</h4></a>
-							<ul class="news">
-								<%
-								for(g in liliao) {
-								%>
-								<li>
-									<b class="glyphicon glyphicon-star stars"></b>
-									<a href="${root}/yangsheng/detail?id=${g.id}" title="${g.title}">${menus.textOverflow(g.title!'')}</a>
-								</li>
-								<%}%>
-							</ul>
-						</li>
+	<section id="center">
+		<ul id="center-ul" style="width:1140px; margin:0 auto;">
+			<li class="center-left-li">
+				<div class="title-div">
+					<h4><a href="">关于我们</a></h4>
+					<ul class="menu-ul1" data-id="zid">
+						<%for(var i=0; i<about.~size; i++) {
+						  if(i==0) {
+						%>
+						<li class="current" data-id="us${i}">${about[i].type!''}</li>
+						<%} else {%>
+						<li data-id="us${i}">${about[i].type!''}</li>
+						<%}}%>
 					</ul>
 				</div>
-			</div>
-		</div>
-		</div>
+				<div class="content-div" id="zid">
+					<%for(var i=0; i<about.~size; i++) {
+					  if(i==0) {
+					%>
+					<div class="normal content-curr" id="us${i}">${about[i].introduction!''}</div>
+					<%} else {%>
+					<div class="normal" id="us${i}">${about[i].introduction!''}</div>
+					<%}}%>
+				</div>
+			</li>
+			<li class="center-right-li">
+				<h4 class="title-h4">资讯中心</h4>
+				<div class="content-div">sdfds</div>
+			</li>
+			<li class="center-left-li">
+				<div class="title-div">
+					<h4><a href="">投资加盟</a></h4>
+					<ul class="menu-ul1" data-id="tid">
+						<%for(var i=0; i<touzi.~size; i++) {
+						  if(i==0) {
+						%>
+						<li class="current" data-id="tz${i}">${touzi[i].type!''}</li>
+						<%} else {%>
+						<li data-id="tz${i}">${touzi[i].type!''}</li>
+						<%}}%>
+					</ul>
+				</div>
+				<div class="content-div" id="tid">
+					<%for(var i=0; i<touzi.~size; i++) {
+					  if(i==0) {
+					%>
+					<div class="normal content-curr" id="tz${i}">${touzi[i].introduction!''}</div>
+					<%} else {%>
+					<div class="normal" id="tz${i}">${touzi[i].introduction!''}</div>
+					<%}}%>
+				</div>
+			</li>
+			<li class="center-right-li">
+				<h4 class="title-h4">养生专区</h4>
+				<div class="content-div">sdfds</div>
+			</li>
+			<div class="clear"></div>
+		</ul>
 	</section>
 	<section class="stores">
 		<div class="stores-shows">
@@ -185,41 +197,8 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</section>
-	<section class="features">
-		<div class="guding team">
-			<h3>品牌加盟</h3>
-			<p class="team-p">品牌是大家的，共赢是品牌自我发展的硬性主张。让我们携手共进，协力共赢。</p>
-			<div class="inners">
-				<div class="insert">
-					<a href="${root}/touzi/18"> <img
-						src="images/xiangmu.jpg" class="img-circle">
-						<h5>关于项目</h5>
-					</a>
-				</div>
-				<div class="insert">
-					<a href="${root}/touzi/19"> 
-						<img src="images/zhichi.jpg" class="img-circle" />
-						<h5>我们的支持</h5>
-					</a>
-				</div>
-				<div class="insert">
-					<a href="${root}/touzi/20"> <img
-						src="images/guanli.jpg" class="img-circle">
-						<h5>管理一体化</h5>
-					</a>
-				</div>
-				<div class="insert">
-					<a href="${root}/touzi/23"> <img src="images/hezuo.jpg"
-						class="img-circle">
-						<h5>如何合作</h5>
-					</a>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div>
-	</section>
 	<div id="qrCode">
-		<img width="180" src="images/weixin.jpg" />
+		<img width="180" src="images/qrcode.png" />
 	</div>
 	<div id="model"></div>
 	<div id="content-window">

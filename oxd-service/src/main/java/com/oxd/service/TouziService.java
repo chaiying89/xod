@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.oxd.dao.TouziRepository;
 import com.oxd.model.TouziModel;
+import com.oxd.util.Constants;
 import com.oxd.vo.TouziVo;
 
 @Service
@@ -42,10 +43,10 @@ public class TouziService extends AbstractService {
 	public List<TouziVo> search() {
 		try {
 			Session session = entityManager.unwrap(Session.class);
-			String[] columns = { "id", "type", "typeId", "content", "createTime", "updateTime",
+			String[] columns = { "id", "type", "typeId", "content", "introduction", "prePictureUrl", "createTime", "updateTime",
 					"createUser", "updateUser"};
 	
-			String sql = "select m.id as typeId, m.name as type, a.id, a.content, DATE_FORMAT(a.create_time, '%Y-%m-%d %T') as createTime, "
+			String sql = "select m.id as typeId, m.name as type, a.id, a.content,a.introduction, a.pre_picture_url as prePictureUrl, DATE_FORMAT(a.create_time, '%Y-%m-%d %T') as createTime, "
 					+ " DATE_FORMAT(a.update_time, '%Y-%m-%d %T') as updateTime, u1.name as createUser, u2.name as updateUser from menu_model m "
 					+ " left join touzi_model a on a.m_id=m.id left join user_model u1 on u1.id=a.create_user left join user_model u2 on u2.id=a.update_user where m.parent_id=4 and m.has_child=0";
 			SQLQuery query = session.createSQLQuery(sql);
@@ -86,6 +87,25 @@ public class TouziService extends AbstractService {
 		List<TouziVo> vos = query.setResultTransformer(Transformers.aliasToBean(TouziVo.class)).list();
 		if(vos.size() > 0) {
 			return vos.get(0);
+		}
+		return null;
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<TouziVo> searchForSite() {
+		try {
+			Session session = entityManager.unwrap(Session.class);
+			String[] columns = { "id", "introduction", "type", "typeId", "prePictureUrl"};
+	
+			String sql = "select a.id, a.introduction, m.name as type, m.id as typeId, a.pre_picture_url as prePictureUrl from menu_model m "
+					+ " left join touzi_model a on a.m_id=m.id  where m.parent_id="+Constants.MENU_TOUZI;
+			SQLQuery query = session.createSQLQuery(sql);
+			this.setScalars(query, columns);
+			List<TouziVo> vos = query.setResultTransformer(Transformers.aliasToBean(TouziVo.class)).list();
+			return vos;
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

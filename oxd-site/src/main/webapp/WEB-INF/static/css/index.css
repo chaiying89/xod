@@ -89,8 +89,7 @@ body {
 	top: 0;
 }
 .title-right li a{
-    border: 1px #bf9f62 solid;
-    border-radius: 4px;
+	text-align: center;
 	display:block;
 	width: 96px;
 	padding:0 18px;
@@ -121,7 +120,7 @@ body {
 .inners a{
 	display:block;
 	text-align:center;
-	background-color:#a98263;
+	background-color:#ccc;
 	transition:all 0.5s;
 	color:#020202;}
 .inners h5{
@@ -314,4 +313,78 @@ b.stars{
 	height: 100%;
 	padding: 20px;
 	overflow-y: auto; 
+}
+
+#center {
+	padding: 10px 0 30px;
+}
+#center-ul>li {
+	float: left;
+	margin-top: 20px;
+	border: 1px solid #802523;
+}
+#center-ul .center-left-li {
+	width: 770px;
+	height: 200px;
+}
+#center-ul .center-right-li {
+	width: 350px;
+	height: 200px;
+	margin-left: 20px;
+}
+
+.title-div {
+	padding-left: 10px;
+    height: 34px;
+    background-color: #802523;
+}
+.title-div h4 {
+	float: left;
+	line-height: 30px;
+	width: 100px;
+	display: block;
+}
+.title-div h4 a {
+	display: block;
+	color: #fff;
+}
+.title-div h4 a:after {
+	content: '>';
+	display: inline-block;
+    vertical-align: middle;
+    height: 30px;
+    width: 10px;
+    margin-left: 10px;
+}
+.title-div ul {
+	float: left;
+	margin: 4px 0 0 20px;
+}
+.title-div ul li {
+	height: 30px;
+	line-height: 30px;
+	padding: 0 6px;
+	display: inline-block;	
+	color: #bbb;
+	cursor: pointer;
+}
+.title-div ul li.current {
+	color: #fff;
+}
+
+
+.content-div {
+	position: relative;
+}
+
+.content-div .normal {
+	display: none;
+	left:4px;
+	top:4px;
+	width:760px;
+	height:156px;
+	position: absolute;
+}
+div.content-div .normal.content-curr {
+	display: block;
 }

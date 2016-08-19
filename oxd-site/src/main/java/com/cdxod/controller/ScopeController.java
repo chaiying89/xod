@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.oxd.service.ScopeService;
@@ -34,8 +35,8 @@ public class ScopeController {
 		return "xod/scope";
 	}
 	
-	@RequestMapping("/detail")
-	public String detail(Model model, Integer id) {
+	@RequestMapping("/{id}")
+	public String detail(Model model, @PathVariable("id") Integer id) {
 		model.addAttribute("pname", "经营范围");
 		try {
 			ScopeVo news = scopeService.findOne(id);

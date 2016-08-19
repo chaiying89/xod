@@ -75,12 +75,12 @@ public class ScopeService extends AbstractService {
 	 */
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
-	public ScopeVo findOne(int id) {
+	public ScopeVo findOne(int mid) {
 		Session session = entityManager.unwrap(Session.class);
 		String[] columns = { "content", "type" };
-		String sql = "select a.content, m.name as type from scope_model a inner join menu_model m on a.m_id=m.id where a.id=?";
+		String sql = "select a.content, m.name as type from scope_model a inner join menu_model m on a.m_id=m.id where a.m_id=?";
 		List<Object> params = new ArrayList<Object>(1);
-		params.add(id);
+		params.add(mid);
 		SQLQuery query = session.createSQLQuery(sql);
 		this.setScalarsAndParams(query, columns, params);
 		List<ScopeVo> vos = query.setResultTransformer(Transformers.aliasToBean(ScopeVo.class)).list();
@@ -96,9 +96,9 @@ public class ScopeService extends AbstractService {
 	public List<ScopeVo> searchForSite() {
 		try {
 			Session session = entityManager.unwrap(Session.class);
-			String[] columns = { "id", "introduction", "type", "prePictureUrl"};
+			String[] columns = { "id", "introduction", "type", "typeId", "prePictureUrl"};
 	
-			String sql = "select a.id, a.introduction, m.name as type, a.pre_picture_url as prePictureUrl from menu_model m "
+			String sql = "select a.id, a.introduction, m.name as type, m.id as typeId, a.pre_picture_url as prePictureUrl from menu_model m "
 					+ " left join scope_model a on a.m_id=m.id  where m.parent_id=5";
 			SQLQuery query = session.createSQLQuery(sql);
 			this.setScalars(query, columns);
