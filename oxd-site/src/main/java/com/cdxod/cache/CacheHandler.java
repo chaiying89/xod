@@ -48,9 +48,9 @@ public class CacheHandler {
 		return args;
 	}
 	
-	public String textOverflow(String args) {
-		if(args.length() > 20) {
-			return args.substring(0, 20) + "...";
+	public String textOverflow(String args, int size) {
+		if(args.length() > size) {
+			return args.substring(0, size) + "...";
 		}
 		return args;
 	}

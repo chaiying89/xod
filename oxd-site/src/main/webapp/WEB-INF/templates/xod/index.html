@@ -100,7 +100,7 @@ $(document).ready(function(){
 				} else {
 					for(a in activity) {
 				%>
-				<li data-background="${a.imgUrl!'' == ''?'images/banner.jpg':menus.split(a.imgUrl, ';')[1]}" data-id="${a.id}" class="cursor activity"></li>
+				<li data-background="${a.imgUrl!'' == ''?'':menus.split(a.imgUrl, ';')[1]}" data-id="${a.id}" class="cursor activity"></li>
 				<%}}%>
 			</ul>
 		</div>
@@ -110,14 +110,14 @@ $(document).ready(function(){
 		<ul id="center-ul" style="width:1140px; margin:0 auto;">
 			<li class="center-left-li">
 				<div class="title-div">
-					<h4><a href="">关于我们</a></h4>
+					<h4 class="has-child-h4"><a href="${root}/about/13">关于我们</a></h4>
 					<ul class="menu-ul1" data-id="zid">
 						<%for(var i=0; i<about.~size; i++) {
 						  if(i==0) {
 						%>
-						<li class="current" data-id="us${i}">${about[i].type!''}</li>
+						<li class="current" data-id="us${i}" onclick="window.location.href='${root}/about/${about[i].typeId}'">${about[i].type!''}</li>
 						<%} else {%>
-						<li data-id="us${i}">${about[i].type!''}</li>
+						<li data-id="us${i}" onclick="window.location.href='${root}/about/${about[i].typeId}'">${about[i].type!''}</li>
 						<%}}%>
 					</ul>
 				</div>
@@ -125,26 +125,40 @@ $(document).ready(function(){
 					<%for(var i=0; i<about.~size; i++) {
 					  if(i==0) {
 					%>
-					<div class="normal content-curr" id="us${i}">${about[i].introduction!''}</div>
+					<div class="normal content-curr" id="us${i}">
+						<a href="${root}/about/${about[i].typeId}"><img width="250" height="156" src="${about[i].prePictureUrl!'' == ''?'':menus.split(about[i].prePictureUrl, ';')[1]}" /></a>
+						<p>${menus.textOverflow(about[i].introduction!'', 250)}</p>
+					</div>
 					<%} else {%>
-					<div class="normal" id="us${i}">${about[i].introduction!''}</div>
+					<div class="normal" id="us${i}">
+						<a href="${root}/about/${about[i].typeId}"><img width="250" height="156" src="${about[i].prePictureUrl!'' == ''?'':menus.split(about[i].prePictureUrl, ';')[1]}" /></a>
+						<p>${menus.textOverflow(about[i].introduction!'', 250)}</p>
+					</div>
 					<%}}%>
 				</div>
 			</li>
 			<li class="center-right-li">
-				<h4 class="title-h4">资讯中心</h4>
-				<div class="content-div">sdfds</div>
+				<div class="title-div">
+					<h4><a href="${root}/info/9">资讯中心</a></h4>
+				</div>
+				<div class="content-div">
+					<ul class="news">
+						<%for(var n in gsnew) { %>
+						<li><b class="glyphicon glyphicon-star stars"></b><a href="${root}/info/detail?id=${n.id}">${menus.textOverflow(n.title!'', 20)}</a></li>
+						<%}%>
+					</ul>
+				</div>
 			</li>
 			<li class="center-left-li">
 				<div class="title-div">
-					<h4><a href="">投资加盟</a></h4>
+					<h4 class="has-child-h4"><a href="${root}/touzi/18">投资加盟</a></h4>
 					<ul class="menu-ul1" data-id="tid">
 						<%for(var i=0; i<touzi.~size; i++) {
 						  if(i==0) {
 						%>
-						<li class="current" data-id="tz${i}">${touzi[i].type!''}</li>
+						<li class="current" data-id="tz${i}" onclick="window.location.href='${root}/touzi/${touzi[i].typeId}'">${touzi[i].type!''}</li>
 						<%} else {%>
-						<li data-id="tz${i}">${touzi[i].type!''}</li>
+						<li data-id="tz${i}" onclick="window.location.href='${root}/touzi/${touzi[i].typeId}'">${touzi[i].type!''}</li>
 						<%}}%>
 					</ul>
 				</div>
@@ -152,15 +166,29 @@ $(document).ready(function(){
 					<%for(var i=0; i<touzi.~size; i++) {
 					  if(i==0) {
 					%>
-					<div class="normal content-curr" id="tz${i}">${touzi[i].introduction!''}</div>
+					<div class="normal content-curr" id="tz${i}">
+						<a href="${root}/touzi/${touzi[i].typeId}"><img width="250" height="156" src="${touzi[i].prePictureUrl!'' == ''?'':menus.split(touzi[i].prePictureUrl, ';')[1]}" /></a>
+						<p>${menus.textOverflow(touzi[i].introduction!'', 250)}</p>
+					</div>
 					<%} else {%>
-					<div class="normal" id="tz${i}">${touzi[i].introduction!''}</div>
+					<div class="normal" id="tz${i}">
+						<a href="${root}/touzi/${touzi[i].typeId}"><img width="250" height="156" src="${touzi[i].prePictureUrl!'' == ''?'':menus.split(touzi[i].prePictureUrl, ';')[1]}" /></a>
+						<p>${menus.textOverflow(touzi[i].introduction!'', 250)}</p>
+					</div>
 					<%}}%>
 				</div>
 			</li>
 			<li class="center-right-li">
-				<h4 class="title-h4">养生专区</h4>
-				<div class="content-div">sdfds</div>
+				<div class="title-div">
+					<h4><a href="${root}/yangsheng/33">养生专区</a></h4>
+				</div>
+				<div class="content-div">
+					<ul class="news">
+						<%for(var y in yangsheng) { %>
+						<li><b class="glyphicon glyphicon-star stars"></b><a href="${root}/yangsheng/detail?id=${y.id}">${menus.textOverflow(y.title!'', 20)}</a></li>
+						<%}%>
+					</ul>
+				</div>
 			</li>
 			<div class="clear"></div>
 		</ul>
@@ -198,7 +226,7 @@ $(document).ready(function(){
 		</div>
 	</section>
 	<div id="qrCode">
-		<img width="180" src="images/qrcode.png" />
+		<img width="180" src="images/qrcode_1.jpg" />
 	</div>
 	<div id="model"></div>
 	<div id="content-window">

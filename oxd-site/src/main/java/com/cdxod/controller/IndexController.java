@@ -46,8 +46,8 @@ public class IndexController {
 			model.addAttribute("activity", activityService.searchByPage());
 			model.addAttribute("touzi", touziService.searchForSite());
 			model.addAttribute("about", aboutService.searchForSite());
-			model.addAttribute("gsgg", newsService.findPageByParam(1, 3, Constants.INFO_GSNEW).getRows());
-			model.addAttribute("liliao", yangShengService.findPageByParam(1, 3, Constants.YANGSHENG_LILIAO).getRows());
+			model.addAttribute("gsnew", newsService.findPageByParam(1, 6, 0).getRows());
+			model.addAttribute("yangsheng", yangShengService.findPageByParam(1, 6, 0).getRows());
 		} catch(Exception e) {
 			logger.error("首页查询业务数据出错：" + e.getMessage());
 		}

@@ -201,28 +201,26 @@ body {
 .row-bot{
 	margin-bottom:10px
 	}
-.managent>h4{
-	line-height:55px;
-	color:#7d1e1b;
-	font-weight: bold;
-	}
-.managent ul a h4{
-	color:#fff;
-	line-height:39px;
-	background-color:#802523;
-	transition:all 0.5s;}
-.managent ul a span{
-	padding:0 11px;}	
-.managent ul li {
-	margin-bottom:15px;}
-.managent ul li>.news li {
+.news {
+	padding: 0 6px;
+}
+.news li {
 	margin:5px 0;
-	background-color:#eee7e1}
-.managent ul li>.news a {
+}
+.news li:hover {
+	background-color:#ccc;
+}
+.news li:hover a {
 	color:#7d1e1b;
+}
+.news li:hover b.stars {
+	color:#7d1e1b;
+}
+.news a {
+	color:#333;
 	margin-left:5px;}
 b.stars{
-	color:#7d1e1b;}
+	color:#333;}
 /*------以下是team区------*/
 .team{
 	background-color:#61201e;}	
@@ -258,7 +256,7 @@ b.stars{
 	width: 180px;
 	position:fixed;
 	top: 100px;
-	right:20px;
+	right:0;
 }
 .cursor{
 	cursor: pointer;
@@ -348,7 +346,7 @@ b.stars{
 	display: block;
 	color: #fff;
 }
-.title-div h4 a:after {
+.title-div .has-child-h4 a:after {
 	content: '>';
 	display: inline-block;
     vertical-align: middle;
@@ -387,4 +385,16 @@ b.stars{
 }
 div.content-div .normal.content-curr {
 	display: block;
+}
+.normal p {
+	display: block;
+	width: 510px;
+	height: 156px;
+	padding: 0 5px;
+	overflow: hidden;
+	letter-spacing: 0.05em;
+	text-indent: 1.5em;
+}
+.normal p,.normal a {
+	float: left;
 }
