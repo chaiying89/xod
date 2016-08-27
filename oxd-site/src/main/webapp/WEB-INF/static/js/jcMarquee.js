@@ -35,7 +35,7 @@
 			var $marquee_left = $marquee_scroll.find('li');
 			if (options.marquee == 'x') {
 				var x = 0;
-		        $marquee_scroll.css('width','1000%');
+		        $marquee_scroll.css('width','10000%');
 				$marquee_left.find('div').css({'margin-right':options.margin_right});
 				//$marquee_left.css({'margin-right':options.margin_right});
                 function Marquee_x(){ 
@@ -52,7 +52,7 @@
 			}
 			if (options.marquee == 'y') {
 				var y = 0;
-		        $marquee_scroll.css('height','1000%');
+		        $marquee_scroll.css('height','10000%');
 				$marquee_left.find('div').css('margin-bottom',options.margin_bottom);
 				$marquee_left.css('margin-bottom',options.margin_bottom);
                 function Marquee_y(){ 

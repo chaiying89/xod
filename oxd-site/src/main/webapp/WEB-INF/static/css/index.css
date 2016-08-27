@@ -8,7 +8,7 @@ body {
 }
 #about img{
 	width:1140px;
-	height:400px;
+	height:300px;
 	display: block;
 	margin: 0 auto;
 }
@@ -75,6 +75,8 @@ body {
 	margin: 0 auto;
 }
 .store-title {
+	width: 1120px;
+	margin: 0 auto;
 	position: relative;
 }
 .title-left h4 {
@@ -248,7 +250,7 @@ b.stars{
 }
 
 .guding	{
-	width: 1140px;
+	width: 1120px;
 	margin: 0 auto;
 }
 /*--------二维码--------*/
@@ -264,8 +266,8 @@ b.stars{
 
 
 /*-----------门店轮播----------*/
-#mrq{width:1140px; }
-#Marquee_x { overflow:hidden; width: 1140px } 
+#mrq{width:1120px; margin: 0 auto; }
+#Marquee_x { overflow:hidden; width: 1120px } 
 #Marquee_x ul li,#Marquee_x ul li div{ float:left;line-height:25px;overflow:hidden} /* 横向滚动必须让所有li左浮动 */
 #Marquee_x ul li div{ float:left;line-height:25px;width:265px; height:234px; overflow:hidden}
 #Marquee_x ul li div img{width:265px; height:182px; display:block}
@@ -322,11 +324,11 @@ b.stars{
 	border: 1px solid #802523;
 }
 #center-ul .center-left-li {
-	width: 770px;
+	width: 760px;
 	height: 200px;
 }
 #center-ul .center-right-li {
-	width: 350px;
+	width: 340px;
 	height: 200px;
 	margin-left: 20px;
 }
@@ -379,7 +381,7 @@ b.stars{
 	display: none;
 	left:4px;
 	top:4px;
-	width:760px;
+	width:750px;
 	height:156px;
 	position: absolute;
 }
@@ -388,7 +390,7 @@ div.content-div .normal.content-curr {
 }
 .normal p {
 	display: block;
-	width: 510px;
+	width: 500px;
 	height: 156px;
 	padding: 0 5px;
 	overflow: hidden;

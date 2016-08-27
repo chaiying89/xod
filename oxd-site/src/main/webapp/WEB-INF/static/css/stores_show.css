@@ -78,9 +78,9 @@ body {
 .img-pp ul li{
 	width:260px;
 	height:220px;
-	background-color:#a98263;
+	background-color:#ccc;
 	float:left;
-	border:4px #a98263 solid;
+	border:4px #ccc solid;
 	text-align:center;
 	margin-top:10px;
 	transition:all 0.5s;
