@@ -2,6 +2,7 @@ package com.oxd.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import com.oxd.tools.Uploader;
 public class UploaderController {
 
 	@RequestMapping(value = "/editorImage")
-	@ResponseBody
-	public String uploadEditorImage(HttpServletRequest request,
+	public void uploadEditorImage(HttpServletRequest request,
+			HttpServletResponse response,
 			@RequestParam("upfile") MultipartFile file) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;chartset=UTF-8");
 		Uploader up = new Uploader(request, file);
 		up.setSavePath("image");
 		String[] fileType = { ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
@@ -28,7 +31,7 @@ public class UploaderController {
 
 		String callback = request.getParameter("callback");
 		String basePath = request.getScheme() + "://" + request.getServerName()
-				+ ":" + request.getServerPort() + request.getContextPath();
+				+ (request.getServerPort() == 80 ? "" : (":" + request.getServerPort())) + request.getContextPath();
 
 		String result = "{\"name\":\"" + up.getFileName()
 				+ "\", \"originalName\": \"" + up.getOriginalName()
@@ -37,11 +40,11 @@ public class UploaderController {
 				+ "\", \"url\": \"" + basePath + "/static/" + up.getUrl() + "\"}";
 
 		result = result.replaceAll("\\\\", "\\\\");
-
+		
 		if (callback == null) {
-			return result;
+			response.getWriter().write(result);
 		} else {
-			return "<script>" + callback + "(" + result + ")</script>";
+			response.getWriter().write("<script>" + callback + "(" + result + ")</script>");
 		}
 	}
 }

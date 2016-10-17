@@ -43,11 +43,11 @@
 		},
 		titleValid : { 
 			validator : function(value, param) { 
-				if(value && value.length > 0 && value.length <= 100) 
+				if(value && value.length > 0 && value.length <= 30) 
 					return true; 
 				return false;
 			}, 
-			message : '标题字数应在1-100之间。' 
+			message : '标题字数应在1-30之间。' 
 		}
 	});
 	

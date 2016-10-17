@@ -43,11 +43,11 @@
 		},
 		titleValid : { 
 			validator : function(value, param) { 
-				if(value && value.length > 0 && value.length <= 100) 
+				if(value && value.length > 0 && value.length <= 30) 
 					return true; 
 				return false;
 			}, 
-			message : '标题字数应在1-100之间。' 
+			message : '标题字数应在1-30之间。' 
 		}
 	});
 	
@@ -178,6 +178,7 @@
 	            secureuri:false,
 	            fileElementId:"upfile",
 	            dataType: 'json',
+	            contentType: "application/x-www-form-urlencoded; charset=utf-8",
 	            success: function (data, status){
 	                if(data.state == 'SUCCESS'){   
 	                	$.messager.alert("成功","上传成功","info")
