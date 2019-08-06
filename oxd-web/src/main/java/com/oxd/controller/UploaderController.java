@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oxd.tools.Uploader;
@@ -21,7 +20,7 @@ public class UploaderController {
 			HttpServletResponse response,
 			@RequestParam("upfile") MultipartFile file) throws Exception {
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json;chartset=UTF-8");
+		response.setContentType("text/html;chartset=UTF-8");
 		Uploader up = new Uploader(request, file);
 		up.setSavePath("image");
 		String[] fileType = { ".gif", ".png", ".jpg", ".jpeg", ".bmp" };

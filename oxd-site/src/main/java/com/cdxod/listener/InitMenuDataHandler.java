@@ -1,8 +1,12 @@
 package com.cdxod.listener;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cdxod.cache.CacheMapFactory;
 import com.oxd.service.MenuService;
